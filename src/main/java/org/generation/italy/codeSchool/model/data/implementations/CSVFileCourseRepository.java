@@ -72,7 +72,7 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     public String CourseToCSV(Course c){
-        return String.format("%d,%s,%s,%s,%f",c.getId(),c.getDescription()
-                ,c.getTitle(),c.getProgram(),c.getDuration());
+        return String.format("%d,%s,%s,%s,%f",c.getId(),c.getTitle()
+                ,c.getDescription(),c.getProgram(),c.getDuration());
     }
 }
