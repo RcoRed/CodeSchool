@@ -23,5 +23,5 @@ public interface CourseRepository {
 /*
     utitlizziamo le exceptions che abbimo creato noi (nel package "exceptions")
     così da riuscire a poter utilizzare questa interfaccia con tutte le classi che vogliamo
-    in questo modo rimane il più generale possibile!!
+    e gestire l'errore in maniera SPECIFICA!
  */

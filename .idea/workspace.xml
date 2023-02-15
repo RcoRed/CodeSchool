@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="risolto problema del primo errore del test di CourseToCSV">
+    <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="aggiungo commenti al codice">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstructions/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstructions/CourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,7 +62,7 @@
       <recent name="org.generation.italy.codeSchool.model.data.implementations" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CSVFileCourseRepositoryTest.courseToCSV">
+  <component name="RunManager" selected="JUnit.CSVFileCourseRepositoryTest.create">
     <configuration name="CSVFileCourseRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
@@ -98,8 +94,42 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CSVFileCourseRepositoryTest.create" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodeSchool" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
+      <option name="METHOD_NAME" value="create" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CSVFileCourseRepositoryTest.findById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodeSchool" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
+      <option name="METHOD_NAME" value="findById" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.create" />
+        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.findById" />
         <item itemvalue="JUnit.CSVFileCourseRepositoryTest.courseToCSV" />
         <item itemvalue="JUnit.CSVFileCourseRepositoryTest" />
       </list>
@@ -128,12 +158,20 @@
       <option name="project" value="LOCAL" />
       <updated>1676480067058</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="aggiungo commenti al codice">
+      <created>1676493124316</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1676493124316</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="inizio CodeSchool" />
     <MESSAGE value="risolto problema del primo errore del test di CourseToCSV" />
-    <option name="LAST_COMMIT_MESSAGE" value="risolto problema del primo errore del test di CourseToCSV" />
+    <MESSAGE value="aggiungo commenti al codice" />
+    <option name="LAST_COMMIT_MESSAGE" value="aggiungo commenti al codice" />
   </component>
 </project>
