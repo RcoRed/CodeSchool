@@ -4,7 +4,6 @@ import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,3 +19,9 @@ public interface CourseRepository {
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
 }
+
+/*
+    utitlizziamo le exceptions che abbimo creato noi (nel package "exceptions")
+    così da riuscire a poter utilizzare questa interfaccia con tutte le classi che vogliamo
+    in questo modo rimane il più generale possibile!!
+ */

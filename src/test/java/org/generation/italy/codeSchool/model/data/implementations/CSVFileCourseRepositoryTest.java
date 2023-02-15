@@ -39,13 +39,13 @@ class CSVFileCourseRepositoryTest {
 
     @org.junit.jupiter.api.Test
     void courseToCSV() {
-        // ARRANGE
+        // ARRANGE      //inizializzo i dati che poi dovrò usare
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
-        // ACT
+        // ACT          //richiamo ciò che devo testare
         String csvLine = repo.CourseToCSV(c);
-        // ASSERT
-        //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perchè l'import è STATIC
+        // ASSERT       //prego che tutto sia andato bene
+        //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perchè l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
         assertEquals(CSVLINE,csvLine);
     }
 }

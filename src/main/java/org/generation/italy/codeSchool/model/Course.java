@@ -41,6 +41,7 @@ public class Course {
         return duration;
     }
 
+    //override del metodo madre Object toString() e lo facciamo meglio
     @Override
     public String toString() {
 //        return "Course{" +
@@ -50,6 +51,7 @@ public class Course {
 //                ", program='" + program + '\'' +
 //                ", duration=" + duration +
 //                '}';
+//        ritorna la stessa cosa, anzi è fatta meglio
         return String.format("Course{id=%d, title=%s, description=%s, program=%s, duration=%f}",
                 id,title,description,program,duration);
     }

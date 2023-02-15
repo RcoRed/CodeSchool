@@ -7,9 +7,23 @@ import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundExcep
 import java.util.*;
 
 public class InMemoryCourseRepository implements CourseRepository {
-
+/*
+    pensalo come una arrayList(NON fanno parte della stassa famiglia) ma le posizioni vengono definite con degli id UNIVOCI
+    immaginalo come 2 colonne a sinistra l'id UNIVOCO della riga e a destra un oggetto
+ */
     private static Map<Long,Course> dataSource = new HashMap<>();
     private static long nextId;
+
+    /*
+        Optional lo vedo un pò come una variabile jolly in che senso:
+        Viene utitlizzata soprattutto (o forse unicamente[questo ce lo dirà il tempo]) per gestire variabili/isatnze/puntaori che posso essere null, come?
+        Optional non può essere null, optional sarà EMPTY se gli passiamo un valore null e PRESENT se gli passiamo qualcosa che non sia null
+        Come vedi si dichiarano con le generics --> <>
+        all'interno ci mettiamo il tipo di dato che devono ricevere (lo sai insomma)
+        MA COSA FA?
+        dice al compilatore che bisogna fare un controllo (nomeOptional.isEmpty) se non lo facciamo ci darà un avviso!
+        si! hai capito!! serve "solo" per ricordarci di controllare se un dato è vuoto(null) o meno, così da evitare cappellate logiche durante la scrittura dei codici
+     */
 
     @Override
     public Optional<Course> findById(long id) {
@@ -22,11 +36,11 @@ public class InMemoryCourseRepository implements CourseRepository {
 
     @Override
     public List<Course> findByTitleContains(String part){
-        List<Course> result = new ArrayList<>();
-        Collection<Course> cs = dataSource.values();
+        List<Course> result = new ArrayList<>();            //un pò di polimorfismo non fa mai male
+        Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
         for (Course c:cs){
             if (c.getTitle().contains(part)){
-                result.add(c);
+                result.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
             }
         }
         return result;
@@ -43,7 +57,7 @@ public class InMemoryCourseRepository implements CourseRepository {
     @Override
     public void update(Course course) throws EntityNotFoundException {
         if (dataSource.containsKey(course.getId())){
-            dataSource.put(course.getId(), course);
+            dataSource.put(course.getId(), course);                   //inseriamo l'oggeto nel hashMap
         }else {
 //            EntityNotFoundException e = new EntityNotFoundException("Non esiste un corso con id: " + course.getId());
 //            throw e;
@@ -57,7 +71,7 @@ public class InMemoryCourseRepository implements CourseRepository {
 //        if (old == null){
 //            throw new EntityNotFoundException("Non esiste un corso con id: " + id);
 //        }
-        if (dataSource.remove(id)==null){
+        if (dataSource.remove(id)==null){           //possiamo farlo perche .remove() ritornerà null se non trova l' id
             throw new EntityNotFoundException("Non esiste un corso con id: " + id);
         }
     }
