@@ -1,5 +1,7 @@
 package org.generation.italy.codeSchool.model;
 
+import java.util.Objects;
+
 public class Course {
     private long id;
     private String title;
@@ -54,5 +56,18 @@ public class Course {
 //        ritorna la stessa cosa, anzi è fatta meglio
         return String.format("Course{id=%d, title=%s, description=%s, program=%s, duration=%f}",
                 id,title,description,program,duration);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+        Course course = (Course) o;     //DownCast
+        return getId() == course.getId() && Double.compare(course.getDuration(), getDuration()) == 0 && getTitle().equals(course.getTitle()) && Objects.equals(getDescription(), course.getDescription()) && Objects.equals(getProgram(), course.getProgram());
+    }
+    //!! equals e hashCode devono stare sempre insieme (sono bff)
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());       //modifica l'hashCode in base all'equals
     }
 }

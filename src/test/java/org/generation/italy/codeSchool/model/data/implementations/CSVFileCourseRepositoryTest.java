@@ -2,9 +2,15 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
-import org.junit.jupiter.api.Assertions;
+import java.io.FileOutputStream;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;       //!!importante!!
@@ -16,9 +22,8 @@ class CSVFileCourseRepositoryTest {
     private static final String DESCRIPTION="DESCRIPTION";
     private static final String PROGRAM="PROGRAM";
     private static final double DURATION=200.0;
-
-    private static final String CSVLINE=String.format("%d,%s,%s,%s,%f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-
+    private static final String CSVLINE=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+    private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID+1,TITLE+"Test",DESCRIPTION+"Test",PROGRAM+"Test",DURATION+1);
     private static final String FILENAME="TESTDATA.csv";
 
     @org.junit.jupiter.api.BeforeEach
@@ -28,25 +33,32 @@ class CSVFileCourseRepositoryTest {
 
     @org.junit.jupiter.api.AfterEach
     void tearDown() {
-        System.out.println("tearDown");
+        try {
+            new FileOutputStream(FILENAME).close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @org.junit.jupiter.api.Test
-    void findById() {
-        /*
+    void findById_finds_course_when_present() {
         Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
-        try{
+        try(PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))){
+            pw.println(CSVLINE2);
+            pw.println(CSVLINE);
+            pw.flush();                                         //obbligo a scrivere subito
             Optional<Course> x = repo.findById(ID);
-            if (x.isPresent()){
-                c2 = x.get();
-                assertEquals(c1,c2);        //non funge perchè puntano a due oggetti differenti
-            }
+            assertTrue(x.isPresent());
+            Course c2 = x.get();
+            assertEquals(c1,c2);
         }catch (DataException e){
-           e.printStackTrace();
+            fail("Errore nella ricerca by id sul file di testo" + e.getMessage());
+        }catch (IOException e){
+            fail("Errore nella preparazione del test sulla ricerca by id sul file di testo" + e.getMessage());
         }
 
-        System.out.println("findById");*/
+        System.out.println("findById");
     }
 
     @org.junit.jupiter.api.Test
@@ -56,11 +68,20 @@ class CSVFileCourseRepositoryTest {
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT
         try{
+            List<String> linesBefore = Files.readAllLines(Paths.get(FILENAME));
             repo.create(c);
+            List<String> linesAfter = Files.readAllLines(Paths.get(FILENAME));
+            // ASSERT
+            assertEquals(linesBefore.size()+1,linesAfter.size());
+            String csvLine = linesAfter.get(linesAfter.size()-1);
+            String[] tokens = csvLine.split(",");
+            assertEquals(ID,Long.parseLong(tokens[0]));
+            assertEquals(DURATION,Double.parseDouble(tokens[tokens.length-1]));
         }catch (DataException e){
-            e.printStackTrace();
+            fail("Fallito il create su file CSV" + e.getMessage());
+        }catch (IOException e){
+            fail("Fallita la verifica del create su file CSV" + e.getMessage());
         }
-        // ASSERT
     }
 
     @org.junit.jupiter.api.Test

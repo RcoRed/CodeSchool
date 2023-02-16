@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class CSVFileCourseRepository implements CourseRepository {
@@ -77,7 +78,7 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     public String CourseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
-        return String.format("%d,%s,%s,%s,%f",c.getId(),c.getTitle()
+        return String.format(Locale.US,"%d,%s,%s,%s,%.2f",c.getId(),c.getTitle()
                 ,c.getDescription(),c.getProgram(),c.getDuration());
     }
 }
