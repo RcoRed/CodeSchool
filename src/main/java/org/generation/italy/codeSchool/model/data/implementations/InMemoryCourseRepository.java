@@ -21,8 +21,8 @@ public class InMemoryCourseRepository implements CourseRepository {
         Come vedi si dichiarano con le generics --> <>
         all'interno ci mettiamo il tipo di dato che devono ricevere (lo sai insomma)
         MA COSA FA?
-        dice al compilatore che bisogna fare un controllo (nomeOptional.isEmpty) se non lo facciamo ci darà un avviso!
-        si! hai capito!! serve "solo" per ricordarci di controllare se un dato è vuoto(null) o meno, così da evitare cappellate logiche durante la scrittura dei codici
+        dice al programmatore che bisogna fare un controllo (nomeOptional.isEmpty) se non lo fa è un coglione!
+        si! hai capito!! serve "solo" per ricordarci/ o a dire di controllare se un dato è vuoto(null) o meno, così da evitare cappellate logiche durante la scrittura dei codici
      */
 
     @Override

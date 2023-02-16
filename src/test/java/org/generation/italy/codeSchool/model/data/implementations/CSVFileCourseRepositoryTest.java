@@ -40,7 +40,7 @@ class CSVFileCourseRepositoryTest {
             Optional<Course> x = repo.findById(ID);
             if (x.isPresent()){
                 c2 = x.get();
-                assertEquals(c1,c2);        //non funge perche puntano a due oggetti differenti
+                assertEquals(c1,c2);        //non funge perchè puntano a due oggetti differenti
             }
         }catch (DataException e){
            e.printStackTrace();
@@ -51,15 +51,16 @@ class CSVFileCourseRepositoryTest {
 
     @org.junit.jupiter.api.Test
     void create() {
+        // ARRANGE
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
+        // ACT
         try{
             repo.create(c);
         }catch (DataException e){
             e.printStackTrace();
         }
-
-        System.out.println("create");
+        // ASSERT
     }
 
     @org.junit.jupiter.api.Test
