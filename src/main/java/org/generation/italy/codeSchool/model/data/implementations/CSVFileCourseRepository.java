@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -73,8 +74,29 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public void deleteById(long id) throws EntityNotFoundException {
-        System.out.println("Aggiunto questo solo per spiegare GitWorkFlow");
+    public void deleteById(long id) throws EntityNotFoundException,DataException {
+        try{
+            List<String> lines = Files.readAllLines(Paths.get(fileName));
+            //come verrà scritto realmente un foreach
+            for (Iterator<String> it = lines.iterator();it.hasNext();){
+                String line = it.next();
+                String[] tokens  = line.split(",");
+                long courseId = Long.parseLong(tokens[0]);
+                if (courseId==id){
+                    it.remove();
+                    //secondo try per la gestione delle risorse, se lo avessimo fatto nel primo try avrebbe eliminato il file e creato uno nuovo prima di leggerlo
+                    try(PrintWriter pw = new PrintWriter(new FileOutputStream(fileName))){
+                        for (String line2:lines){
+                            pw.println(line2);
+                        }
+                    }
+                    return;
+                }
+            }
+            throw new EntityNotFoundException("Non esiste un corso con ID: " + id);
+        }catch (IOException e){
+            throw new DataException("Errore nel cancellamento di una linea da file csv", e);
+        }
 
     }
 

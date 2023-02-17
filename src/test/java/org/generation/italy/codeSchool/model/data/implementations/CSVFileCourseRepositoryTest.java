@@ -2,13 +2,16 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
+import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.junit.jupiter.api.Test;
+
 import java.io.FileOutputStream;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -18,12 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;       //!!importante!!
 class CSVFileCourseRepositoryTest {
 
     private static final long ID=1;
+    private static final long ID2=ID+1;
+    private static final long ID_NOT_PRESENT=3;
     private static final String TITLE="TITLE";
     private static final String DESCRIPTION="DESCRIPTION";
     private static final String PROGRAM="PROGRAM";
     private static final double DURATION=200.0;
     private static final String CSVLINE=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-    private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID+1,TITLE+"Test",DESCRIPTION+"Test",PROGRAM+"Test",DURATION+1);
+    private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+"Test",DESCRIPTION+"Test",PROGRAM+"Test",DURATION+1);
     private static final String FILENAME="TESTDATA.csv";
 
     @org.junit.jupiter.api.BeforeEach
@@ -40,7 +45,7 @@ class CSVFileCourseRepositoryTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void findById_finds_course_when_present() {
         Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
@@ -57,11 +62,9 @@ class CSVFileCourseRepositoryTest {
         }catch (IOException e){
             fail("Errore nella preparazione del test sulla ricerca by id sul file di testo" + e.getMessage());
         }
-
-        System.out.println("findById");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void create() {
         // ARRANGE
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
@@ -84,7 +87,57 @@ class CSVFileCourseRepositoryTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
+    void deleteById_should_delete_course_if_present() {
+        //ARRANGE
+        CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
+        try{
+            try(PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))){
+                pw.println(CSVLINE2);
+                pw.println(CSVLINE);
+            }
+            //ACT
+            repo.deleteById(ID);
+            //ASSERT
+            List<String[]> tokenLines = readTokenizedLines();
+            assertTrue(tokenLines.size()==1);
+            long courseID = Long.parseLong(tokenLines.get(0)[0]);
+            assertEquals(ID2,courseID);
+
+        }catch (IOException e){
+            fail("Errore nell'utilizzo del file id test .CSV" + e.getMessage());
+        }catch (EntityNotFoundException | DataException e){
+            fail("Errore nella cancellazione di un corso " + e.getMessage());
+        }
+    }
+
+    @Test
+    void deleteById_should_throw_when_course_not_present() {
+        //ARRANGE
+        CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
+        try{
+            try(PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))){
+                pw.println(CSVLINE2);
+                pw.println(CSVLINE);
+            }
+            //ACT
+            repo.deleteById(ID_NOT_PRESENT);
+            //ASSERT
+            List<String[]> tokenLines = readTokenizedLines();
+            assertTrue(tokenLines.size()==1);
+            long courseID = Long.parseLong(tokenLines.get(0)[0]);
+            assertEquals(ID2,courseID);
+            fail("Non Viene lanciata EntityNotFound Exception quando si cancella un corso non esistente");
+        }catch (IOException e){
+            fail("Errore nell'utilizzo del file id test .CSV" + e.getMessage());
+        }catch (EntityNotFoundException e){
+            //EXPECTED
+        }catch (DataException e){
+            fail("Errore nella cancellazione di un corso " + e.getMessage());
+        }
+    }
+
+    @Test
     void courseToCSV() {
         // ARRANGE      //inizializzo i dati che poi dovrò usare
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
@@ -94,5 +147,14 @@ class CSVFileCourseRepositoryTest {
         // ASSERT       //prego che tutto sia andato bene
         //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perchè l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
         assertEquals(CSVLINE,csvLine);
+    }
+
+    private List<String[]> readTokenizedLines() throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(FILENAME));
+        List<String[]> tokenLines = new ArrayList<>();
+        for (String s:lines){
+            tokenLines.add(s.split(","));
+        }
+        return tokenLines;
     }
 }
