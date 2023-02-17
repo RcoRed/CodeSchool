@@ -28,14 +28,15 @@ class SerializedCourseRepositoryTest implements Serializable{
         System.out.println("pippo");
         try{
             System.out.println("pippo3");
-            FileOutputStream fileOutput = new FileOutputStream("serializzaione.bin");
+            FileOutputStream fileOutput = new FileOutputStream("serializzazione.txt");
             ObjectOutputStream output = new ObjectOutputStream(fileOutput);
             output.writeObject(c);
             output.close();
             fileOutput.close();
+
             System.out.println("pippo4");
 
-            FileInputStream fileInput = new FileInputStream("serializzazione.bin");
+            FileInputStream fileInput = new FileInputStream("serializzazione.txt");
             ObjectInputStream input = new ObjectInputStream(fileInput);
             Course c2 = (Course) input.readObject();
             input.close();

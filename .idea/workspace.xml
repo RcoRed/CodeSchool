@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="Aggiunge inizio test scrittura serializzazione">
+    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="Aggiunge implements serializzazione">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -195,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676657419108</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Aggiunge implements serializzazione">
+      <created>1676658242793</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1676658242793</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -241,15 +244,16 @@
     <MESSAGE value="Aggiunge Println di commit su branch" />
     <MESSAGE value="Aggiunge metodo udate() e inizio scrittura serializzazione" />
     <MESSAGE value="Aggiunge inizio test scrittura serializzazione" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunge inizio test scrittura serializzazione" />
+    <MESSAGE value="Aggiunge implements serializzazione" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunge implements serializzazione" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java</url>
-          <line>35</line>
-          <option name="timeStamp" value="11" />
+          <line>38</line>
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
