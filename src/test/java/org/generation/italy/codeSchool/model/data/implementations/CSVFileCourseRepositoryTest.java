@@ -22,22 +22,26 @@ import static org.junit.jupiter.api.Assertions.*;       //!!importante!!
 class CSVFileCourseRepositoryTest {
 
     private static final long ID=1;
-    private static final long ID2=ID+1;
-    private static final long ID_NOT_PRESENT=3;
+    private static final long ID2=2;
+    private static final long ID3=3;
+    private static final long ID_NOT_PRESENT=22;
     private static final long ID_CREATE=4;
     private static final String TITLE="TITLE";
     private static final String DESCRIPTION="DESCRIPTION";
     private static final String PROGRAM="PROGRAM";
     private static final double DURATION=200.0;
-    private static final String CSVLINE=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-    private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+"Test",DESCRIPTION+"Test",PROGRAM+"Test",DURATION+1);
+    private static final String TEST="TEST";
+    private static final String CSVLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+    private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
+    private static final String CSVLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
     private static final String FILENAME="TESTDATA.csv";
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() throws FileNotFoundException {
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))){
+            pw.println(CSVLINE1);
             pw.println(CSVLINE2);
-            pw.println(CSVLINE);
+            pw.println(CSVLINE3);
             //pw.flush();                                         //obbligo a scrivere subito
         }
     }
@@ -94,10 +98,11 @@ class CSVFileCourseRepositoryTest {
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         try{
             //ACT
+            List<String> linesBefore = Files.readAllLines(Paths.get(FILENAME));
             repo.deleteById(ID);
             //ASSERT
             List<String[]> tokenLines = readTokenizedLines();
-            assertEquals(1, tokenLines.size());
+            assertEquals(linesBefore.size()-1, tokenLines.size());
             long courseID = Long.parseLong(tokenLines.get(0)[0]);
             assertEquals(ID2,courseID);
 
@@ -125,6 +130,23 @@ class CSVFileCourseRepositoryTest {
     }
 
     @Test
+    void findByTitleContains_should_find_courses_if_title_present(){
+        CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
+        try{
+            List<Course> courses = repo.findByTitleContains(TEST);
+            assertEquals(2,courses.size());
+            for (Course c:courses){
+                assertTrue(c.getId() == ID2 || c.getId() == ID3 );
+                assertTrue(c.getTitle().contains(TEST));
+            }
+        }catch (DataException e){
+            fail("Errore nella ricerca di corsi per titolo like ", e);
+        }
+
+
+    }
+
+    @Test
     void courseToCSV() {
         // ARRANGE      //inizializzo i dati che poi dovrò usare
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
@@ -133,7 +155,7 @@ class CSVFileCourseRepositoryTest {
         String csvLine = repo.CourseToCSV(c);
         // ASSERT       //prego che tutto sia andato bene
         //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perchè l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
-        assertEquals(CSVLINE,csvLine);
+        assertEquals(CSVLINE1,csvLine);
     }
 
     private List<String[]> readTokenizedLines() throws IOException {

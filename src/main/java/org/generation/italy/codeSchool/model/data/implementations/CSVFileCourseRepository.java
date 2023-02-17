@@ -10,10 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 public class CSVFileCourseRepository implements CourseRepository {
     private String fileName;
@@ -47,8 +44,22 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public List<Course> findByTitleContains(String part) {
-        return null;
+    public List<Course> findByTitleContains(String part) throws DataException {
+        List<Course> courses = new ArrayList<>();
+        try{
+            List<String> lines = Files.readAllLines(Paths.get(fileName));
+            for (String s:lines){
+                String[] tokens = s.split(",");
+                if (tokens[1].contains(part)){
+                    Course found = new Course(Long.parseLong(tokens[0]),tokens[1]
+                            ,tokens[2],tokens[3],Double.parseDouble(tokens[4]));
+                    courses.add(found);
+                }
+            }
+            return courses;
+        }catch (IOException e){
+            throw new DataException("Errore nella lettura del file", e);
+        }
     }
 
     @Override
