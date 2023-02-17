@@ -1,7 +1,7 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
-import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
@@ -82,8 +82,23 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public void update(Course course) throws EntityNotFoundException {
-
+    public void update(Course course) throws EntityNotFoundException, DataException {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(fileName));
+            for (String s : lines) {
+                String[] tokens = s.split(",");
+                if (course.getId()==Long.parseLong(tokens[0])){
+                    deleteById(Long.parseLong(tokens[0]));
+                    create(course);
+                    /*try (FileOutputStream output = new FileOutputStream(fileName,true);
+                         PrintWriter pw = new PrintWriter(output)){
+                        pw.println(CourseToCSV(course));
+                    }*/
+                }
+            }
+        }catch (IOException e){
+            throw new DataException("Errore nel salvataggio su file", e);
+        }
     }
 
     @Override

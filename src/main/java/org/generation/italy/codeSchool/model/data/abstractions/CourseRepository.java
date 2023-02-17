@@ -1,9 +1,10 @@
-package org.generation.italy.codeSchool.model.data.abstructions;
+package org.generation.italy.codeSchool.model.data.abstractions;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
