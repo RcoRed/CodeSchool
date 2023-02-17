@@ -2,13 +2,16 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
+import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.junit.jupiter.api.Test;
+
 import java.io.FileOutputStream;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -17,14 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;       //!!importante!!
 
 class CSVFileCourseRepositoryTest {
 
-    private static final long ID=1;
-    private static final String TITLE="TITLE";
-    private static final String DESCRIPTION="DESCRIPTION";
-    private static final String PROGRAM="PROGRAM";
-    private static final double DURATION=200.0;
-    private static final String CSVLINE=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-    private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID+1,TITLE+"Test",DESCRIPTION+"Test",PROGRAM+"Test",DURATION+1);
-    private static final String FILENAME="TESTDATA.csv";
+    private static final long ID = 1;
+    private static final long ID2 = ID + 1;
+    private static final long ID_NOT_PRESENT = 3;
+    private static final String TITLE = "TITLE";
+    private static final String DESCRIPTION = "DESCRIPTION";
+    private static final String PROGRAM = "PROGRAM";
+    private static final double DURATION = 200.0;
+    private static final String CSVLINE = String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+    private static final String CSVLINE2 = String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID+1,TITLE+"Test",DESCRIPTION+"Test",PROGRAM+"Test",DURATION+1);
+    private static final String FILENAME = "TESTDATA.csv";
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -40,14 +45,14 @@ class CSVFileCourseRepositoryTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void findById_finds_course_when_present() {
         Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))){
             pw.println(CSVLINE2);
             pw.println(CSVLINE);
-            pw.flush();                                         //obbligo a scrivere subito
+            pw.flush();                                     //obbligo a scrivere subito
             Optional<Course> x = repo.findById(ID);
             assertTrue(x.isPresent());
             Course c2 = x.get();
@@ -61,7 +66,7 @@ class CSVFileCourseRepositoryTest {
         System.out.println("findById");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void create() {
         // ARRANGE
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
@@ -84,15 +89,66 @@ class CSVFileCourseRepositoryTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void courseToCSV() {
-        // ARRANGE      //inizializzo i dati che poi dovrò usare
+        // ARRANGE inizializzo i dati che poi dovrò usare
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
-        // ACT          //richiamo ciò che devo testare
+        // ACT richiamo ciò che devo testare
         String csvLine = repo.CourseToCSV(c);
-        // ASSERT       //prego che tutto sia andato bene
-        //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perchè l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
+        // ASSERT prego che tutto sia andato bene
+        //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perché l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
         assertEquals(CSVLINE,csvLine);
+    }
+
+    @Test
+    void deleteID_should_delete_course_if_present() {
+        // ARRANGE
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
+        try {
+            try (PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))) {
+                pw.println(CSVLINE2);
+                pw.println(CSVLINE);
+            }
+            // ACT
+            repo.deleteById(ID);
+            // ASSERT
+            List<String[]> tokenLines = readTokenizedLines();
+            assertEquals(1, tokenLines.size());
+            assertEquals(ID+1, Long.parseLong(tokenLines.get(0)[0]));
+        } catch (IOException e) {
+            fail("Fallimento dell'utilizzo del file CSV");
+        } catch (EntityNotFoundException | DataException e) {
+            fail("Errore nella cancellazione del file :" +e.getMessage());
+        }
+    }
+
+    @Test
+    void deleteID_should_throw_if_course_is_missing() {
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
+        try {
+            try (PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))) {
+                pw.println(CSVLINE2);
+                pw.println(CSVLINE);
+            }
+            // ACT
+            repo.deleteById(ID_NOT_PRESENT);
+            // se arrivo qui, l'eccezione non è stata lanciata
+            fail("Non viene lanciata una EntityNotFoundException anche se il corso non esiste");
+        } catch (IOException | DataException e) {
+            fail("Fallimento dell'utilizzo del file CSV");
+        } catch (EntityNotFoundException e) {
+            // EXPECTED (sappiamo che ci arriverà e lo sappiamo
+        }
+    }
+
+    //funzione di utilità
+    private List<String[]> readTokenizedLines() throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(FILENAME));
+        List<String[]> tokenLines = new ArrayList<>();
+        for (String s : lines) {
+            tokenLines.add(s.split(","));
+        }
+        return tokenLines;
     }
 }

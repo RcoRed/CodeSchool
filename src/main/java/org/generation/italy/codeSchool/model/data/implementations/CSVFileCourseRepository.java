@@ -10,12 +10,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
 public class CSVFileCourseRepository implements CourseRepository {
-    private String fileName;
+    private final String fileName;
     private static long nextId;
     public static final String DEFAULT_FILE_NAME = "Corsi.csv";
 
@@ -34,7 +35,7 @@ public class CSVFileCourseRepository implements CourseRepository {
                 String[] trimmed = s.split(",");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array
                 long courseId = Long.parseLong(trimmed[0]);
                 if (courseId == id){
-                    Course found = new Course(courseId,trimmed[1],trimmed[2]    //creo l'oggeto passando le stringhe letta dal file
+                    Course found = new Course(courseId,trimmed[1],trimmed[2]    //creo l'oggetto passando le stringhe letta dal file
                             ,trimmed[3],Double.parseDouble(trimmed[4]));
                     return Optional.of(found);
                 }
@@ -51,18 +52,19 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public Course create(Course course) throws DataException{
+    public Course create(Course course) throws DataException {
         /*
-            FileOutputStream serve per scrivere nel file                !!(magari da richiedere)!!
-            quel (append)true serve ad aggiungere una nuova riga alle riche esistenti, se non ci fosse sovrascriverebbe tutte le righe presenti nel file
-            PintWriter sarà colui che effettivamente scriverà sul file
+            FileOutputStream serve per scrivere nel file
+            quel (append)true serve ad aggiungere una nuova riga alle riche esistenti,
+            se non ci fosse sovrascriverebbe tutte le righe presenti nel file
+            PrintWriter sarà colui che effettivamente scriverà sul file
          */
         try (FileOutputStream output = new FileOutputStream(fileName,true);
                 PrintWriter pw = new PrintWriter(output)){
             course.setId(++nextId);
             pw.println(CourseToCSV(course));                //è qui che scrivo sul file (si con una println) richiamando un metodo creato da noi(sta verso la fine)
             return course;                                  //ovviamente nelle parentesi gli passo la stringa che voglio sivere sul file
-        }catch (IOException e){
+        } catch (IOException e){
             throw new DataException("Errore nel salvataggio su file",e);
         }
     }
@@ -73,8 +75,26 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public void deleteById(long id) throws EntityNotFoundException {
-
+    public void deleteById(long id) throws EntityNotFoundException, DataException {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(fileName));
+            for (Iterator<String> it = lines.iterator(); it.hasNext();) { //non c'è bisogno dell'aumento del contatore
+                String line = it.next();
+                String[] tokens = line.split(",");
+                if (Long.parseLong(tokens[0]) == id) {
+                    it.remove(); // posso rimuoverlo perché it ha accesso all'oggetto reale dentro la lista
+                    try (PrintWriter pw = new PrintWriter(new FileOutputStream(fileName))){ //serve solo per fare gestione risorse
+                        for (String l : lines) {
+                            pw.println(l);
+                        }
+                    }
+                    return;
+                }
+            }
+            throw new EntityNotFoundException("Non ho trovato il corso con l'id inserito");
+        } catch (IOException e) {
+            throw new DataException("Errore nella cancellazione di una linea da file CSV", e);
+        }
     }
 
     public String CourseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
