@@ -5,6 +5,7 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import java.io.IOException;
@@ -17,23 +18,32 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;       //!!importante!!
+import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 class CSVFileCourseRepositoryTest {
 
-    private static final long ID = 1;
-    private static final long ID2 = ID + 1;
-    private static final long ID_NOT_PRESENT = 3;
-    private static final String TITLE = "TITLE";
-    private static final String DESCRIPTION = "DESCRIPTION";
-    private static final String PROGRAM = "PROGRAM";
-    private static final double DURATION = 200.0;
-    private static final String CSVLINE = String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-    private static final String CSVLINE2 = String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID+1,TITLE+"Test",DESCRIPTION+"Test",PROGRAM+"Test",DURATION+1);
-    private static final String FILENAME = "TESTDATA.csv";
+    private static final long ID=1;
+    private static final long ID2= 2;
+    private static final long ID3 = 3;
+    private static final long ID_NOT_PRESENT=4;
+    private static final long ID_CREATE=5;
+    private static final String TEST = "TEST";
+    private static final String TITLE="TITLE";
+    private static final String DESCRIPTION="DESCRIPTION";
+    private static final String PROGRAM="PROGRAM";
+    private static final double DURATION=200.0;
+    private static final String CSVLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+    private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
+    private static final String CSVLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
+    private static final String FILENAME="TESTDATA.csv";
 
     @org.junit.jupiter.api.BeforeEach
-    void setUp() {
-        System.out.println("setUp");
+    void setUp() throws FileNotFoundException {
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))) {
+            pw.println(CSVLINE1);
+            pw.println(CSVLINE2);
+            pw.println(CSVLINE3);
+        }
     }
 
     @org.junit.jupiter.api.AfterEach
@@ -49,27 +59,20 @@ class CSVFileCourseRepositoryTest {
     void findById_finds_course_when_present() {
         Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
-        try(PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))){
-            pw.println(CSVLINE2);
-            pw.println(CSVLINE);
-            pw.flush();                                     //obbligo a scrivere subito
+        try{                                                                 //obbligo a scrivere subito
             Optional<Course> x = repo.findById(ID);
             assertTrue(x.isPresent());
             Course c2 = x.get();
             assertEquals(c1,c2);
         }catch (DataException e){
             fail("Errore nella ricerca by id sul file di testo" + e.getMessage());
-        }catch (IOException e){
-            fail("Errore nella preparazione del test sulla ricerca by id sul file di testo" + e.getMessage());
         }
-
-        System.out.println("findById");
     }
 
     @Test
     void create() {
         // ARRANGE
-        Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT
         try{
@@ -80,7 +83,7 @@ class CSVFileCourseRepositoryTest {
             assertEquals(linesBefore.size()+1,linesAfter.size());
             String csvLine = linesAfter.get(linesAfter.size()-1);
             String[] tokens = csvLine.split(",");
-            assertEquals(ID,Long.parseLong(tokens[0]));
+            assertEquals(ID_CREATE,Long.parseLong(tokens[0]));
             assertEquals(DURATION,Double.parseDouble(tokens[tokens.length-1]));
         }catch (DataException e){
             fail("Fallito il create su file CSV" + e.getMessage());
@@ -88,66 +91,82 @@ class CSVFileCourseRepositoryTest {
             fail("Fallita la verifica del create su file CSV" + e.getMessage());
         }
     }
+    @Test
+    void deleteById_should_delete_course_when_present(){
+        //Arrange
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
+        //arrange
+        try {
+            //Act
+            List<String> linesBefore = Files.readAllLines(Paths.get(FILENAME));
+            repo.deleteById(ID);
+            //Assert
+            List<String[]> tokenLines = readTokenizedLines();
+            assertEquals(linesBefore.size() - 1, tokenLines.size());
+            long courseId = Long.parseLong(tokenLines.get(0)[0]);
+            assertEquals(ID2,courseId);
+        }catch (IOException e){
+            fail("Errore nell'utilizzo del file di test CSV");
+        }catch (EntityNotFoundException | DataException e){
+            fail("Errore nella cancellazione di un corso"+ e.getMessage());
+        }
+    }
+
+    @Test
+    void deleteById_should_throw_when_course_not_present(){
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
+        try{
+            repo.deleteById(ID_NOT_PRESENT);
+            fail("Non viene lanciata EntityNotFoundExeption quando si cancella un corso già esistente");
+        } catch (DataException e) {
+            fail("Errore dell'utilizzo del file CSV"+e.getMessage());
+        } catch (EntityNotFoundException e) {
+            assertEquals(ENTITY_NOT_FOUND + ID_NOT_PRESENT, e.getMessage());
+        }
+    }
+
+    @Test
+    void betterDeleteById_should_throw_when_course_not_present(){
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+                repo.deleteById(ID_NOT_PRESENT);                                           //lambda expression
+        });
+        assertEquals(ENTITY_NOT_FOUND + ID_NOT_PRESENT, exception.getMessage());
+    }
 
     @Test
     void courseToCSV() {
-        // ARRANGE inizializzo i dati che poi dovrò usare
+        // ARRANGE      //inizializzo i dati che poi dovrò usare
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
-        // ACT richiamo ciò che devo testare
+        // ACT          //richiamo ciò che devo testare
         String csvLine = repo.CourseToCSV(c);
-        // ASSERT prego che tutto sia andato bene
-        //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perché l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
-        assertEquals(CSVLINE,csvLine);
+        // ASSERT       //prego che tutto sia andato bene
+        //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perchè l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
+        assertEquals(CSVLINE1,csvLine);
     }
 
     @Test
-    void deleteID_should_delete_course_if_present() {
-        // ARRANGE
+    void findByTitleContains_should_find_courses_if_title_present(){
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
-        try {
-            try (PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))) {
-                pw.println(CSVLINE2);
-                pw.println(CSVLINE);
+        try{
+            List<Course> courses = repo.findByTitleContains(TEST);
+            assertEquals(2,courses.size());
+            for(Course c : courses){
+                    assertTrue(c.getId() == ID2 || c.getId() == ID3);
+                    assertTrue(c.getTitle().contains(TEST));
             }
-            // ACT
-            repo.deleteById(ID);
-            // ASSERT
-            List<String[]> tokenLines = readTokenizedLines();
-            assertEquals(1, tokenLines.size());
-            assertEquals(ID+1, Long.parseLong(tokenLines.get(0)[0]));
-        } catch (IOException e) {
-            fail("Fallimento dell'utilizzo del file CSV");
-        } catch (EntityNotFoundException | DataException e) {
-            fail("Errore nella cancellazione del file :" +e.getMessage());
+        }catch (DataException e){
+            fail("Errore nella ricerca di corsi per titolo like " + e.getMessage());
         }
     }
 
-    @Test
-    void deleteID_should_throw_if_course_is_missing() {
-        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
-        try {
-            try (PrintWriter pw = new PrintWriter(new FileOutputStream(FILENAME))) {
-                pw.println(CSVLINE2);
-                pw.println(CSVLINE);
-            }
-            // ACT
-            repo.deleteById(ID_NOT_PRESENT);
-            // se arrivo qui, l'eccezione non è stata lanciata
-            fail("Non viene lanciata una EntityNotFoundException anche se il corso non esiste");
-        } catch (IOException | DataException e) {
-            fail("Fallimento dell'utilizzo del file CSV");
-        } catch (EntityNotFoundException e) {
-            // EXPECTED (sappiamo che ci arriverà e lo sappiamo
-        }
-    }
-
-    //funzione di utilità
-    private List<String[]> readTokenizedLines() throws IOException {
+    private List<String[]> readTokenizedLines() throws IOException{
         List<String> lines = Files.readAllLines(Paths.get(FILENAME));
         List<String[]> tokenLines = new ArrayList<>();
-        for (String s : lines) {
-            tokenLines.add(s.split(","));
+        for(String s:lines){
+            String[] tokens=s.split(",");
+            tokenLines.add(tokens);
         }
         return tokenLines;
     }
