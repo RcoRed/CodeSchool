@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SerializedCourseRepository implements CourseRepository {
+public class SerializedCourseRepository implements CourseRepository, Serializable{
     private static long nextId;
     private String fileName;
     public static final String DEFAULT_FILE_NAME = "Corsi.ser";

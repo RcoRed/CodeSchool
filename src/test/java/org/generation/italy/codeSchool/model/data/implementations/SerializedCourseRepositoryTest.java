@@ -6,10 +6,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.io.Serializable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SerializedCourseRepositoryTest{
+class SerializedCourseRepositoryTest implements Serializable{
 
 
     @BeforeEach
@@ -27,13 +28,14 @@ class SerializedCourseRepositoryTest{
         System.out.println("pippo");
         try{
             System.out.println("pippo3");
-            FileOutputStream fileOutput = new FileOutputStream("serializzaione.txt");
+            FileOutputStream fileOutput = new FileOutputStream("serializzaione.bin");
             ObjectOutputStream output = new ObjectOutputStream(fileOutput);
             output.writeObject(c);
             output.close();
             fileOutput.close();
             System.out.println("pippo4");
-            FileInputStream fileInput = new FileInputStream("serializzazione.txt");
+
+            FileInputStream fileInput = new FileInputStream("serializzazione.bin");
             ObjectInputStream input = new ObjectInputStream(fileInput);
             Course c2 = (Course) input.readObject();
             input.close();
