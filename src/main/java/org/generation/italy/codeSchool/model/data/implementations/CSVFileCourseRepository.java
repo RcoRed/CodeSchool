@@ -8,13 +8,14 @@ import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundExcep
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
-public class CSVFileCourseRepository implements CourseRepository {
+public class CSVFileCourseRepository implements CourseRepository, Serializable {
     private String fileName;
     private static long nextId;
     public static final String DEFAULT_FILE_NAME = "Corsi.csv";

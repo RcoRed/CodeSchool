@@ -5,10 +5,7 @@ import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,8 +25,8 @@ public class SerializedCourseRepository implements CourseRepository {
     @Override
     public Optional<Course> findById(long id) throws DataException {
         try{
-            FileOutputStream fileOutput= new FileOutputStream(fileName);
-            ObjectOutputStream output = new ObjectOutputStream(fileOutput);
+            FileInputStream fileInput= new FileInputStream (fileName);
+            ObjectInputStream input = new ObjectInputStream(fileInput);
             List<String> lines = Files.readAllLines(Paths.get(fileName));
             for (String s:lines){
                 String[] trimmed = s.split(",");
@@ -37,9 +34,8 @@ public class SerializedCourseRepository implements CourseRepository {
                 if (courseId == id){
                     Course found = new Course(courseId,trimmed[1],trimmed[2]
                             ,trimmed[3],Double.parseDouble(trimmed[4]));
-                    output.writeObject(found);
-                    output.close();
-                    fileOutput.close();
+                    input.close();
+                    fileInput.close();
                     return Optional.of(found);
                 }
             }
