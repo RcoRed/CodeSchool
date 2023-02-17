@@ -1,20 +1,18 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
-import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
+
+import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 public class CSVFileCourseRepository implements CourseRepository {
    private String fileName;
@@ -48,8 +46,21 @@ public class CSVFileCourseRepository implements CourseRepository {
    }
 
    @Override
-   public List<Course> findByTitleContains(String part) {
-      return null;
+   public List<Course> findByTitleContains(String part) throws DataException {
+      try{
+         List<String> lines = Files.readAllLines(Paths.get(fileName));
+         List<Course> courses = new ArrayList<>();
+         for(String s : lines){
+            String[] tokens = s.split(",");
+            if(tokens[1].contains(part)){
+               Course found = new Course(Long.parseLong(tokens[0]),tokens[1],tokens[2],tokens[3],Double.parseDouble(tokens[4]));
+               courses.add(found);
+            }
+         }
+         return courses;
+      }catch (IOException e){
+         throw new DataException("Errore nella su file", e);
+      }
    }
 
    @Override
@@ -70,7 +81,18 @@ public class CSVFileCourseRepository implements CourseRepository {
    }
 
    @Override
-   public void update(Course course) throws EntityNotFoundException {
+   public void update(Course course) throws EntityNotFoundException, DataException {
+      try{
+         List<String> lines = Files.readAllLines(Paths.get(fileName));
+         try{
+            deleteById(course.getId());
+            create(course);
+         } catch (EntityNotFoundException e){
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND);
+         }
+      } catch (IOException | DataException e) {
+         throw new DataException("Errore nell'update del file", e);
+      }
 
    }
 
@@ -92,7 +114,7 @@ public class CSVFileCourseRepository implements CourseRepository {
                return;
             }
          }
-         throw new EntityNotFoundException("Non esiste un corso con id: " + id);
+         throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
       }catch(IOException e){
          throw new DataException("Errore nel cancellamento di una linea da file csv. ", e);
       }

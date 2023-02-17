@@ -1,4 +1,4 @@
-package org.generation.italy.codeSchool.model.data.abstructions;
+package org.generation.italy.codeSchool.model.data.abstractions;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
