@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="">
+    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="aggiunge test per findByTitleContains e implementa il metodo findByTitleContains della classe CSVFileCourseRepository">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +74,7 @@
       <recent name="org.generation.italy.codeSchool.model.data.implementations" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.CSVFileCourseRepositoryTest">
+  <component name="RunManager">
     <configuration name="CSVFileCourseRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
@@ -87,22 +86,6 @@
       <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
       <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CSVFileCourseRepositoryTest.createNewCourse" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CodeSchool" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="createNewCourse" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -155,13 +138,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CSVFileCourseRepositoryTest.findByTitleContains_should_find_courses_if_title_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodeSchool" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
+      <option name="METHOD_NAME" value="findByTitleContains_should_find_courses_if_title_present" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.CSVFileCourseRepositoryTest" />
+        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.findByTitleContains_should_find_courses_if_title_present" />
         <item itemvalue="JUnit.CSVFileCourseRepositoryTest.deleteById_should_throw_when_course_not_present" />
         <item itemvalue="JUnit.CSVFileCourseRepositoryTest.deleteById_should_delete_course_if_present" />
         <item itemvalue="JUnit.CSVFileCourseRepositoryTest.findById_finds_course_when_present" />
-        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.createNewCourse" />
+        <item itemvalue="JUnit.CSVFileCourseRepositoryTest" />
       </list>
     </recent_temporary>
   </component>
@@ -174,6 +173,28 @@
       <option name="presentableId" value="Default" />
       <updated>1676458651426</updated>
     </task>
+    <task id="LOCAL-00001" summary="Refactoring del codice">
+      <created>1676642289917</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1676642289917</updated>
+    </task>
+    <task id="LOCAL-00002" summary="aggiunge gitignore workspace.xml">
+      <created>1676643998845</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1676643998846</updated>
+    </task>
+    <task id="LOCAL-00003" summary="aggiunge test per findByTitleContains e implementa il metodo findByTitleContains della classe CSVFileCourseRepository">
+      <created>1676644822958</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1676644822958</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -186,5 +207,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Refactoring del codice" />
+    <MESSAGE value="aggiunge gitignore workspace.xml" />
+    <MESSAGE value="aggiunge test per findByTitleContains e implementa il metodo findByTitleContains della classe CSVFileCourseRepository" />
+    <option name="LAST_COMMIT_MESSAGE" value="aggiunge test per findByTitleContains e implementa il metodo findByTitleContains della classe CSVFileCourseRepository" />
   </component>
 </project>

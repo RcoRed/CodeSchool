@@ -142,8 +142,6 @@ class CSVFileCourseRepositoryTest {
         }catch (DataException e){
             fail("Errore nella ricerca di corsi per titolo like ", e);
         }
-
-
     }
 
     @Test
