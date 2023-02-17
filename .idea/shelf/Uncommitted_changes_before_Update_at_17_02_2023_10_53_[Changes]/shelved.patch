@@ -1,0 +1,180 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"87e37e51-a85a-4fb4-bfb8-d80808e44c3b\" name=\"Changes\" comment=\"modifico altri commenti\">\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n        <option value=\"JUnit5 Test Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"importingSettings\">\r\n      <MavenImportingSettings>\r\n        <option name=\"workspaceImportEnabled\" value=\"true\" />\r\n      </MavenImportingSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2LlvnyHTuV022jB6O9nX74JKngs\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary\": \"JUnit5\",\r\n    \"com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5\": \"\",\r\n    \"last_opened_file_path\": \"C:/Users/magre_a244ufq/Desktop/Java/GenerationItaly/Object/CodeSchool\",\r\n    \"project.structure.last.edited\": \"Modules\",\r\n    \"project.structure.proportion\": \"0.0\",\r\n    \"project.structure.side.proportion\": \"0.0\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CreateTestDialog.Recents.Supers\">\r\n      <recent name=\"\" />\r\n    </key>\r\n    <key name=\"CreateTestDialog.RecentsKey\">\r\n      <recent name=\"org.generation.italy.codeSchool.model.data.implementations\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"JUnit.CSVFileCourseRepositoryTest\">\r\n    <configuration name=\"CSVFileCourseRepositoryTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodeSchool\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"org.generation.italy.codeSchool.model.data.implementations.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"CSVFileCourseRepositoryTest.courseToCSV\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodeSchool\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"org.generation.italy.codeSchool.model.data.implementations.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"courseToCSV\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"CSVFileCourseRepositoryTest.create\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodeSchool\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"org.generation.italy.codeSchool.model.data.implementations.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"create\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"CSVFileCourseRepositoryTest.findById\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodeSchool\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"org.generation.italy.codeSchool.model.data.implementations.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"findById\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"CSVFileCourseRepositoryTest.findById_finds_course_when_present\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodeSchool\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"org.generation.italy.codeSchool.model.data.implementations.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"findById_finds_course_when_present\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"JUnit.CSVFileCourseRepositoryTest\" />\r\n        <item itemvalue=\"JUnit.CSVFileCourseRepositoryTest.findById_finds_course_when_present\" />\r\n        <item itemvalue=\"JUnit.CSVFileCourseRepositoryTest.create\" />\r\n        <item itemvalue=\"JUnit.CSVFileCourseRepositoryTest.findById\" />\r\n        <item itemvalue=\"JUnit.CSVFileCourseRepositoryTest.courseToCSV\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"87e37e51-a85a-4fb4-bfb8-d80808e44c3b\" name=\"Changes\" comment=\"\" />\r\n      <created>1676458656654</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1676458656654</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"inizio CodeSchool\">\r\n      <created>1676479946204</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1676479946204</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"risolto problema del primo errore del test di CourseToCSV\">\r\n      <created>1676480067058</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1676480067058</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"aggiungo commenti al codice\">\r\n      <created>1676493124316</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1676493124316</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"implemento test create\">\r\n      <created>1676500827997</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1676500827997</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"modifico altri commenti\">\r\n      <created>1676538268458</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1676538268458</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"6\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"inizio CodeSchool\" />\r\n    <MESSAGE value=\"risolto problema del primo errore del test di CourseToCSV\" />\r\n    <MESSAGE value=\"aggiungo commenti al codice\" />\r\n    <MESSAGE value=\"implemento test create\" />\r\n    <MESSAGE value=\"modifico altri commenti\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"modifico altri commenti\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -5,7 +5,8 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="modifico altri commenti">
+-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -47,7 +48,7 @@
+     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+-    "last_opened_file_path": "C:/Users/magre_a244ufq/Desktop/Java/GenerationItaly/Object/CodeSchool",
++    "last_opened_file_path": "C:/Dev/Java/Projects/CodeSchool",
+     "project.structure.last.edited": "Modules",
+     "project.structure.proportion": "0.0",
+     "project.structure.side.proportion": "0.0"
+@@ -197,6 +198,17 @@
+     </task>
+     <option name="localTasksCounter" value="6" />
+     <servers />
++  </component>
++  <component name="Vcs.Log.Tabs.Properties">
++    <option name="TAB_STATES">
++      <map>
++        <entry key="MAIN">
++          <value>
++            <State />
++          </value>
++        </entry>
++      </map>
++    </option>
+   </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="inizio CodeSchool" />
+Index: src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.generation.italy.codeSchool.model.data.implementations;\r\n\r\nimport org.generation.italy.codeSchool.model.Course;\r\nimport org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;\r\nimport org.generation.italy.codeSchool.model.data.exceptions.DataException;\r\nimport org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;\r\n\r\nimport java.io.FileOutputStream;\r\nimport java.io.IOException;\r\nimport java.io.PrintWriter;\r\nimport java.nio.file.Files;\r\nimport java.nio.file.Paths;\r\nimport java.util.List;\r\nimport java.util.Locale;\r\nimport java.util.Optional;\r\n\r\npublic class CSVFileCourseRepository implements CourseRepository {\r\n    private String fileName;\r\n    private static long nextId;\r\n    public static final String DEFAULT_FILE_NAME = \"Corsi.csv\";\r\n\r\n    public CSVFileCourseRepository() {\r\n        this.fileName = DEFAULT_FILE_NAME;\r\n    }\r\n    public CSVFileCourseRepository(String fileName) {\r\n        this.fileName = fileName;\r\n    }\r\n\r\n    @Override\r\n    public Optional<Course> findById(long id) throws DataException{             //!!RICORDATI!! se un metodo può dare un errore allora DEVI mettere il THROWS e l'exception che \"lancerà\"\r\n        try{\r\n            List<String> lines = Files.readAllLines(Paths.get(fileName));       //apro il file\r\n            for (String s:lines){                                               //ciclo per ogni riga letta\r\n                String[] trimmed = s.split(\",\");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array\r\n                long courseId = Long.parseLong(trimmed[0]);\r\n                if (courseId == id){\r\n                    Course found = new Course(courseId,trimmed[1],trimmed[2]    //creo l'oggeto passando le stringhe letta dal file\r\n                            ,trimmed[3],Double.parseDouble(trimmed[4]));\r\n                    return Optional.of(found);\r\n                }\r\n            }\r\n            return Optional.empty();\r\n        }catch (IOException e){                                                  //\"raccogliamo\" IOException ma \"lanciamo\" un DataException di nostra creazione (si, si può fare) così da poter ancora utilizzare la nostra interfaccia nel miglior modo possibile\r\n            throw new DataException(\"Errore nella lettura del file\",e);          //lo lanciamo qui\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<Course> findByTitleContains(String part) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public Course create(Course course) throws DataException{\r\n        /*\r\n            FileOutputStream serve per scrivere nel file                !!(magari da richiedere)!!\r\n            quel (append)true serve ad aggiungere una nuova riga alle riche esistenti, se non ci fosse sovrascriverebbe tutte le righe presenti nel file\r\n            PintWriter sarà colui che effettivamente scriverà sul file\r\n         */\r\n        try (FileOutputStream output = new FileOutputStream(fileName,true);\r\n                PrintWriter pw = new PrintWriter(output)){\r\n            course.setId(++nextId);\r\n            pw.println(CourseToCSV(course));                //è qui che scrivo sul file (si con una println) richiamando un metodo creato da noi(sta verso la fine)\r\n            return course;                                  //ovviamente nelle parentesi gli passo la stringa che voglio sivere sul file\r\n        }catch (IOException e){\r\n            throw new DataException(\"Errore nel salvataggio su file\",e);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void update(Course course) throws EntityNotFoundException {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void deleteById(long id) throws EntityNotFoundException {\r\n\r\n    }\r\n\r\n    public String CourseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)\r\n        return String.format(Locale.US,\"%d,%s,%s,%s,%.2f\",c.getId(),c.getTitle()\r\n                ,c.getDescription(),c.getProgram(),c.getDuration());\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java b/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java
+--- a/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java	
++++ b/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java	
+@@ -15,70 +15,70 @@
+ import java.util.Optional;
+ 
+ public class CSVFileCourseRepository implements CourseRepository {
+-    private String fileName;
+-    private static long nextId;
+-    public static final String DEFAULT_FILE_NAME = "Corsi.csv";
++   private String fileName;
++   private static long nextId;
++   public static final String DEFAULT_FILE_NAME = "Corsi.csv";
+ 
+-    public CSVFileCourseRepository() {
+-        this.fileName = DEFAULT_FILE_NAME;
+-    }
+-    public CSVFileCourseRepository(String fileName) {
+-        this.fileName = fileName;
+-    }
++   public CSVFileCourseRepository() {
++      this.fileName = DEFAULT_FILE_NAME;
++   }
++   public CSVFileCourseRepository(String fileName) {
++      this.fileName = fileName;
++   }
+ 
+-    @Override
+-    public Optional<Course> findById(long id) throws DataException{             //!!RICORDATI!! se un metodo può dare un errore allora DEVI mettere il THROWS e l'exception che "lancerà"
+-        try{
+-            List<String> lines = Files.readAllLines(Paths.get(fileName));       //apro il file
+-            for (String s:lines){                                               //ciclo per ogni riga letta
+-                String[] trimmed = s.split(",");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array
+-                long courseId = Long.parseLong(trimmed[0]);
+-                if (courseId == id){
+-                    Course found = new Course(courseId,trimmed[1],trimmed[2]    //creo l'oggeto passando le stringhe letta dal file
+-                            ,trimmed[3],Double.parseDouble(trimmed[4]));
+-                    return Optional.of(found);
+-                }
+-            }
+-            return Optional.empty();
+-        }catch (IOException e){                                                  //"raccogliamo" IOException ma "lanciamo" un DataException di nostra creazione (si, si può fare) così da poter ancora utilizzare la nostra interfaccia nel miglior modo possibile
+-            throw new DataException("Errore nella lettura del file",e);          //lo lanciamo qui
+-        }
+-    }
++   @Override
++   public Optional<Course> findById(long id) throws DataException{             //!!RICORDATI!! se un metodo può dare un errore allora DEVI mettere il THROWS e l'exception che "lancerà"
++      try{
++         List<String> lines = Files.readAllLines(Paths.get(fileName));       //apro il file
++         for (String s:lines){                                               //ciclo per ogni riga letta
++            String[] trimmed = s.split(",");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array
++            long courseId = Long.parseLong(trimmed[0]);
++            if (courseId == id){
++               Course found = new Course(courseId,trimmed[1],trimmed[2]    //creo l'oggeto passando le stringhe letta dal file
++                     ,trimmed[3],Double.parseDouble(trimmed[4]));
++               return Optional.of(found);
++            }
++         }
++         return Optional.empty();
++      }catch (IOException e){                                                  //"raccogliamo" IOException ma "lanciamo" un DataException di nostra creazione (si, si può fare) così da poter ancora utilizzare la nostra interfaccia nel miglior modo possibile
++         throw new DataException("Errore nella lettura del file",e);          //lo lanciamo qui
++      }
++   }
+ 
+-    @Override
+-    public List<Course> findByTitleContains(String part) {
+-        return null;
+-    }
++   @Override
++   public List<Course> findByTitleContains(String part) {
++      return null;
++   }
+ 
+-    @Override
+-    public Course create(Course course) throws DataException{
++   @Override
++   public Course create(Course course) throws DataException{
+         /*
+             FileOutputStream serve per scrivere nel file                !!(magari da richiedere)!!
+             quel (append)true serve ad aggiungere una nuova riga alle riche esistenti, se non ci fosse sovrascriverebbe tutte le righe presenti nel file
+             PintWriter sarà colui che effettivamente scriverà sul file
+          */
+-        try (FileOutputStream output = new FileOutputStream(fileName,true);
+-                PrintWriter pw = new PrintWriter(output)){
+-            course.setId(++nextId);
+-            pw.println(CourseToCSV(course));                //è qui che scrivo sul file (si con una println) richiamando un metodo creato da noi(sta verso la fine)
+-            return course;                                  //ovviamente nelle parentesi gli passo la stringa che voglio sivere sul file
+-        }catch (IOException e){
+-            throw new DataException("Errore nel salvataggio su file",e);
+-        }
+-    }
++      try (FileOutputStream output = new FileOutputStream(fileName,true);
++           PrintWriter pw = new PrintWriter(output)){
++         course.setId(++nextId);
++         pw.println(CourseToCSV(course));                //è qui che scrivo sul file (si con una println) richiamando un metodo creato da noi(sta verso la fine)
++         return course;                                  //ovviamente nelle parentesi gli passo la stringa che voglio sivere sul file
++      }catch (IOException e){
++         throw new DataException("Errore nel salvataggio su file",e);
++      }
++   }
+ 
+-    @Override
+-    public void update(Course course) throws EntityNotFoundException {
++   @Override
++   public void update(Course course) throws EntityNotFoundException {
+ 
+-    }
++   }
+ 
+-    @Override
+-    public void deleteById(long id) throws EntityNotFoundException {
++   @Override
++   public void deleteById(long id) throws EntityNotFoundException {
+ 
+-    }
++   }
+ 
+-    public String CourseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
+-        return String.format(Locale.US,"%d,%s,%s,%s,%.2f",c.getId(),c.getTitle()
+-                ,c.getDescription(),c.getProgram(),c.getDuration());
+-    }
++   public String CourseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
++      return String.format(Locale.US,"%d,%s,%s,%s,%.2f",c.getId(),c.getTitle()
++            ,c.getDescription(),c.getProgram(),c.getDuration());
++   }
+ }
