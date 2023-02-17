@@ -10,10 +10,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
+
+import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 public class CSVFileCourseRepository implements CourseRepository {
     private String fileName;
@@ -47,8 +46,22 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public List<Course> findByTitleContains(String part) {
-        return null;
+    public List<Course> findByTitleContains(String part) throws DataException {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(fileName));
+            List<Course> courses = new ArrayList<>();
+            for(String s : lines){
+                String[] tokens = s.split(",");
+                if(tokens[1].contains(part)){
+                    Course found = new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
+                            tokens[3], Double.parseDouble(tokens[4]));
+                    courses.add(found);
+                }
+            }
+            return courses;
+        }catch (IOException e){
+            throw new DataException("Errore nella lettura del file", e);
+        }
     }
 
     @Override
@@ -91,9 +104,9 @@ public class CSVFileCourseRepository implements CourseRepository {
                     return;
                 }
             }
-            throw new EntityNotFoundException("Non esiste un corso con id:" + id);
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
         }catch(IOException e){
-            throw new DataException("Errore nel cancellamento di una linea da fileCSV", e);
+            throw new DataException("Errore nel cancellamento di una linea da file CSV", e);
         }
 
     }
@@ -102,4 +115,5 @@ public class CSVFileCourseRepository implements CourseRepository {
         return String.format(Locale.US,"%d,%s,%s,%s,%.2f",c.getId(),c.getTitle()
                 ,c.getDescription(),c.getProgram(),c.getDuration());
     }
+
 }
