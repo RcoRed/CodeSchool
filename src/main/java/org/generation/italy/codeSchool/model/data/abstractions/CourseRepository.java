@@ -4,16 +4,17 @@ import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 public interface CourseRepository {
 
-    Optional<Course> findById(long id) throws DataException;
+    Optional<Course> findById(long id) throws EntityNotFoundException,DataException;
 
     List<Course> findByTitleContains(String part) throws DataException;
 
-    Course create(Course course) throws DataException;
+    Course create(Course course) throws EntityNotFoundException,DataException;
 
     void update(Course course) throws EntityNotFoundException,DataException;
 

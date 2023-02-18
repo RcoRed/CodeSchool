@@ -65,7 +65,7 @@ public class CSVFileCourseRepository implements CourseRepository {
     @Override
     public Course create(Course course) throws DataException{
         /*
-            FileOutputStream serve per scrivere nel file                !!(magari da richiedere)!!
+            FileOutputStream serve per scrivere nel file
             quel (append)true serve ad aggiungere una nuova riga alle riche esistenti, se non ci fosse sovrascriverebbe tutte le righe presenti nel file
             PintWriter sarà colui che effettivamente scriverà sul file
          */
@@ -100,7 +100,7 @@ public class CSVFileCourseRepository implements CourseRepository {
         try{
             List<String> lines = Files.readAllLines(Paths.get(fileName));
             //come verrà scritto realmente un foreach
-            for (Iterator<String> it = lines.iterator();it.hasNext();){
+            for (Iterator<String> it = lines.iterator();it.hasNext();){     //ITERATOR
                 String line = it.next();
                 String[] tokens  = line.split(",");
                 long courseId = Long.parseLong(tokens[0]);

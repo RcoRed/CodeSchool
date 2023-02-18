@@ -2,12 +2,18 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
+import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,13 +28,21 @@ class SerializedCourseRepositoryTest {
     private static final String PROGRAM="PROGRAM";
     private static final double DURATION=200.0;
     private static final String TEST="TEST";
-    private static final String SERLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-    private static final String SERLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
-    private static final String SERLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
+    private static final Course COURSE1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+    private static final Course COURSE2 = new Course(ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
+    private static final Course COURSE3 = new Course(ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
     private static final String FILENAME="TEST_DATA_SER";
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
+        ArrayList<Course> dataSource = new ArrayList<>();
+        dataSource.add(COURSE1);
+        dataSource.add(COURSE2);
+        dataSource.add(COURSE3);
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILENAME))){
+            //out.write(3);
+            out.writeObject(dataSource);
+        }
     }
 
     @AfterEach
@@ -41,35 +55,112 @@ class SerializedCourseRepositoryTest {
     }
 
     @Test
-    void findById() {
-
+    void findById_should_finds_course_when_present() {
+        // ARRANGE
+        Course c1 = new Course(ID, TITLE, DESCRIPTION, PROGRAM, DURATION);
+        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
+        try {
+            // ACT
+            Optional<Course> x = repo.findById(ID);
+            // ASSERT
+            assertTrue(x.isPresent());
+            Course c2 = x.get();
+            assertEquals(c1, c2);
+        } catch (DataException e) {
+            fail("Errore nella ricerca by id sul file di testo " + e.getMessage());
+        } catch (EntityNotFoundException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
-    void create_should_add_course() throws DataException{
-        Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-        Course c2 = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
-        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILENAME))){
-            out.writeObject(c1);
-            out.writeObject(c2);
+    void create_should_add_course(){
+        // ARRANGE
+        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
+        try{
+            ArrayList<Course> dataSourceBefore = new ArrayList<>();
             try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-                Course verifica1 = (Course) in.readObject();
-                Course verifica2 = (Course) in.readObject();
-                System.out.println(verifica1.getId());
-                System.out.println(verifica1.getTitle());
-                System.out.println(verifica1.getDescription());
-                System.out.println(verifica1.getProgram());
-                System.out.println(verifica1.getDuration());
-                System.out.println(verifica2.getId());
-                System.out.println(verifica2.getTitle());
-                System.out.println(verifica2.getDescription());
-                System.out.println(verifica2.getProgram());
-                System.out.println(verifica2.getDuration());
+
+                    dataSourceBefore = (ArrayList<Course>) in.readObject();
+
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                fail("Classe non trovata " + e.getMessage());
+            } catch (IOException e){
+                if (dataSourceBefore.isEmpty()){
+                    fail("Fallita la lettura prima del create" + e.getMessage());
+                }
             }
-        }catch (IOException e) {
-            fail("Fallita la verifica del create su file SER" + e.getMessage());
+
+            // ACT
+            repo.create(c);
+
+            ArrayList<Course> dataSourceAfter = new ArrayList<>();
+            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
+
+                    dataSourceAfter = (ArrayList<Course>) in.readObject();
+
+            } catch (ClassNotFoundException e) {
+                fail("Classe non trovata " + e.getMessage());
+            } catch (IOException e){
+                if (dataSourceAfter.isEmpty()){
+                    fail("Fallita la lettura dopo il create" + e.getMessage());
+                }
+            }
+
+            // ASSERT
+            assertEquals(dataSourceBefore.size()+1,dataSourceAfter.size());
+            assertEquals(ID_CREATE,dataSourceAfter.get(dataSourceAfter.size()-1).getId());
+            assertEquals(DURATION,dataSourceAfter.get(dataSourceAfter.size()-1).getDuration());
+        } catch (EntityNotFoundException e){
+            fail(e.getMessage());
+        } catch (DataException e){
+            fail("Fallito il create su file SER" + e.getMessage());
         }
     }
+
+//    @Test
+//    void superTest() throws DataException{
+////        Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+////        Course c2 = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
+//        //try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILENAME))){
+////            out.writeObject(c1);
+////            out.writeObject(c2);
+////            ArrayList<Course> list = new ArrayList<>();
+//            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
+//
+//                //System.out.println(in.available());
+//                Course cc = (Course) in.readObject();
+//                //System.out.println(in.available());
+//                Course cc2 = (Course) in.readObject();
+//                Course cc3 = (Course) in.readObject();
+//                Course cc4 = (Course) in.readObject();
+//                //System.out.println(in.available());
+//                System.out.println(cc);
+//                System.out.println(cc2);
+//                System.out.println(cc3);
+//                System.out.println(cc4);
+//
+//            } catch (ClassNotFoundException e) {        //quando darà la ClassNotFoundException?
+//                System.out.println("class");
+//            }catch (IOException e){
+//                System.out.println("io");
+//            }
+//            /*
+//            System.out.println(list.get(0).getId());
+//            System.out.println(list.get(0).getTitle());
+//            System.out.println(list.get(0).getDescription());
+//            System.out.println(list.get(0).getProgram());
+//            System.out.println(list.get(0).getDuration());
+//            System.out.println(list.get(1).getId());
+//            System.out.println(list.get(1).getTitle());
+//            System.out.println(list.get(1).getDescription());
+//            System.out.println(list.get(1).getProgram());
+//            System.out.println(list.get(1).getDuration());
+//            System.out.println(list.get(1));*/
+////        }
+////        catch (IOException e) {
+////            fail("Fallita la verifica del create su file SER" + e.getMessage());
+////        }
+//    }
 }
