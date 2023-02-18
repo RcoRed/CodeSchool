@@ -26,7 +26,7 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
    }
    @Override
    public Optional<Course> findById(long id) throws DataException {
-      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(fileName))))) {
+      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(fileName))) {
          dataSource.putAll((Map<Long, Course>) fIS.readObject());
          Course x = dataSource.get(id);
          if (x != null) { //si hay curso, no es un curso vacìo
@@ -43,7 +43,7 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
    @Override
    public List<Course> findByTitleContains(String part) throws DataException {
       List<Course> coursesFinded = new ArrayList<>();
-      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(fileName))))){
+      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(fileName))){
          dataSource = new HashMap<>();
          dataSource.putAll((Map<Long, Course>) fIS.readObject());
          Collection<Course> gumCollectionCourse = dataSource.values();
@@ -54,7 +54,7 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
          }
          return coursesFinded;
       } catch (FileNotFoundException | ClassNotFoundException e) {
-         new FileNotFoundException("Elemento non trovato");
+         new EntityNotFoundException(ENTITY_NOT_FOUND);
       } catch (IOException e) {
          throw new DataException("Errore nell'utilizzo del dato", e.getCause());
       }
@@ -63,16 +63,16 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
 
    @Override
    public Course create(Course course) throws DataException { //QUANDO CREO AGGIUNGO A PROSSIMO ID, NON SOSTITUISCO!!!
-      try (ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(fileName))))) {
+      try (ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(fileName))) {
          dataSource = (Map<Long, Course>) fIS.readObject();
          course.setId(++nextId);
          dataSource.put(course.getId(), course);
-         try(ObjectOutputStream fOS = new ObjectOutputStream(new FileOutputStream(String.valueOf(Paths.get(fileName))))){
+         try(ObjectOutputStream fOS = new ObjectOutputStream(new FileOutputStream(fileName))){
             fOS.writeObject(dataSource);
          }
          return course;
       } catch (FileNotFoundException |ClassNotFoundException e) {
-         new FileNotFoundException(ENTITY_NOT_FOUND);
+         new EntityNotFoundException(ENTITY_NOT_FOUND);
       } catch (IOException e) {
          throw new DataException(e.getMessage(), e);
       }
@@ -81,7 +81,7 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
 
    @Override
    public void update(Course course) throws EntityNotFoundException, DataException {
-      try (ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(fileName))))) {
+      try (ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(fileName))) {
          dataSource = (Map<Long, Course>) fIS.readObject();
          if(dataSource.containsKey(course.getId())){
             dataSource.put(course.getId(), course);
@@ -89,7 +89,7 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
 //            System.out.println("Non esiste un corso con id: " + course.getId());
             throw new EntityNotFoundException("Non esiste un corso con id: " + course.getId());
          }
-         try (ObjectOutputStream fOS = new ObjectOutputStream(new FileOutputStream(String.valueOf(Paths.get(fileName))))){
+         try (ObjectOutputStream fOS = new ObjectOutputStream(new FileOutputStream(fileName))){
             fOS.writeObject(dataSource);
          }
       }catch (FileNotFoundException | ClassNotFoundException naruto){
@@ -101,6 +101,18 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
 
    @Override
    public void deleteById(long id) throws EntityNotFoundException, DataException {
-
+      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(fileName))){
+         dataSource = (Map<Long, Course>) fIS.readObject();
+         if(dataSource.remove(id) == null){
+            throw new EntityNotFoundException("Non esiste un corso con id: " + id);
+         }
+         try(ObjectOutputStream fOS = new ObjectOutputStream(new FileOutputStream(fileName))){
+            fOS.writeObject(dataSource);
+         }
+      } catch (FileNotFoundException | ClassNotFoundException e) {
+         throw new EntityNotFoundException(ENTITY_NOT_FOUND);
+      } catch (IOException e) {
+         throw new DataException("Errore col flusso di dati", e);
+      }
    }
 }

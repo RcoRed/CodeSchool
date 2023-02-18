@@ -85,7 +85,7 @@ class SerializedCourseRepositoryTest {
 
    @Test
    void create_control_if_created() {
-      try (ObjectInputStream fileOutputS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(FILENAME))))){
+      try (ObjectInputStream fileOutputS = new ObjectInputStream(new FileInputStream(FILENAME))){
          Course newCourse = new Course(ID_CREATE, TITLE,DESCRIPTION,PROGRAM,DURATION);
          Map<Long, Course> presentCourses = new HashMap<>();
          presentCourses.putAll((Map<Long,Course>)fileOutputS.readObject());
@@ -99,13 +99,13 @@ class SerializedCourseRepositoryTest {
       } catch (DataException | IOException e) {
          fail(" Failed to create course. ", e);
       } catch (ClassNotFoundException e) {
-         new FileNotFoundException(ENTITY_NOT_FOUND);
+         new EntityNotFoundException(ENTITY_NOT_FOUND);
       }
    }
 
    @Test
    void update_replacing_existing_course() {
-      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(FILENAME))))){
+      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(FILENAME))){
          Course newCourse = new Course(ID, TITLE+TITLE+TEST+TEST,DESCRIPTION,PROGRAM,DURATION);
          Map<Long, Course> sexyMap = (Map<Long, Course>) fIS.readObject();
          Map<Long, Course> notSoSexyMap = new HashMap<>(sexyMap);
@@ -115,7 +115,7 @@ class SerializedCourseRepositoryTest {
          //updating
          repo.update(newCourse);
          //new situation
-         ObjectInputStream fileIS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(FILENAME))));
+         ObjectInputStream fileIS = new ObjectInputStream(new FileInputStream(FILENAME));
          sexyMap = (Map<Long, Course>) fileIS.readObject(); //necessario per leggere l'aggiornamento del file
          fileIS.close();
          long newNumOfCourses = sexyMap.size();
@@ -126,7 +126,7 @@ class SerializedCourseRepositoryTest {
          assertEquals(newCourse, courseUpdated);   //controllo che effettivamente il nuovo corso sia quello registrato a quell'id e non qualcosa di strano
          assertNotEquals(sexyMap,notSoSexyMap);
       } catch (FileNotFoundException | EntityNotFoundException | ClassNotFoundException naruto){
-         new FileNotFoundException(ENTITY_NOT_FOUND);
+         new EntityNotFoundException(ENTITY_NOT_FOUND);
       } catch (IOException | DataException naruto){
          new DataException(naruto.getMessage(), naruto);
       }
@@ -134,7 +134,7 @@ class SerializedCourseRepositoryTest {
    // TRY to fail adding into unknown id
    @Test
    void update_replacing_non_existing_course() {
-      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(FILENAME))))){
+      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(FILENAME))){
          Course newCourse = new Course(ID_NOT_PRESENT, TITLE+TITLE+TEST+TEST,DESCRIPTION,PROGRAM,DURATION);
          Map<Long, Course> sexyMap = (Map<Long, Course>) fIS.readObject();
          Map<Long, Course> notSoSexyMap = new HashMap<>();
@@ -144,7 +144,7 @@ class SerializedCourseRepositoryTest {
          //updating
          repo.update(newCourse);
          //new situation
-         ObjectInputStream fileIS = new ObjectInputStream(new FileInputStream(String.valueOf(Paths.get(FILENAME))));
+         ObjectInputStream fileIS = new ObjectInputStream(new FileInputStream(FILENAME));
          sexyMap = (Map<Long, Course>) fileIS.readObject(); //necessario per leggere l'aggiornamento del file
          fileIS.close();
          long newNumOfCourses = sexyMap.size();
@@ -152,13 +152,51 @@ class SerializedCourseRepositoryTest {
          assertEquals(exNumOfCourses, newNumOfCourses); //controllo che si sìa effettivamente sovrascritto, quindi non variato in num di corsi
          assertEquals(sexyMap,notSoSexyMap);
       } catch (FileNotFoundException | EntityNotFoundException | ClassNotFoundException naruto){
-         new FileNotFoundException(ENTITY_NOT_FOUND);
+         new EntityNotFoundException(ENTITY_NOT_FOUND);
       } catch (IOException | DataException naruto){
          new DataException(naruto.getMessage(), naruto);
       }
    }
    @Test
    void deleteById_duh() {
-
+      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(FILENAME))){
+         Map<Long, Course> sexyMap = (Map<Long, Course>) fIS.readObject();
+         Map<Long, Course> notSoSexyMap = new HashMap<>(sexyMap);
+         long exNumOfCourses = sexyMap.size();
+         repo.deleteById(ID);
+         ObjectInputStream fileIS = new ObjectInputStream(new FileInputStream(FILENAME));
+         sexyMap = (Map<Long, Course>) fileIS.readObject();
+         fileIS.close();
+         long newNumOfCourses = sexyMap.size();
+         assertEquals(exNumOfCourses-1, newNumOfCourses);
+         assertNotEquals(notSoSexyMap, sexyMap);
+      } catch (FileNotFoundException | ClassNotFoundException | EntityNotFoundException e) {
+         new EntityNotFoundException(ENTITY_NOT_FOUND);
+      } catch (IOException e) {
+         new DataException(e.getMessage(), e);
+      } catch (DataException e) {
+         throw new RuntimeException(e);
+      }
+   }
+   @Test
+   void deleteById_but_don_t_find_it_sad() {
+      try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(FILENAME))){
+         Map<Long, Course> sexyMap = (Map<Long, Course>) fIS.readObject();
+         Map<Long, Course> notSoSexyMap = new HashMap<>(sexyMap);
+         long exNumOfCourses = sexyMap.size();
+         repo.deleteById(ID_NOT_PRESENT);
+         ObjectInputStream fileIS = new ObjectInputStream(new FileInputStream(FILENAME));
+         sexyMap = (Map<Long, Course>) fileIS.readObject();
+         fileIS.close();
+         long newNumOfCourses = sexyMap.size();
+         assertEquals(exNumOfCourses, newNumOfCourses);
+         assertEquals(notSoSexyMap, sexyMap);
+      } catch (FileNotFoundException | ClassNotFoundException | EntityNotFoundException e) {
+         new EntityNotFoundException(ENTITY_NOT_FOUND);
+      } catch (IOException e) {
+         new DataException(e.getMessage(), e);
+      } catch (DataException e) {
+         throw new RuntimeException(e);
+      }
    }
 }
