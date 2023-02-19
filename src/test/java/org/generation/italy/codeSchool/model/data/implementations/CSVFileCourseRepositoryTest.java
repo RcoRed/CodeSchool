@@ -29,7 +29,9 @@ class CSVFileCourseRepositoryTest {
     private static final long ID_CREATE=5;
     private static final String TEST = "TEST";
     private static final String TITLE="TITLE";
+    private static final String TITLE_UPDATED="TITLE_UPDATED";
     private static final String DESCRIPTION="DESCRIPTION";
+    private static final String DESCRIPTION_UPDATED="DESCRIPTION_UPDATED";
     private static final String PROGRAM="PROGRAM";
     private static final double DURATION=200.0;
     private static final String CSVLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
@@ -140,7 +142,7 @@ class CSVFileCourseRepositoryTest {
         Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT          //richiamo ciò che devo testare
-        String csvLine = repo.CourseToCSV(c);
+        String csvLine = repo.courseToCSV(c);
         // ASSERT       //prego che tutto sia andato bene
         //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perchè l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
         assertEquals(CSVLINE1,csvLine);
@@ -161,6 +163,44 @@ class CSVFileCourseRepositoryTest {
         }
     }
 
+
+    @Test
+    void update_should_change_course_if_present(){
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
+        Course c = new Course(ID,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
+        try {
+            repo.update(c);
+            var courses = readAll();
+            boolean found = false;
+            for(var course : courses) {
+                if(course.getId() == c.getId()) {
+                    assertEquals(TITLE_UPDATED, course.getTitle());
+                    assertEquals(DESCRIPTION_UPDATED, course.getDescription());
+                    found = true;
+                    break;
+                }
+            }
+            assertTrue(found);
+
+        } catch (EntityNotFoundException e) {
+            fail("corso da modificare non trovato quando dovrebbe essere presente " + e.getMessage());
+        } catch (IOException | DataException e) {
+            fail("Errore nell' update di corsi " + e.getMessage());
+        }
+    }
+
+
+    @Test
+    void update_should_throw_if_course_absent(){
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
+        Course c = new Course(ID_NOT_PRESENT,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
+
+        Exception e = assertThrows(EntityNotFoundException.class, () -> {
+            repo.update(c);
+        }) ;
+        assertEquals(ENTITY_NOT_FOUND + ID_NOT_PRESENT, e.getMessage());
+    }
+
     private List<String[]> readTokenizedLines() throws IOException{
         List<String> lines = Files.readAllLines(Paths.get(FILENAME));
         List<String[]> tokenLines = new ArrayList<>();
@@ -169,5 +209,17 @@ class CSVFileCourseRepositoryTest {
             tokenLines.add(tokens);
         }
         return tokenLines;
+    }
+
+    private List<Course> readAll() throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(FILENAME));
+        List<Course> courses = new ArrayList<>();
+        for(var s : lines) {
+            String[] tokens = s.split(",");
+            Course c = new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
+                    tokens[3], Double.parseDouble(tokens[4]) );
+            courses.add(c);
+        }
+        return courses;
     }
 }
