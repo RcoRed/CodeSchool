@@ -1,7 +1,7 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
-import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.util.*;

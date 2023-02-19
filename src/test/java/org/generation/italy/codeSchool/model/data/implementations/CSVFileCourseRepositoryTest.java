@@ -22,11 +22,12 @@ import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 class CSVFileCourseRepositoryTest {
 
-    private static final long ID=1;
+    private static final long ID = 1;
     private static final long ID2= 2;
     private static final long ID3 = 3;
     private static final long ID_NOT_PRESENT=4;
     private static final long ID_CREATE=5;
+    private static final long ID_TO_UPDATE = 2;
     private static final String TEST = "TEST";
     private static final String TITLE="TITLE";
     private static final String DESCRIPTION="DESCRIPTION";
@@ -132,6 +133,25 @@ class CSVFileCourseRepositoryTest {
                 repo.deleteById(ID_NOT_PRESENT);                                           //lambda expression
         });
         assertEquals(ENTITY_NOT_FOUND + ID_NOT_PRESENT, exception.getMessage());
+    }
+
+
+    @Test
+    void update_should_modify_existing_course() throws DataException, EntityNotFoundException {
+        try {
+            CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
+            Course updated = new Course(ID_TO_UPDATE, "New"+TITLE, DESCRIPTION, PROGRAM, DURATION);
+            repo.update(updated);
+            List<String[]> tokenLines = readTokenizedLines();
+            String[] updatedFormatted = String.format(Locale.US,"%d,%s,%s,%s,%.2f",updated.getId(),
+                    updated.getTitle(), updated.getDescription(), updated.getProgram(),
+                    updated.getDuration()).split(",");
+            assertEquals(tokenLines.get(tokenLines.size() - 1)[1], updatedFormatted[1]);
+        } catch (IOException e){
+            fail("Errore nell'utilizzo del file di test CSV");
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("error");
+        }
     }
 
     @Test
