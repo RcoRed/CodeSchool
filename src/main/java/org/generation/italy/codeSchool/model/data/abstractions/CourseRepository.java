@@ -12,7 +12,7 @@ public interface CourseRepository {
 
     Optional<Course> findById(long id) throws EntityNotFoundException,DataException;
 
-    List<Course> findByTitleContains(String part) throws DataException;
+    List<Course> findByTitleContains(String part) throws EntityNotFoundException, DataException;
 
     Course create(Course course) throws EntityNotFoundException,DataException;
 

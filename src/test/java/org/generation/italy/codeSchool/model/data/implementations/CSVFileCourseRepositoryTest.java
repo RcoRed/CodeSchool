@@ -158,12 +158,12 @@ class CSVFileCourseRepositoryTest {
 
     @Test
     void update_should_replace_course_when_present(){
-        Course c = new Course(ID, TITLE + "LMAO", DESCRIPTION, PROGRAM, DURATION);
+        Course c = new Course(ID, TITLE+TEST, DESCRIPTION+TEST, PROGRAM+TEST, DURATION+1);
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
         try{
             List<String[]> readLines = readTokenizedLines();
             List<String> linesBefore = Files.readAllLines(Paths.get(FILENAME));
-            assertNotEquals(readLines.get(2)[1], c.getTitle());
+            assertEquals(readLines.get(2)[1], c.getTitle());
             repo.update(c);
             List<String> linesAfter = Files.readAllLines(Paths.get(FILENAME));
             assertEquals(linesBefore.size(), linesAfter.size());

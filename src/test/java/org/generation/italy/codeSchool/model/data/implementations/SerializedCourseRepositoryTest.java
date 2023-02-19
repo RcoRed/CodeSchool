@@ -8,11 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,6 +71,39 @@ class SerializedCourseRepositoryTest {
     }
 
     @Test
+    void findByTitleContains_should_find_courses_if_title_present(){
+        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
+        try{
+            ArrayList<Course> dataSourceBefore = new ArrayList<>();
+            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
+
+                dataSourceBefore = (ArrayList<Course>) in.readObject();
+
+            } catch (ClassNotFoundException e) {
+                fail("Classe non trovata " + e.getMessage());
+            } catch (IOException e){
+                if (dataSourceBefore.isEmpty()){
+                    fail("Fallita la lettura prima del create" + e.getMessage());
+                }
+            }
+
+            // ACT
+
+            List<Course> dataSourceAfter = repo.findByTitleContains(TEST);
+
+            assertEquals(2,dataSourceAfter.size());
+            for (Course c:dataSourceAfter){
+                assertTrue(c.getId() == ID2 || c.getId() == ID3 );
+                assertTrue(c.getTitle().contains(TEST));
+            }
+        }catch (DataException e){
+            fail("Errore nella ricerca di corsi per titolo like ", e);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
     void create_should_add_course(){
         // ARRANGE
         Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
@@ -116,6 +146,108 @@ class SerializedCourseRepositoryTest {
             fail(e.getMessage());
         } catch (DataException e){
             fail("Fallito il create su file SER" + e.getMessage());
+        }
+    }
+
+    @Test
+    void update_should_replace_course_when_present(){
+        Course c = new Course(ID2, TITLE+TEST, DESCRIPTION+TEST, PROGRAM+TEST, DURATION+1);
+        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
+        try{
+            ArrayList<Course> dataSourceBefore = new ArrayList<>();
+            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
+
+                dataSourceBefore = (ArrayList<Course>) in.readObject();
+
+            } catch (ClassNotFoundException e) {
+                fail("Classe non trovata " + e.getMessage());
+            } catch (IOException e){
+                if (dataSourceBefore.isEmpty()){
+                    fail("Fallita la lettura prima del create" + e.getMessage());
+                }
+            }
+
+            // ACT
+            repo.update(c);
+
+            ArrayList<Course> dataSourceAfter = new ArrayList<>();
+            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
+
+                dataSourceAfter = (ArrayList<Course>) in.readObject();
+
+            } catch (ClassNotFoundException e) {
+                fail("Classe non trovata " + e.getMessage());
+            } catch (IOException e){
+                if (dataSourceAfter.isEmpty()){
+                    fail("Fallita la lettura dopo il create" + e.getMessage());
+                }
+            }
+
+            // ASSERT
+            assertEquals(dataSourceBefore.size()+1, dataSourceAfter.size());
+            assertEquals(dataSourceAfter.get(3).getId(), c.getId());
+            assertEquals(dataSourceAfter.get(3).getTitle(), c.getTitle());
+        }catch (EntityNotFoundException e){
+            fail("Corso non trovato");
+        } catch (DataException e) {
+            fail("Errore nella ricerca", e);
+        }
+    }
+
+    @Test
+    void deleteById_should_delete_course_if_present() {
+        //ARRANGE
+        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
+        try{
+            ArrayList<Course> dataSourceBefore = new ArrayList<>();
+            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
+
+                dataSourceBefore = (ArrayList<Course>) in.readObject();
+
+            } catch (ClassNotFoundException e) {
+                fail("Classe non trovata " + e.getMessage());
+            } catch (IOException e){
+                if (dataSourceBefore.isEmpty()){
+                    fail("Fallita la lettura prima del create" + e.getMessage());
+                }
+            }
+
+            // ACT
+            repo.deleteById(ID);
+
+            ArrayList<Course> dataSourceAfter = new ArrayList<>();
+            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
+
+                dataSourceAfter = (ArrayList<Course>) in.readObject();
+
+            } catch (ClassNotFoundException e) {
+                fail("Classe non trovata " + e.getMessage());
+            } catch (IOException e){
+                if (dataSourceAfter.isEmpty()){
+                    fail("Fallita la lettura dopo il create" + e.getMessage());
+                }
+            }
+            //ASSERT
+            assertEquals(dataSourceBefore.size()-1, dataSourceAfter.size());
+            assertEquals(ID2,dataSourceAfter.get(0).getId());
+
+        } catch (EntityNotFoundException | DataException e){
+            fail("Errore nella cancellazione di un corso " + e.getMessage());
+        }
+    }
+    @Test
+    void deleteById_should_throw_when_course_not_present() {
+        //ARRANGE
+        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
+        try{
+            //ACT
+            repo.deleteById(ID_NOT_PRESENT);
+            //ASSERT
+            fail("Non Viene lanciata EntityNotFound Exception quando si cancella un corso non esistente");
+        }catch (EntityNotFoundException e){
+            //EXPECTED
+        }catch (DataException e){
+            fail("Errore nella cancellazione di un corso " + e.getMessage());
         }
     }
 
