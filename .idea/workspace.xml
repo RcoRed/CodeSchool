@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="Aggiunge implements serializzazione">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TESTDATA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,21 +69,8 @@
       <recent name="org.generation.italy.codeSchool.model.data.implementations" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.SerializedCourseRepositoryTest.findById">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.Main" />
-      <module name="CodeSchool" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.generation.italy.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CSVFileCourseRepositoryTest.deleteById_should_throw_when_course_not_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.SerializedCourseRepositoryTest.findById_finds_course_when_present">
+    <configuration name="SerializedCourseRepositoryTest2.create" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
         <pattern>
@@ -90,14 +79,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="deleteById_should_throw_when_course_not_present" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.SerializedCourseRepositoryTest2" />
+      <option name="METHOD_NAME" value="create" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CSVFileCourseRepositoryTest.update_should_replace_course_when_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SerializedCourseRepositoryTest2.create_should_not" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
         <pattern>
@@ -106,14 +95,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="update_should_replace_course_when_present" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.SerializedCourseRepositoryTest2" />
+      <option name="METHOD_NAME" value="create_should_not" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SerializedCourseRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SerializedCourseRepositoryTest.create_should_not" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
         <pattern>
@@ -123,12 +112,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
       <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.SerializedCourseRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="METHOD_NAME" value="create_should_not" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SerializedCourseRepositoryTest.findById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SerializedCourseRepositoryTest.create_should_not_throw" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
         <pattern>
@@ -138,7 +128,23 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
       <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.SerializedCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="findById" />
+      <option name="METHOD_NAME" value="create_should_not_throw" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SerializedCourseRepositoryTest.findById_finds_course_when_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodeSchool" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.SerializedCourseRepositoryTest" />
+      <option name="METHOD_NAME" value="findById_finds_course_when_present" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -146,11 +152,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.SerializedCourseRepositoryTest.findById" />
-        <item itemvalue="JUnit.SerializedCourseRepositoryTest" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.update_should_replace_course_when_present" />
-        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.deleteById_should_throw_when_course_not_present" />
+        <item itemvalue="JUnit.SerializedCourseRepositoryTest.findById_finds_course_when_present" />
+        <item itemvalue="JUnit.SerializedCourseRepositoryTest.create_should_not" />
+        <item itemvalue="JUnit.SerializedCourseRepositoryTest2.create_should_not" />
+        <item itemvalue="JUnit.SerializedCourseRepositoryTest2.create" />
+        <item itemvalue="JUnit.SerializedCourseRepositoryTest.create_should_not_throw" />
       </list>
     </recent_temporary>
   </component>
@@ -246,16 +252,5 @@
     <MESSAGE value="Aggiunge inizio test scrittura serializzazione" />
     <MESSAGE value="Aggiunge implements serializzazione" />
     <option name="LAST_COMMIT_MESSAGE" value="Aggiunge implements serializzazione" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

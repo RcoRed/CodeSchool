@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SerializedCourseRepository implements CourseRepository, Serializable{
+public class SerializedCourseRepository implements CourseRepository{
     private static long nextId;
     private String fileName;
-    public static final String DEFAULT_FILE_NAME = "Corsi.ser";
+    public static final String DEFAULT_FILE_NAME = "Corsi.txt";
     public SerializedCourseRepository() {
         this.fileName = DEFAULT_FILE_NAME;
     }
@@ -71,11 +71,15 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
 
     @Override
     public Course create(Course course) throws DataException {
-        try (FileOutputStream fileOutput = new FileOutputStream(fileName,true);
-             PrintWriter pw = new PrintWriter(fileOutput)){
-            course.setId(++nextId);
-            pw.println((course));
+        try{
+            FileOutputStream fileOutput = new FileOutputStream(fileName, true);
+            ObjectOutputStream output= new ObjectOutputStream(fileOutput);
+            output.writeObject(course);
+            output.close();
+            fileOutput.close();
             return course;
+        }catch (FileNotFoundException e){
+            throw new DataException("Errore nel trovare il file", e);
         }catch (IOException e){
             throw new DataException("Errore nel salvataggio su file",e);
         }
