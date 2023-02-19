@@ -188,49 +188,4 @@ class SerializedCourseRepositoryTest {
             fail("Errore nella cancellazione di un corso " + e.getMessage());
         }
     }
-
-//    @Test
-//    void superTest() throws DataException{
-////        Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-////        Course c2 = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
-//        //try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILENAME))){
-////            out.writeObject(c1);
-////            out.writeObject(c2);
-////            ArrayList<Course> list = new ArrayList<>();
-//            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-//
-//                //System.out.println(in.available());
-//                Course cc = (Course) in.readObject();
-//                //System.out.println(in.available());
-//                Course cc2 = (Course) in.readObject();
-//                Course cc3 = (Course) in.readObject();
-//                Course cc4 = (Course) in.readObject();
-//                //System.out.println(in.available());
-//                System.out.println(cc);
-//                System.out.println(cc2);
-//                System.out.println(cc3);
-//                System.out.println(cc4);
-//
-//            } catch (ClassNotFoundException e) {        //quando darà la ClassNotFoundException?
-//                System.out.println("class");
-//            }catch (IOException e){
-//                System.out.println("io");
-//            }
-//            /*
-//            System.out.println(list.get(0).getId());
-//            System.out.println(list.get(0).getTitle());
-//            System.out.println(list.get(0).getDescription());
-//            System.out.println(list.get(0).getProgram());
-//            System.out.println(list.get(0).getDuration());
-//            System.out.println(list.get(1).getId());
-//            System.out.println(list.get(1).getTitle());
-//            System.out.println(list.get(1).getDescription());
-//            System.out.println(list.get(1).getProgram());
-//            System.out.println(list.get(1).getDuration());
-//            System.out.println(list.get(1));*/
-////        }
-////        catch (IOException e) {
-////            fail("Fallita la verifica del create su file SER" + e.getMessage());
-////        }
-//    }
 }
