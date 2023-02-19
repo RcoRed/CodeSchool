@@ -28,7 +28,7 @@ class SerializedCourseRepositoryTest {
     private static final Course COURSE1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
     private static final Course COURSE2 = new Course(ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
     private static final Course COURSE3 = new Course(ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
-    private static final String FILENAME="TEST_DATA_SER";
+    private static final String FILENAME="TEST_DATA_SER.txt";
 
     @BeforeEach
     void setUp() throws IOException {
@@ -74,21 +74,7 @@ class SerializedCourseRepositoryTest {
     void findByTitleContains_should_find_courses_if_title_present(){
         SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
         try{
-            ArrayList<Course> dataSourceBefore = new ArrayList<>();
-            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-
-                dataSourceBefore = (ArrayList<Course>) in.readObject();
-
-            } catch (ClassNotFoundException e) {
-                fail("Classe non trovata " + e.getMessage());
-            } catch (IOException e){
-                if (dataSourceBefore.isEmpty()){
-                    fail("Fallita la lettura prima del create" + e.getMessage());
-                }
-            }
-
             // ACT
-
             List<Course> dataSourceAfter = repo.findByTitleContains(TEST);
 
             assertEquals(2,dataSourceAfter.size());
@@ -99,7 +85,7 @@ class SerializedCourseRepositoryTest {
         }catch (DataException e){
             fail("Errore nella ricerca di corsi per titolo like ", e);
         } catch (EntityNotFoundException e) {
-            throw new RuntimeException(e);
+            fail(e.getMessage());
         }
     }
 
@@ -109,42 +95,25 @@ class SerializedCourseRepositoryTest {
         Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
         SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
         try{
-            ArrayList<Course> dataSourceBefore = new ArrayList<>();
+            ArrayList<Course> dataSourceBefore;
             try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-
                     dataSourceBefore = (ArrayList<Course>) in.readObject();
-
-            } catch (ClassNotFoundException e) {
-                fail("Classe non trovata " + e.getMessage());
-            } catch (IOException e){
-                if (dataSourceBefore.isEmpty()){
-                    fail("Fallita la lettura prima del create" + e.getMessage());
-                }
             }
 
             // ACT
             repo.create(c);
 
-            ArrayList<Course> dataSourceAfter = new ArrayList<>();
+            ArrayList<Course> dataSourceAfter;
             try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-
                     dataSourceAfter = (ArrayList<Course>) in.readObject();
-
-            } catch (ClassNotFoundException e) {
-                fail("Classe non trovata " + e.getMessage());
-            } catch (IOException e){
-                if (dataSourceAfter.isEmpty()){
-                    fail("Fallita la lettura dopo il create" + e.getMessage());
-                }
             }
-
             // ASSERT
             assertEquals(dataSourceBefore.size()+1,dataSourceAfter.size());
             assertEquals(ID_CREATE,dataSourceAfter.get(dataSourceAfter.size()-1).getId());
             assertEquals(DURATION,dataSourceAfter.get(dataSourceAfter.size()-1).getDuration());
-        } catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException | ClassNotFoundException e){
             fail(e.getMessage());
-        } catch (DataException e){
+        } catch (DataException | IOException e){
             fail("Fallito il create su file SER" + e.getMessage());
         }
     }
@@ -156,15 +125,7 @@ class SerializedCourseRepositoryTest {
         try{
             ArrayList<Course> dataSourceBefore = new ArrayList<>();
             try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-
                 dataSourceBefore = (ArrayList<Course>) in.readObject();
-
-            } catch (ClassNotFoundException e) {
-                fail("Classe non trovata " + e.getMessage());
-            } catch (IOException e){
-                if (dataSourceBefore.isEmpty()){
-                    fail("Fallita la lettura prima del create" + e.getMessage());
-                }
             }
 
             // ACT
@@ -172,25 +133,16 @@ class SerializedCourseRepositoryTest {
 
             ArrayList<Course> dataSourceAfter = new ArrayList<>();
             try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-
                 dataSourceAfter = (ArrayList<Course>) in.readObject();
-
-            } catch (ClassNotFoundException e) {
-                fail("Classe non trovata " + e.getMessage());
-            } catch (IOException e){
-                if (dataSourceAfter.isEmpty()){
-                    fail("Fallita la lettura dopo il create" + e.getMessage());
-                }
             }
-
             // ASSERT
-            assertEquals(dataSourceBefore.size()+1, dataSourceAfter.size());
-            assertEquals(dataSourceAfter.get(3).getId(), c.getId());
-            assertEquals(dataSourceAfter.get(3).getTitle(), c.getTitle());
-        }catch (EntityNotFoundException e){
-            fail("Corso non trovato");
-        } catch (DataException e) {
-            fail("Errore nella ricerca", e);
+            assertEquals(dataSourceBefore.size(), dataSourceAfter.size());
+            assertEquals(dataSourceAfter.get(2).getId(), c.getId());
+            assertEquals(dataSourceAfter.get(2).getTitle(), c.getTitle());
+        }catch (EntityNotFoundException | ClassNotFoundException e){
+            fail("Errore update, Corso non trovato");
+        } catch (DataException | IOException e) {
+            fail("Errore update, errore nella ricerca ", e);
         }
     }
 
@@ -201,15 +153,7 @@ class SerializedCourseRepositoryTest {
         try{
             ArrayList<Course> dataSourceBefore = new ArrayList<>();
             try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-
                 dataSourceBefore = (ArrayList<Course>) in.readObject();
-
-            } catch (ClassNotFoundException e) {
-                fail("Classe non trovata " + e.getMessage());
-            } catch (IOException e){
-                if (dataSourceBefore.isEmpty()){
-                    fail("Fallita la lettura prima del create" + e.getMessage());
-                }
             }
 
             // ACT
@@ -217,21 +161,15 @@ class SerializedCourseRepositoryTest {
 
             ArrayList<Course> dataSourceAfter = new ArrayList<>();
             try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-
                 dataSourceAfter = (ArrayList<Course>) in.readObject();
-
-            } catch (ClassNotFoundException e) {
-                fail("Classe non trovata " + e.getMessage());
-            } catch (IOException e){
-                if (dataSourceAfter.isEmpty()){
-                    fail("Fallita la lettura dopo il create" + e.getMessage());
-                }
             }
             //ASSERT
             assertEquals(dataSourceBefore.size()-1, dataSourceAfter.size());
             assertEquals(ID2,dataSourceAfter.get(0).getId());
 
-        } catch (EntityNotFoundException | DataException e){
+        } catch (EntityNotFoundException | ClassNotFoundException e){
+            fail("Errore nella cancellazione di un corso " + e.getMessage());
+        } catch (DataException | IOException e){
             fail("Errore nella cancellazione di un corso " + e.getMessage());
         }
     }
