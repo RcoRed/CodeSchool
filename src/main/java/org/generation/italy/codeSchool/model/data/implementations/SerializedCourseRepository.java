@@ -18,41 +18,35 @@ public class SerializedCourseRepository implements CourseRepository {
         try (ObjectInputStream writeFile = new ObjectInputStream(new FileInputStream(fileName))){
             this.dataSource = (ArrayList<Course>) writeFile.readObject();
         } catch (IOException e) {
-            throw new DataException("error", e);
+            throw new DataException("Errore nell'interazione col file ", e);
         } catch (ClassNotFoundException e) {
-            throw new DataException("errorz", e);
+            throw new DataException("Classe non trovata", e);
         }
-    }
-
-    public SerializedCourseRepository(String fileName, ArrayList<Course> dataSource) {
-        this.fileName = fileName;
-        this.dataSource = dataSource;
     }
 
     @Override
     public Optional<Course> findById(long id) throws DataException {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(fileName))){
-            dataSource = (ArrayList<Course>) inputStream.readObject();
-            for (Course c : dataSource) {
-                if (id == c.getId()) {
-                    return Optional.of(c);
-                }
+        for (Course c : dataSource) {
+            if (id == c.getId()) {
+                return Optional.of(c);
             }
-            return Optional.empty();
-        } catch (IOException e) {
-            throw new DataException("Error", e);
-        } catch (ClassNotFoundException e) {
-            throw new DataException("Class not found", e);
         }
+        return Optional.empty();
     }
 
     @Override
-    public List<Course> findByTitleContains(String part) throws DataException {
-        return null;
+    public List<Course> findByTitleContains(String part) {
+        List<Course> result = null;
+        for (Course c : dataSource) {
+            if (c.getTitle().contains(part)) {
+                result.add(c);
+            }
+        }
+        return result;
     }
 
     @Override
-    public Course create(Course course) throws DataException {
+    public Course create(Course course) {
         dataSource.add(course);
         try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fileName))) {
             os.writeObject(dataSource);
@@ -64,11 +58,26 @@ public class SerializedCourseRepository implements CourseRepository {
 
     @Override
     public void update(Course course) throws EntityNotFoundException, DataException {
-
+        if (findById(course.getId()).equals(Optional.of(course))) {
+            deleteById(course.getId());
+            create(course);
+        } else {
+            throw new EntityNotFoundException("Course not found");
+        }
     }
 
     @Override
     public void deleteById(long id) throws EntityNotFoundException, DataException {
-
+        Optional<Course> course = Optional.empty();
+        for (Course c : dataSource) {
+            if (id == c.getId()) {
+                course = Optional.of(c);
+            }
+        }
+        if (findById(id).equals(course)) {
+            dataSource.remove(course);
+        } else {
+            throw new EntityNotFoundException("Course with id: "+id+" not found");
+        }
     }
 }
