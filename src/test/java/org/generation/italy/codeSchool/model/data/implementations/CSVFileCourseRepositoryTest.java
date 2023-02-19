@@ -60,7 +60,7 @@ class CSVFileCourseRepositoryTest {
     void findById_finds_course_when_present() {
         Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
-        try{                                                                 //obbligo a scrivere subito
+        try{
             Optional<Course> x = repo.findById(ID);
             assertTrue(x.isPresent());
             Course c2 = x.get();
