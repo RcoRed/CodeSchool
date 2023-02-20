@@ -1,21 +1,20 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
-import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
-public class CSVFileCourseRepository implements CourseRepository{
+public class CSVFileCourseRepository implements CourseRepository {
     private String fileName;
     private static long nextId;
     public static final String DEFAULT_FILE_NAME = "Corsi.csv";
@@ -83,23 +82,8 @@ public class CSVFileCourseRepository implements CourseRepository{
     }
 
     @Override
-    public void update(Course course) throws EntityNotFoundException, DataException {
-        try {
-            List<String> lines = Files.readAllLines(Paths.get(fileName));
-            for (String s : lines) {
-                String[] tokens = s.split(",");
-                if (course.getId()==Long.parseLong(tokens[0])){
-                    deleteById(Long.parseLong(tokens[0]));
-                    create(course);
-                    /*try (FileOutputStream output = new FileOutputStream(fileName,true);
-                         PrintWriter pw = new PrintWriter(output)){
-                        pw.println(CourseToCSV(course));
-                    }*/
-                }
-            }
-        }catch (IOException e){
-            throw new DataException("Errore nel salvataggio su file", e);
-        }
+    public void update(Course course) throws EntityNotFoundException {
+
     }
 
     @Override

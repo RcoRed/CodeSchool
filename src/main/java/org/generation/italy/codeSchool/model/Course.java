@@ -1,9 +1,8 @@
 package org.generation.italy.codeSchool.model;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-public class Course implements Serializable{
+public class Course {
     private long id;
     private String title;
     private String description;

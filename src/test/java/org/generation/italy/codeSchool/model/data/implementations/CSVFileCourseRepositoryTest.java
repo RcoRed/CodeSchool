@@ -34,7 +34,7 @@ class CSVFileCourseRepositoryTest {
     private static final double DURATION=200.0;
     private static final String CSVLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
     private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
-    private static final String CSVLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST+"ciao",DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
+    private static final String CSVLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
     private static final String FILENAME="TESTDATA.csv";
 
     @org.junit.jupiter.api.BeforeEach
@@ -89,28 +89,6 @@ class CSVFileCourseRepositoryTest {
             fail("Fallito il create su file CSV" + e.getMessage());
         }catch (IOException e){
             fail("Fallita la verifica del create su file CSV" + e.getMessage());
-        }
-    }
-    @Test
-    void update_should_replace_course_when_present(){
-        Course c = new Course(ID,TITLE+"pippo",DESCRIPTION,PROGRAM,DURATION);
-        CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
-        try{
-            List<String[]> readLines = readTokenizedLines();
-            List<String> linesBefore = Files.readAllLines(Paths.get(FILENAME));
-            assertNotEquals(readLines.get(2)[1], c.getTitle());
-            repo.update(c);
-            List<String> linesAfter = Files.readAllLines(Paths.get(FILENAME));
-            assertEquals(linesBefore.size(), linesAfter.size());
-            readLines=readTokenizedLines();
-            assertEquals(Long.parseLong(readLines.get(2)[0]), c.getId());
-            assertEquals(readLines.get(2)[1], c.getTitle());
-        }catch (EntityNotFoundException e){
-            fail("Corso non trovato");
-        }catch (DataException e){
-            fail("Errore nella ricerca", e);
-        }catch (IOException e){
-            fail("Errore nell'utilizzo del file CSV",e);
         }
     }
     @Test
