@@ -1,53 +1,11 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
-<<<<<<< HEAD
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
-=======
-import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
->>>>>>> origin/master
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.io.*;
-<<<<<<< HEAD
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-public class SerializedCourseRepository implements CourseRepository{
-    private static long nextId;
-    private String fileName;
-    public static final String DEFAULT_FILE_NAME = "Corsi.txt";
-    public SerializedCourseRepository() {
-        this.fileName = DEFAULT_FILE_NAME;
-    }
-    public SerializedCourseRepository(String fileName) {
-        this.fileName = fileName;
-    }
-    @Override
-    public Optional<Course> findById(long id) throws DataException {
-        try{
-            FileInputStream fileInput= new FileInputStream (fileName);
-            ObjectInputStream input = new ObjectInputStream(fileInput);
-            List<String> lines = Files.readAllLines(Paths.get(fileName));
-            for (String s:lines){
-                String[] trimmed = s.split(",");
-                long courseId = Long.parseLong(trimmed[0]);
-                if (courseId == id){
-                    Course found = new Course(courseId,trimmed[1],trimmed[2]
-                            ,trimmed[3],Double.parseDouble(trimmed[4]));
-                    input.close();
-                    fileInput.close();
-                    return Optional.of(found);
-                }
-            }
-            return Optional.empty();
-        }catch (IOException e){
-            throw new DataException("Errore nella lettura del file",e);
-=======
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -82,33 +40,11 @@ public class SerializedCourseRepository implements CourseRepository {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             throw new DataException("Errore nel create course", e);
->>>>>>> origin/master
         }
     }
 
     @Override
     public List<Course> findByTitleContains(String part) throws DataException {
-<<<<<<< HEAD
-        try {
-            FileOutputStream fileOutput= new FileOutputStream(fileName);
-            ObjectOutputStream output = new ObjectOutputStream(fileOutput);
-            List<String> lines = Files.readAllLines(Paths.get(fileName));
-            List<Course> courses = new ArrayList<>();
-            for(String s : lines){
-                String[] tokens = s.split(",");
-                if(tokens[1].contains(part)){
-                    Course found = new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
-                            tokens[3], Double.parseDouble(tokens[4]));
-                    courses.add(found);
-                }
-            }
-            output.writeObject(courses);
-            output.close();
-            fileOutput.close();
-            return courses;
-        }catch (IOException e){
-            throw new DataException("Errore nella lettura del file", e);
-=======
         var courses = new ArrayList<Course>();
         try {
             var all = load();
@@ -120,32 +56,11 @@ public class SerializedCourseRepository implements CourseRepository {
             return courses;
         } catch (IOException | ClassNotFoundException e) {
             throw new DataException("Errore nel findByTitleContains", e);
->>>>>>> origin/master
         }
     }
 
     @Override
     public Course create(Course course) throws DataException {
-<<<<<<< HEAD
-        try{
-            FileOutputStream fileOutput = new FileOutputStream(fileName, true);
-            ObjectOutputStream output= new ObjectOutputStream(fileOutput);
-            output.writeObject(course);
-            output.close();
-            fileOutput.close();
-            return course;
-        }catch (FileNotFoundException e){
-            throw new DataException("Errore nel trovare il file", e);
-        }catch (IOException e){
-            throw new DataException("Errore nel salvataggio su file",e);
-        }
-    }
-
-
-    @Override
-    public void update(Course course) throws EntityNotFoundException, DataException {
-
-=======
         try {
             var courses = load();
             course.setId(++nextID);
@@ -176,15 +91,10 @@ public class SerializedCourseRepository implements CourseRepository {
         } catch (IOException | ClassNotFoundException e) {
             throw new DataException("Errore nel create course", e);
         }
->>>>>>> origin/master
     }
 
     @Override
     public void deleteById(long id) throws EntityNotFoundException, DataException {
-<<<<<<< HEAD
-
-    }
-=======
         try {
             var courses = load();
             for(Iterator<Course> it = courses.iterator(); it.hasNext();) {
@@ -223,5 +133,4 @@ public class SerializedCourseRepository implements CourseRepository {
         }
     }
 
->>>>>>> origin/master
 }
