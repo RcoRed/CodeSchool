@@ -112,6 +112,16 @@ public class SerializedCourseRepository implements CourseRepository {
         }
     }
 
+    @Override
+    public int countActive() throws DataException {
+        return 0;
+    }
+
+    @Override
+    public List<Course> getOldestActive(int n) {
+        return null;
+    }
+
     private List<Course> load() throws IOException, ClassNotFoundException {
         File f = new File(filename);
         if (!f.exists()) {

@@ -5,6 +5,7 @@ import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.data.implementations.InMemoryCourseRepository;
+import org.generation.italy.codeSchool.model.services.BusinessLogicException;
 import org.generation.italy.codeSchool.model.services.abstractions.AbstractDidacticService;
 
 import java.util.List;
@@ -48,11 +49,23 @@ public class StandardDidacticService implements AbstractDidacticService {
     }
 
     @Override
-    public boolean adjustActiveCourses(int numActive) throws DataException {
+    public boolean adjustActiveCourses(int numActive) throws DataException, BusinessLogicException {
         //chiama il repository per scoprire quanti corsi sono attivi
         //se i corsi attivi sono <= di numActive ritorniamo false (fine)
         //altrimenti, chiameremo un metodo sul repository che cancella gli n corsi più vecchi (n parametro input)
-
-        return false;
+        int activeCourses = repo.countActive();
+        if(activeCourses <= numActive) {
+            return false;
+        }
+        List<Course> oldCourses = repo.getOldestActive(numActive - activeCourses);
+        for(var c : oldCourses) {
+            c.setActive(false);
+            try {
+                repo.update(c);
+            } catch (EntityNotFoundException e) {
+                throw new BusinessLogicException("errore di concorrenza sulla base dati:",e);
+            }
+        }
+        return true;
     }
 }

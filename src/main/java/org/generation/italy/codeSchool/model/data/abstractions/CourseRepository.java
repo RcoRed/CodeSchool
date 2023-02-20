@@ -18,6 +18,10 @@ public interface CourseRepository {
     void update(Course course) throws EntityNotFoundException,DataException;
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
+
+    int countActive() throws DataException;
+
+    List<Course> getOldestActive(int n);
 }
 
 /*

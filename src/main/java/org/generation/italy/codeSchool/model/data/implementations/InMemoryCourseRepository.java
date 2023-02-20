@@ -2,6 +2,7 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.util.*;
@@ -74,6 +75,28 @@ public class InMemoryCourseRepository implements CourseRepository {
         if (dataSource.remove(id)==null){           //possiamo farlo perche .remove() ritornerà null se non trova l' id
             throw new EntityNotFoundException("Non esiste un corso con id: " + id);
         }
+    }
+
+    @Override
+    public int countActive(){
+        int countActive = 0;
+        for( var course : dataSource.values()) {
+            if(course.isActive()){
+                countActive++;
+            }
+        }
+        return countActive;
+    }
+
+    @Override
+    public List<Course> getOldestActive(int n) {
+        List<Course> courseList = new ArrayList<>(dataSource.values());
+        Collections.sort(courseList);
+        List<Course> oldestN = new ArrayList<>();
+        for(int i=0; i < n; i++) {
+            oldestN.add(courseList.get(i));
+        }
+        return oldestN;
     }
 
 }
