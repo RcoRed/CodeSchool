@@ -90,12 +90,12 @@ public class InMemoryCourseRepository implements CourseRepository {
     @Override
     public void deleteOldestActiveCourses(int num) {
         ArrayList<Course> orderedActives = countActiveCourses();
-        orderedActives.sort((o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
+        orderedActives.sort((o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt())); //lo sorta ascendente o discendente?
         while (num > 0) {
+            orderedActives.get(orderedActives.size()-1).setActive(false);
             orderedActives.remove(orderedActives.size()-1);
             --num;
         }
-
     }
 
 
