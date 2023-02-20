@@ -1,6 +1,5 @@
 package org.generation.italy.codeSchool.model;
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -11,14 +10,17 @@ public class Course implements Serializable {
     private String description;
     private String program;
     private double duration;
+    //private static final long serialVersionUID = 1;
     private boolean isActive;
     private LocalDate createdAt;
+
 
     public Course(){
         this.createdAt = LocalDate.now();
     }
     public Course(long id, String title, String description, String program, double duration, LocalDate createdAt) {
         this(id,title,description,program,duration,true,createdAt);
+
     }
     public Course(long id, String title, String description, String program, double duration,boolean isActive, LocalDate createdAt) {
         this.id = id;
@@ -28,13 +30,16 @@ public class Course implements Serializable {
         this.duration = duration;
         this.isActive = isActive;
         this.createdAt = createdAt;
-    }
 
+
+
+    }
     public long getId() {
         return id;
     }
+
     public void setId(long id){
-        id = id;
+        this.id = id;
     }
 
     public String getTitle() {
@@ -59,6 +64,10 @@ public class Course implements Serializable {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
     //override del metodo madre Object toString() e lo facciamo meglio
@@ -88,4 +97,5 @@ public class Course implements Serializable {
     public int hashCode() {
         return Objects.hash(getId());       //modifica l'hashCode in base all'equals
     }
+
 }

@@ -12,37 +12,47 @@ import java.util.Optional;
 
 public class StandardDidacticService implements AbstractDidacticService {
 
-   CourseRepository repo  = new InMemoryCourseRepository();
-   public StandardDidacticService (CourseRepository repo){ //può ricevere qualsiesi implementazione dell'interfaccia repository
-      this.repo = repo;                                    //iniezionde delle dipendenze -> inversione del controllo, inversione delle dipendenze
-   }
-   @Override
-   public Optional<Course> findCourseById(long id) throws DataException {
-      return repo.findById(id);
-   }
+    //private InMemoryCourseRepository repo;  //associazione con un'implementazione (no)
+    //private CourseRepository repo = new InMemoryCourseRepository(); //dipendenza con un'implementazione (quasi)
+    private CourseRepository repo; //iniezione delle dipendenze (si)
+    public StandardDidacticService(CourseRepository repo){
+        this.repo = repo; //iniezione delle dipendenze (tecnica) -> inversione del controllo (design pattern), inversione delle dipendenze ()
+    }
 
-   @Override
-   public List<Course> findCoursesByTitleContains(String part) throws DataException {
-      return findCoursesByTitleContains(part);
-   }
+    @Override
+    public Optional<Course> findCourseById(long id) throws DataException {
+        Optional<Course> oc = repo.findById(id);
+        return oc;
+    }
 
-   @Override
-   public Course saveCourse(Course course) throws DataException {
-      return repo.create(course);
-   }
+    @Override
+    public List<Course> findCoursesByTitleContains(String part) throws DataException {
+        List<Course> lc = repo.findByTitleContains(part);
+        return lc;
+    }
 
-   @Override
-   public void updateCourse(Course course) throws EntityNotFoundException, DataException {
-      repo.update(course);
-   }
+    @Override
+    public Course saveCourse(Course course) throws DataException {
+        Course c = repo.create(course);
+        return c;
+    }
 
-   @Override
-   public void deleteCourseById(long id) throws EntityNotFoundException, DataException {
-      repo.deleteById(id);
-   }
+    @Override
+    public void updateCourse(Course course) throws EntityNotFoundException, DataException {
+        repo.update(course);
+    }
 
-   @Override
-   public boolean adjustActiveCourses(int numActive) throws DataException {
-      return false;
-   }
+    @Override
+    public void deleteCourseById(long id) throws EntityNotFoundException, DataException {
+        repo.deleteById(id);
+    }
+
+    @Override
+    public boolean adjustActiveCourses(int numActive) throws DataException {
+        //chiama il repository per scoprire quanti corsi sono attivi
+        //se i corsi attivi sono <= di numActive ritorniamo false (fine)
+        //altrimenti, chiameremo un metodo sul repository che cancella gli n corsi più vecchi (n parametro input)
+
+        return false;
+    }
 }
