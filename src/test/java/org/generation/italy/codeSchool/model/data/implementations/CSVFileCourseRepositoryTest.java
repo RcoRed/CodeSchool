@@ -19,22 +19,12 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;       //!!importante!!
 import static org.generation.italy.codeSchool.model.data.Constants.*;
+import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
 
 class CSVFileCourseRepositoryTest {
 
-    private static final long ID=1;
-    private static final long ID2= 2;
-    private static final long ID3 = 3;
-    private static final long ID_NOT_PRESENT=4;
-    private static final long ID_CREATE=5;
-    private static final String TEST = "TEST";
-    private static final String TITLE="TITLE";
-    private static final String TITLE_UPDATED="TITLE_UPDATED";
-    private static final String DESCRIPTION="DESCRIPTION";
-    private static final String DESCRIPTION_UPDATED="DESCRIPTION_UPDATED";
-    private static final String PROGRAM="PROGRAM";
-    private static final double DURATION=200.0;
-    private static final String CSVLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+
+    private static final String CSVLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f", ID1,TITLE,DESCRIPTION,PROGRAM,DURATION);
     private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
     private static final String CSVLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
     private static final String FILENAME="TESTDATA.csv";
@@ -59,10 +49,10 @@ class CSVFileCourseRepositoryTest {
 
     @Test
     void findById_finds_course_when_present() {
-        Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         try{                                                                 //obbligo a scrivere subito
-            Optional<Course> x = repo.findById(ID);
+            Optional<Course> x = repo.findById(ID1);
             assertTrue(x.isPresent());
             Course c2 = x.get();
             assertEquals(c1,c2);
@@ -85,7 +75,7 @@ class CSVFileCourseRepositoryTest {
             assertEquals(linesBefore.size()+1,linesAfter.size());
             String csvLine = linesAfter.get(linesAfter.size()-1);
             String[] tokens = csvLine.split(",");
-            assertEquals(ID_CREATE,Long.parseLong(tokens[0]));
+            assertEquals(CSVFileCourseRepository.nextId,Long.parseLong(tokens[0]));
             assertEquals(DURATION,Double.parseDouble(tokens[tokens.length-1]));
         }catch (DataException e){
             fail("Fallito il create su file CSV" + e.getMessage());
@@ -101,7 +91,7 @@ class CSVFileCourseRepositoryTest {
         try {
             //Act
             List<String> linesBefore = Files.readAllLines(Paths.get(FILENAME));
-            repo.deleteById(ID);
+            repo.deleteById(ID1);
             //Assert
             List<String[]> tokenLines = readTokenizedLines();
             assertEquals(linesBefore.size() - 1, tokenLines.size());
@@ -139,7 +129,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void courseToCSV() {
         // ARRANGE      //inizializzo i dati che poi dovrò usare
-        Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT          //richiamo ciò che devo testare
         String csvLine = repo.courseToCSV(c);
@@ -167,7 +157,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void update_should_change_course_if_present(){
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
-        Course c = new Course(ID,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
+        Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
         try {
             repo.update(c);
             var courses = readAll();

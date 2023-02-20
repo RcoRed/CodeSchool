@@ -17,7 +17,7 @@ import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 public class CSVFileCourseRepository implements CourseRepository {
     private String fileName;
-    private static long nextId;
+    public static long nextId;
     public static final String DEFAULT_FILE_NAME = "Corsi.csv";
 
     public CSVFileCourseRepository() {

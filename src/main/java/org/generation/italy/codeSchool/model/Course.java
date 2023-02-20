@@ -1,8 +1,9 @@
 package org.generation.italy.codeSchool.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Course {
+public class Course implements Serializable {
     private long id;
     private String title;
     private String description;
@@ -23,8 +24,9 @@ public class Course {
     public long getId() {
         return id;
     }
+
     public void setId(long id){
-        id = id;
+        this.id = id;
     }
 
     public String getTitle() {
