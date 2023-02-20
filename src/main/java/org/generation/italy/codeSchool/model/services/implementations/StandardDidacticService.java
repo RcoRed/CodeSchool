@@ -11,23 +11,30 @@ import java.util.List;
 import java.util.Optional;
 
 public class StandardDidacticService implements AbstractDidacticService {
-    private CourseRepository repo;
-    public StandardDidacticService (CourseRepository repo) {
-        this.repo = repo; // dependencies injection
+
+    //private InMemoryCourseRepository repo;  //associazione con un'implementazione (no)
+    //private CourseRepository repo = new InMemoryCourseRepository(); //dipendenza con un'implementazione (quasi)
+    private CourseRepository repo; //iniezione delle dipendenze (si)
+    public StandardDidacticService(CourseRepository repo){
+        this.repo = repo; //iniezione delle dipendenze (tecnica) -> inversione del controllo (design pattern), inversione delle dipendenze ()
     }
+
     @Override
     public Optional<Course> findCourseById(long id) throws DataException {
-        return repo.findById(id);
+        Optional<Course> oc = repo.findById(id);
+        return oc;
     }
 
     @Override
     public List<Course> findCoursesByTitleContains(String part) throws DataException {
-        return repo.findByTitleContains(part);
+        List<Course> lc = repo.findByTitleContains(part);
+        return lc;
     }
 
     @Override
     public Course saveCourse(Course course) throws DataException {
-        return repo.create(course);
+        Course c = repo.create(course);
+        return c;
     }
 
     @Override
@@ -41,12 +48,11 @@ public class StandardDidacticService implements AbstractDidacticService {
     }
 
     @Override
-    public boolean adjustActiveCourse(int numActive) throws DataException {
-        // controlla quanti corsi sono attivi nel repo
-        // ritorniamo false se il numero di attivi è minore-uguale di numActive
-        // altrimenti cancella un numero di corsi dato dalla differenza tra gli attivi e numActive
-        // a partire dai più vecchi
-        // (solo in InMemoryCourseRepository al momento)
+    public boolean adjustActiveCourses(int numActive) throws DataException {
+        //chiama il repository per scoprire quanti corsi sono attivi
+        //se i corsi attivi sono <= di numActive ritorniamo false (fine)
+        //altrimenti, chiameremo un metodo sul repository che cancella gli n corsi più vecchi (n parametro input)
+
         return false;
     }
 }

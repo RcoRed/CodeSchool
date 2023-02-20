@@ -7,77 +7,130 @@ import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundExcep
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 public class SerializedCourseRepository implements CourseRepository {
-    private String fileName;
-    private ArrayList<Course> dataSource;
-    public SerializedCourseRepository(String fileName) throws FileNotFoundException, DataException {
-        this.fileName = fileName;
-        try (ObjectInputStream writeFile = new ObjectInputStream(new FileInputStream(fileName))){
-            this.dataSource = (ArrayList<Course>) writeFile.readObject();
-        } catch (IOException e) {
-            throw new DataException("Errore nell'interazione col file ", e);
-        } catch (ClassNotFoundException e) {
-            throw new DataException("Classe non trovata", e);
-        }
+    private static final String SERIALIZED_FILE_NAME = "courses.ser";
+    public static long nextID;
+    private String filename;
+
+    public SerializedCourseRepository(String filename) {
+        this.filename = filename;
+    }
+
+    public SerializedCourseRepository() {
+        this.filename = SERIALIZED_FILE_NAME;
     }
 
     @Override
     public Optional<Course> findById(long id) throws DataException {
-        for (Course c : dataSource) {
-            if (id == c.getId()) {
-                return Optional.of(c);
+        try {
+            var courses = load();
+            for(var c : courses) {
+                if(c.getId() == id) {
+                    return Optional.of(c);
+                }
             }
-        }
-        return Optional.empty();
-    }
+            return Optional.empty();
 
-    @Override
-    public List<Course> findByTitleContains(String part) {
-        List<Course> result = null;
-        for (Course c : dataSource) {
-            if (c.getTitle().contains(part)) {
-                result.add(c);
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public Course create(Course course) {
-        dataSource.add(course);
-        try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            os.writeObject(dataSource);
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            throw new DataException("Errore nel create course", e);
         }
-        return course;
+    }
+
+    @Override
+    public List<Course> findByTitleContains(String part) throws DataException {
+        var courses = new ArrayList<Course>();
+        try {
+            var all = load();
+            for (Course c : all) {
+                if (c.getTitle().contains(part)) {
+                    courses.add(c);
+                }
+            }
+            return courses;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel findByTitleContains", e);
+        }
+    }
+
+    @Override
+    public Course create(Course course) throws DataException {
+        try {
+            var courses = load();
+            course.setId(++nextID);
+            courses.add(course);
+            store(courses);
+            return course;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
+        }
     }
 
     @Override
     public void update(Course course) throws EntityNotFoundException, DataException {
-        if (findById(course.getId()).equals(Optional.of(course))) {
-            deleteById(course.getId());
-            create(course);
-        } else {
-            throw new EntityNotFoundException("Course not found");
+        try {
+            var courses = load();
+            int pos = -1;
+            for(int i=0; i < courses.size(); i++) {
+                if(courses.get(i).getId() == course.getId()) {
+                    pos = i;
+                }
+            }
+            if(pos == -1) {
+                throw new EntityNotFoundException(ENTITY_NOT_FOUND + course.getId());
+            }
+            courses.set(pos, course);
+            store(courses);
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
         }
     }
 
     @Override
     public void deleteById(long id) throws EntityNotFoundException, DataException {
-        Optional<Course> course = Optional.empty();
-        for (Course c : dataSource) {
-            if (id == c.getId()) {
-                course = Optional.of(c);
+        try {
+            var courses = load();
+            for(Iterator<Course> it = courses.iterator(); it.hasNext();) {
+                Course c = it.next();
+                if(c.getId() == id) {
+                    it.remove();
+                    //courses.remove(c);
+                    store(courses);
+                    return;
+                }
             }
-        }
-        if (findById(id).equals(course)) {
-            dataSource.remove(course);
-        } else {
-            throw new EntityNotFoundException("Course with id: "+id+" not found");
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
         }
     }
+
+    private List<Course> load() throws IOException, ClassNotFoundException {
+        File f = new File(filename);
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        if (f.length() == 0) {
+            return new ArrayList<>();
+        }
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            List<Course> courseList = (List<Course>) ois.readObject();
+            return courseList;
+        }
+    }
+
+    private void store(List<Course> courses) throws IOException{
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(courses);
+        }
+    }
+
+
 }
