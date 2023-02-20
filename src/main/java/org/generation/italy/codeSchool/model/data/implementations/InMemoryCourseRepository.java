@@ -26,6 +26,7 @@ public class InMemoryCourseRepository implements CourseRepository {
         si! hai capito!! serve "solo" per ricordarci/ o a dire di controllare se un dato è vuoto(null) o meno, così da evitare cappellate logiche durante la scrittura dei codici
      */
 
+
    @Override
    public Optional<Course> findById(long id) {
       Course x = dataSource.get(id);
@@ -79,24 +80,35 @@ public class InMemoryCourseRepository implements CourseRepository {
 
    public int countActivesCourses(){
       int count=0;
-      for (long i = 0; i < dataSource.size(); i++){
+      Map.Entry<Long, Course> firstEntry = dataSource.entrySet().iterator().next();
+      long firstId = firstEntry.getKey();
+      for (long i = firstId; i < dataSource.size(); i++){ //Ci stavo sclerando, nextId inizia da 1 non da 0
          dataSource.get(i).isActive();
          count++;
       }
       return count;
    }
    public void deleteOldCourses(int coursesToDelete) throws EntityNotFoundException {
+      Map.Entry<Long, Course> firstEntry = dataSource.entrySet().iterator().next();
+      long idMin = firstEntry.getKey();
+      LocalDate minDate = dataSource.get(idMin).getCreatedAt();
+      ArrayList<Long> idToDelete = new ArrayList<>();
+      idToDelete.add(idMin);
       while(coursesToDelete > 0){
-         Map.Entry<Long, Course> firstEntry = dataSource.entrySet().iterator().next();
-         long idMin = firstEntry.getKey()    ;
-         LocalDate minDate = dataSource.get(0).getCreatedAt();
          for (Course c : dataSource.values() ) {
             if(c.getCreatedAt().isBefore(minDate)){
                idMin=c.getId();
+               idToDelete.add(idMin);
+               minDate=dataSource.get(idMin).getCreatedAt();
             }
          }
-         deleteById(idMin);
          coursesToDelete--;
       }
+      for (Long l : idToDelete){
+         deleteById(l);
+      }
+   }
+   public long numOfCourses(){
+      return dataSource.size();
    }
 }
