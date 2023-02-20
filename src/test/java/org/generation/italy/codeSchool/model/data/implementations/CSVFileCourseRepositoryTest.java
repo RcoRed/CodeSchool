@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -31,9 +32,11 @@ class CSVFileCourseRepositoryTest {
    private static final String DESCRIPTION="DESCRIPTION";
    private static final String PROGRAM="PROGRAM";
    private static final double DURATION=200.0;
-   private static final String CSVLINE1 =String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-   private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
-   private static final String CSVLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
+   private static final boolean IS_ACTIVE=true;
+   private static final LocalDate CREATED_AT=LocalDate.now();
+   private static final String CSVLINE1 =String.format(Locale.US,CSVCOURSE,ID,TITLE,DESCRIPTION,PROGRAM,DURATION,IS_ACTIVE, CREATED_AT.toString());
+   private static final String CSVLINE2=String.format(Locale.US,CSVCOURSE,ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1,IS_ACTIVE, CREATED_AT.toString());
+   private static final String CSVLINE3=String.format(Locale.US,CSVCOURSE,ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1,IS_ACTIVE, CREATED_AT.toString());
    private static final String FILENAME="TESTDATA.csv";
 
    @org.junit.jupiter.api.BeforeEach
@@ -58,7 +61,7 @@ class CSVFileCourseRepositoryTest {
 
    @Test
    void findById_finds_course_when_present() {
-      Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+      Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION,true, LocalDate.now());
       CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
       try{
          Optional<Course> x = repo.findById(ID);
@@ -73,7 +76,7 @@ class CSVFileCourseRepositoryTest {
    @Test
    void create() {
       // ARRANGE
-      Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
+      Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
       CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
       // ACT
       try{
@@ -85,7 +88,7 @@ class CSVFileCourseRepositoryTest {
          String csvLine = linesAfter.get(linesAfter.size()-1);
          String[] tokens = csvLine.split(",");
          assertEquals(ID_CREATE,Long.parseLong(tokens[0]));
-         assertEquals(DURATION,Double.parseDouble(tokens[tokens.length-1]));
+         assertEquals(DURATION,Double.parseDouble(tokens[4])); //la pos di duration
       }catch (DataException e){
          fail("Fallito il create su file CSV" + e.getMessage());
       }catch (IOException e){
@@ -96,7 +99,7 @@ class CSVFileCourseRepositoryTest {
    @Test
    void courseToCSV() {
       // ARRANGE      //inizializzo i dati che poi dovrò usare
-      Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+      Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
       CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
       // ACT          //richiamo ciò che devo testare
       String csvLine = repo.CourseToCSV(c);
@@ -163,7 +166,7 @@ class CSVFileCourseRepositoryTest {
 
    @Test
    public void update_should_replace_course_when_present(){
-      Course c = new Course(ID,TITLE+"lollo", DESCRIPTION,PROGRAM,DURATION);
+      Course c = new Course(ID,TITLE+"lollo", DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
       CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
       try{
          List<String> linesBefore = Files.readAllLines(Paths.get(FILENAME));

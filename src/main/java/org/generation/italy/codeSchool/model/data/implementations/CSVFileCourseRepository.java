@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.generation.italy.codeSchool.model.data.Constants.*;
@@ -35,7 +36,7 @@ public class CSVFileCourseRepository implements CourseRepository {
             long courseId = Long.parseLong(trimmed[0]);
             if (courseId == id){
                Course found = new Course(courseId,trimmed[1],trimmed[2]    //creo l'oggeto passando le stringhe letta dal file
-                     ,trimmed[3],Double.parseDouble(trimmed[4]));
+                     ,trimmed[3],Double.parseDouble(trimmed[4]),LocalDate.now());
                return Optional.of(found);
             }
          }
@@ -53,7 +54,7 @@ public class CSVFileCourseRepository implements CourseRepository {
          for(String s : lines){
             String[] tokens = s.split(",");
             if(tokens[1].contains(part)){
-               Course found = new Course(Long.parseLong(tokens[0]),tokens[1],tokens[2],tokens[3],Double.parseDouble(tokens[4]));
+               Course found = new Course(Long.parseLong(tokens[0]),tokens[1],tokens[2],tokens[3],Double.parseDouble(tokens[4]), LocalDate.parse(tokens[5]));
                courses.add(found);
             }
          }

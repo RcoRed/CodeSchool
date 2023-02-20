@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,9 +26,9 @@ class SerializedCourseRepositoryTest {
    private static final String DESCRIPTION="DESCRIPTION";
    private static final String PROGRAM="PROGRAM";
    private static final double DURATION=200.0;
-   private static final Course COURSE1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-   private static final Course COURSE2=new Course(ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
-   private static final Course COURSE3=new Course(ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
+   private static final Course COURSE1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION, LocalDate.now());
+   private static final Course COURSE2=new Course(ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1,LocalDate.now());
+   private static final Course COURSE3=new Course(ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1,LocalDate.now());
    private static final String FILENAME="TESTDATA.ser";
    private static final SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
    @org.junit.jupiter.api.BeforeEach
@@ -86,7 +87,7 @@ class SerializedCourseRepositoryTest {
    @Test
    void create_control_if_created() {
       try (ObjectInputStream fileOutputS = new ObjectInputStream(new FileInputStream(FILENAME))){
-         Course newCourse = new Course(ID_CREATE, TITLE,DESCRIPTION,PROGRAM,DURATION);
+         Course newCourse = new Course(ID_CREATE, TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
          Map<Long, Course> presentCourses = new HashMap<>();
          presentCourses.putAll((Map<Long,Course>)fileOutputS.readObject());
          long exNumOfCourses = presentCourses.size();
@@ -106,7 +107,7 @@ class SerializedCourseRepositoryTest {
    @Test
    void update_replacing_existing_course() {
       try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(FILENAME))){
-         Course newCourse = new Course(ID, TITLE+TITLE+TEST+TEST,DESCRIPTION,PROGRAM,DURATION);
+         Course newCourse = new Course(ID, TITLE+TITLE+TEST+TEST,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
          Map<Long, Course> sexyMap = (Map<Long, Course>) fIS.readObject();
          Map<Long, Course> notSoSexyMap = new HashMap<>(sexyMap);
          //preview situation
@@ -135,7 +136,7 @@ class SerializedCourseRepositoryTest {
    @Test
    void update_replacing_non_existing_course() {
       try(ObjectInputStream fIS = new ObjectInputStream(new FileInputStream(FILENAME))){
-         Course newCourse = new Course(ID_NOT_PRESENT, TITLE+TITLE+TEST+TEST,DESCRIPTION,PROGRAM,DURATION);
+         Course newCourse = new Course(ID_NOT_PRESENT, TITLE+TITLE+TEST+TEST,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
          Map<Long, Course> sexyMap = (Map<Long, Course>) fIS.readObject();
          Map<Long, Course> notSoSexyMap = new HashMap<>();
          notSoSexyMap.putAll(sexyMap);
