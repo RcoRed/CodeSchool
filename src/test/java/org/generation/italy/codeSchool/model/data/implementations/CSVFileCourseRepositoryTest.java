@@ -9,6 +9,7 @@ import java.io.*;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -21,9 +22,12 @@ import static org.generation.italy.codeSchool.model.data.implementations.TestCon
 class CSVFileCourseRepositoryTest {
 
 
-    private static final String CSVLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f", ID1,TITLE,DESCRIPTION,PROGRAM,DURATION);
-    private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
-    private static final String CSVLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
+    private static final String CSVLINE1=String.format(Locale.US,CSV_COURSE,
+            ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,IS_ACTIVE,CREATED_AT.toString());
+    private static final String CSVLINE2=String.format(Locale.US,CSV_COURSE,
+            ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1,IS_ACTIVE,CREATED_AT.toString());
+    private static final String CSVLINE3=String.format(Locale.US,CSV_COURSE,
+            ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2,IS_ACTIVE,CREATED_AT.toString());
     private static final String FILENAME="TESTDATA.csv";
 
     @org.junit.jupiter.api.BeforeEach
@@ -46,7 +50,7 @@ class CSVFileCourseRepositoryTest {
 
     @Test
     void findById_finds_course_when_present() {
-        Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         try{                                                                 //obbligo a scrivere subito
             Optional<Course> x = repo.findById(ID1);
@@ -61,7 +65,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void create() {
         // ARRANGE
-        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT
         try{
@@ -73,7 +77,7 @@ class CSVFileCourseRepositoryTest {
             String csvLine = linesAfter.get(linesAfter.size()-1);
             String[] tokens = csvLine.split(",");
             assertEquals(CSVFileCourseRepository.nextId,Long.parseLong(tokens[0]));
-            assertEquals(DURATION,Double.parseDouble(tokens[tokens.length-1]));
+            assertEquals(DURATION,Double.parseDouble(tokens[4]));
         }catch (DataException e){
             fail("Fallito il create su file CSV" + e.getMessage());
         }catch (IOException e){
@@ -83,7 +87,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void create_should_save_even_when_file_dont_exist(){
         try{
-            Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
+            Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
             CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
             File f = new File(FILENAME);
             assertTrue(f.delete());
@@ -94,7 +98,7 @@ class CSVFileCourseRepositoryTest {
             String csvLine = linesAfter.get(0);
             String[] tokens = csvLine.split(",");
             assertEquals(CSVFileCourseRepository.nextId,Long.parseLong(tokens[0]));
-            assertEquals(DURATION,Double.parseDouble(tokens[tokens.length-1]));
+            assertEquals(DURATION,Double.parseDouble(tokens[4]));
         }catch (DataException e){
             fail("Fallito il create su file CSV" + e.getMessage());
         }catch (IOException e){
@@ -104,7 +108,7 @@ class CSVFileCourseRepositoryTest {
     }
     @Test
     void findById_should_not_throw_when_file_dont_exist(){
-        Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         try{                                                                 //obbligo a scrivere subito
             File f = new File(FILENAME);
@@ -162,7 +166,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void courseToCSV() {
         // ARRANGE      //inizializzo i dati che poi dovrò usare
-        Course c = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT          //richiamo ciò che devo testare
         String csvLine = repo.courseToCSV(c);
@@ -190,7 +194,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void update_should_change_course_if_present(){
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
-        Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
+        Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION,LocalDate.now());
         try {
             repo.update(c);
             var courses = readAll();
@@ -216,7 +220,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void update_should_throw_if_course_absent(){
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
-        Course c = new Course(ID_NOT_PRESENT,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
+        Course c = new Course(ID_NOT_PRESENT,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION,LocalDate.now());
 
         Exception e = assertThrows(EntityNotFoundException.class, () -> {
             repo.update(c);
@@ -240,7 +244,7 @@ class CSVFileCourseRepositoryTest {
         for(var s : lines) {
             String[] tokens = s.split(",");
             Course c = new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
-                    tokens[3], Double.parseDouble(tokens[4]) );
+                    tokens[3], Double.parseDouble(tokens[4]), Boolean.valueOf(tokens[5]),LocalDate.parse(tokens[6]));
             courses.add(c);
         }
         return courses;
