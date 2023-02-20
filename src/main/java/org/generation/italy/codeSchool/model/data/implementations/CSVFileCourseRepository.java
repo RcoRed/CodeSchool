@@ -1,13 +1,11 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
-import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -16,7 +14,7 @@ import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 public class CSVFileCourseRepository implements CourseRepository {
     private String fileName;
-    private static long nextId;
+    public static long nextId;
     public static final String DEFAULT_FILE_NAME = "Corsi.csv";
 
     public CSVFileCourseRepository() {
@@ -29,6 +27,10 @@ public class CSVFileCourseRepository implements CourseRepository {
     @Override
     public Optional<Course> findById(long id) throws DataException{             //!!RICORDATI!! se un metodo può dare un errore allora DEVI mettere il THROWS e l'exception che "lancerà"
         try{
+            File f = new File(fileName);
+            if (!f.exists()){
+                f.createNewFile();
+            }
             List<String> lines = Files.readAllLines(Paths.get(fileName));       //apro il file
             for (String s:lines){                                               //ciclo per ogni riga letta
                 String[] trimmed = s.split(",");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array
@@ -74,7 +76,7 @@ public class CSVFileCourseRepository implements CourseRepository {
         try (FileOutputStream output = new FileOutputStream(fileName,true);
                 PrintWriter pw = new PrintWriter(output)){
             course.setId(++nextId);
-            pw.println(CourseToCSV(course));                //è qui che scrivo sul file (si con una println) richiamando un metodo creato da noi(sta verso la fine)
+            pw.println(courseToCSV(course));                //è qui che scrivo sul file (si con una println) richiamando un metodo creato da noi(sta verso la fine)
             return course;                                  //ovviamente nelle parentesi gli passo la stringa che voglio sivere sul file
         }catch (IOException e){
             throw new DataException("Errore nel salvataggio su file",e);
@@ -82,8 +84,24 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public void update(Course course) throws EntityNotFoundException {
-
+    public void update(Course course) throws EntityNotFoundException, DataException {
+        try{
+            int pos = -1;
+            List<String> lines= Files.readAllLines(Paths.get(fileName));
+            for(int i = 0; i < lines.size(); i++) {
+                if(lines.get(i).startsWith(String.valueOf(course.getId()))) {
+                    pos = i;
+                    break;
+                }
+            }
+            if(pos == -1) {
+                throw new EntityNotFoundException(ENTITY_NOT_FOUND + course.getId());
+            }
+            lines.set(pos, courseToCSV(course));
+            flushStringsToFile(lines);
+        }catch(IOException e){
+            throw new DataException("Errore nel cancellamento di una linea da file CSV", e);
+        }
     }
 
     @Override
@@ -96,11 +114,7 @@ public class CSVFileCourseRepository implements CourseRepository {
                 long courseId=Long.parseLong(tokens[0]);
                 if (courseId==id){
                     it.remove();
-                    try(PrintWriter pw = new PrintWriter(new FileOutputStream(fileName))) {
-                        for (String st : lines) {
-                            pw.println(st);
-                        }
-                    }
+                    flushStringsToFile(lines);
                     return;
                 }
             }
@@ -111,9 +125,17 @@ public class CSVFileCourseRepository implements CourseRepository {
 
     }
 
-    public String CourseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
+    public String courseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
         return String.format(Locale.US,"%d,%s,%s,%s,%.2f",c.getId(),c.getTitle()
                 ,c.getDescription(),c.getProgram(),c.getDuration());
+    }
+
+    private void flushStringsToFile(List<String> lines) throws FileNotFoundException {
+        try(PrintWriter pw = new PrintWriter(new FileOutputStream(fileName))) {
+            for (String st : lines) {
+                pw.println(st);
+            }
+        }
     }
 
 }
