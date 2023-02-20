@@ -16,7 +16,7 @@ public class StandardDidacticService implements AbstractDidacticService {
     //private CourseRepository repo = new InMemoryCourseRepository(); //dipendenza con un'implementazione (quasi)
     private CourseRepository repo; //iniezione delle dipendenze (si)
     public StandardDidacticService(CourseRepository repo){
-        this.repo = repo; //iniezione delle dipendenze (tecnica) -> inversione del controllo (design pattern), inversione delle dipendenze ()
+        this.repo = repo; //iniezione delle dipendenze (tecnica) -> inversione del controllo (design pattern), inversione delle dipendenze (si)
     }
 
     @Override
