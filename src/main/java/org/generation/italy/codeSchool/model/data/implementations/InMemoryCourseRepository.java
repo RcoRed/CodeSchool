@@ -76,4 +76,27 @@ public class InMemoryCourseRepository implements CourseRepository {
         }
     }
 
+    public ArrayList<Course> countActiveCourses() {
+        ArrayList<Course> actives = null;
+        Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
+        for (Course c:cs){
+            if (c.isActive()){
+                actives.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
+            }
+        }
+        return actives;
+    }
+
+    @Override
+    public void deleteOldestActiveCourses(int num) {
+        ArrayList<Course> orderedActives = countActiveCourses();
+        orderedActives.sort((o1, o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
+        while (num > 0) {
+            orderedActives.remove(orderedActives.size()-1);
+            --num;
+        }
+
+    }
+
+
 }
