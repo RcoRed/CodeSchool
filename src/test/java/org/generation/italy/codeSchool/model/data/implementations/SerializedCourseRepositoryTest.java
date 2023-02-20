@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -21,14 +22,14 @@ public class SerializedCourseRepositoryTest {
     private static final String DESCRIPTION = "DESCRIPTION";
     private static final String PROGRAM = "PROGRAM";
     private static final double DURATION = 200.0;
-
+    private static final LocalDate NOW = LocalDate.now();
     @BeforeEach
     void setUp() throws DataException {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(FILENAME))) {
             ArrayList<Course> input = new ArrayList<>();
-            Course DUMMY1 = new Course(ID, TITLE, DESCRIPTION, PROGRAM, DURATION);
-            Course DUMMY2 = new Course(ID+1, TITLE+TEST, DESCRIPTION+TEST, PROGRAM+TEST, DURATION+1);
-            Course DUMMY3 = new Course(ID+2, TITLE+TEST+3, DESCRIPTION+TEST+3, PROGRAM+TEST+3, DURATION+2);
+            Course DUMMY1 = new Course(ID, TITLE, DESCRIPTION, PROGRAM, DURATION, NOW);
+            Course DUMMY2 = new Course(ID+1, TITLE+TEST, DESCRIPTION+TEST, PROGRAM+TEST, DURATION+1, NOW);
+            Course DUMMY3 = new Course(ID+2, TITLE+TEST+3, DESCRIPTION+TEST+3, PROGRAM+TEST+3, DURATION+2, NOW);
             input.add(DUMMY1);
             input.add(DUMMY2);
             input.add(DUMMY3);
@@ -46,7 +47,7 @@ public class SerializedCourseRepositoryTest {
     @Test
     void findById_should_find_a_course_if_present() throws DataException {
         try {
-            Course c = new Course(ID+1, TITLE+TEST, DESCRIPTION+TEST, PROGRAM+TEST, DURATION+1);
+            Course c = new Course(ID+1, TITLE+TEST, DESCRIPTION+TEST, PROGRAM+TEST, DURATION+1, NOW);
             SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
             Optional<Course> found = repo.findById(ID+1);
             assertTrue(found.isPresent());
@@ -61,7 +62,7 @@ public class SerializedCourseRepositoryTest {
 
     @Test
     void create_should_add_new_course() throws DataException, FileNotFoundException {
-        Course c = new Course(27, "PIPO", "PIPO È BELLO", "WOW, SUCH PROGRAM", 20.0);
+        Course c = new Course(27, "PIPO", "PIPO È BELLO", "WOW, SUCH PROGRAM", 20.0, NOW);
         SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
         repo.create(c);
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(FILENAME))){

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -33,6 +34,7 @@ class CSVFileCourseRepositoryTest {
     private static final String DESCRIPTION="DESCRIPTION";
     private static final String PROGRAM="PROGRAM";
     private static final double DURATION=200.0;
+    private static final LocalDate NOW = LocalDate.now();
     private static final String CSVLINE1=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
     private static final String CSVLINE2=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
     private static final String CSVLINE3=String.format(Locale.US,"%d,%s,%s,%s,%.2f",ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
@@ -58,7 +60,7 @@ class CSVFileCourseRepositoryTest {
 
     @Test
     void findById_finds_course_when_present() {
-        Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION, NOW);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         try{
             Optional<Course> x = repo.findById(ID);
@@ -73,7 +75,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void create() {
         // ARRANGE
-        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION, NOW);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT
         try{
@@ -140,7 +142,7 @@ class CSVFileCourseRepositoryTest {
     void update_should_modify_existing_course() throws DataException, EntityNotFoundException {
         try {
             CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
-            Course updated = new Course(ID_TO_UPDATE, "New"+TITLE, DESCRIPTION, PROGRAM, DURATION);
+            Course updated = new Course(ID_TO_UPDATE, "New"+TITLE, DESCRIPTION, PROGRAM, DURATION, NOW);
             repo.update(updated);
             List<String[]> tokenLines = readTokenizedLines();
             String[] updatedFormatted = String.format(Locale.US,"%d,%s,%s,%s,%.2f",updated.getId(),
@@ -157,7 +159,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void courseToCSV() {
         // ARRANGE      //inizializzo i dati che poi dovrò usare
-        Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION, NOW);
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT          //richiamo ciò che devo testare
         String csvLine = repo.CourseToCSV(c);

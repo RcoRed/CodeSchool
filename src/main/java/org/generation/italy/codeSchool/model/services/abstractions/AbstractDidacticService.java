@@ -17,4 +17,6 @@ public interface AbstractDidacticService {
     void updateCourse(Course course) throws EntityNotFoundException,DataException;
 
     void deleteCourseById(long id) throws EntityNotFoundException,DataException;
+
+    boolean adjustActiveCourse(int numActive) throws DataException;
 }

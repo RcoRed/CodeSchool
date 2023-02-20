@@ -39,4 +39,14 @@ public class StandardDidacticService implements AbstractDidacticService {
     public void deleteCourseById(long id) throws EntityNotFoundException, DataException {
         repo.deleteById(id);
     }
+
+    @Override
+    public boolean adjustActiveCourse(int numActive) throws DataException {
+        // controlla quanti corsi sono attivi nel repo
+        // ritorniamo false se il numero di attivi è minore-uguale di numActive
+        // altrimenti cancella un numero di corsi dato dalla differenza tra gli attivi e numActive
+        // a partire dai più vecchi
+        // (solo in InMemoryCourseRepository al momento)
+        return false;
+    }
 }
