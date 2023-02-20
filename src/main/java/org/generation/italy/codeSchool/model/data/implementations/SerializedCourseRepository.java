@@ -1,11 +1,15 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
+<<<<<<< HEAD
 import netscape.javascript.JSObject;
+=======
+>>>>>>> master
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
+<<<<<<< HEAD
 import javax.xml.datatype.DatatypeConstants;
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -25,10 +29,32 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
 
     public SerializedCourseRepository(){
 
+=======
+import java.io.*;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import static org.generation.italy.codeSchool.model.data.Constants.*;
+
+public class SerializedCourseRepository implements CourseRepository {
+    private static final String SERIALIZED_FILE_NAME = "courses.ser";
+    public static long nextID;
+    private String filename;
+
+    public SerializedCourseRepository(String filename) {
+        this.filename = filename;
+    }
+
+    public SerializedCourseRepository() {
+        this.filename = SERIALIZED_FILE_NAME;
+>>>>>>> master
     }
 
     @Override
     public Optional<Course> findById(long id) throws DataException {
+<<<<<<< HEAD
         try{
             List<Course> courses = new ArrayList<>();
             FileInputStream file = new FileInputStream(fileName);
@@ -37,21 +63,35 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
             for(Course c : courses){
                 if(c.getId() == id){
                     System.out.println("trovato");
+=======
+        try {
+            var courses = load();
+            for(var c : courses) {
+                if(c.getId() == id) {
+>>>>>>> master
                     return Optional.of(c);
                 }
             }
             return Optional.empty();
+<<<<<<< HEAD
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new DataException("Errore nell'utilizzo del file",e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+=======
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new DataException("Errore nel create course", e);
+>>>>>>> master
         }
     }
 
     @Override
     public List<Course> findByTitleContains(String part) throws DataException {
+<<<<<<< HEAD
         try {
             List<Course> c;
             List<Course> found= new ArrayList<>();
@@ -72,10 +112,25 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
             throw new RuntimeException(e);
         }
         return null;
+=======
+        var courses = new ArrayList<Course>();
+        try {
+            var all = load();
+            for (Course c : all) {
+                if (c.getTitle().contains(part)) {
+                    courses.add(c);
+                }
+            }
+            return courses;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel findByTitleContains", e);
+        }
+>>>>>>> master
     }
 
     @Override
     public Course create(Course course) throws DataException {
+<<<<<<< HEAD
         try{
             ArrayList<Course> c;
             File f = new File(fileName);
@@ -107,11 +162,22 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
             throw new DataException("Errore nell'utilizzo del file",e);
         } catch (ClassNotFoundException e) {
             throw new DataException("Classe non trovata", e);
+=======
+        try {
+            var courses = load();
+            course.setId(++nextID);
+            courses.add(course);
+            store(courses);
+            return course;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
+>>>>>>> master
         }
     }
 
     @Override
     public void update(Course course) throws EntityNotFoundException, DataException {
+<<<<<<< HEAD
         try{
             List<Course> c;
             FileInputStream fileInputStream = new FileInputStream(fileName);
@@ -133,12 +199,31 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+=======
+        try {
+            var courses = load();
+            int pos = -1;
+            for(int i=0; i < courses.size(); i++) {
+                if(courses.get(i).getId() == course.getId()) {
+                    pos = i;
+                }
+            }
+            if(pos == -1) {
+                throw new EntityNotFoundException(ENTITY_NOT_FOUND + course.getId());
+            }
+            courses.set(pos, course);
+            store(courses);
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
+>>>>>>> master
         }
     }
 
     @Override
     public void deleteById(long id) throws EntityNotFoundException, DataException {
         try {
+<<<<<<< HEAD
             List<Course> c;
             FileInputStream fileInputStream = new FileInputStream(fileName);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -163,4 +248,43 @@ public class SerializedCourseRepository implements CourseRepository, Serializabl
             throw new RuntimeException(e);
         }
     }
+=======
+            var courses = load();
+            for(Iterator<Course> it = courses.iterator(); it.hasNext();) {
+                Course c = it.next();
+                if(c.getId() == id) {
+                    it.remove();
+                    //courses.remove(c);
+                    store(courses);
+                    return;
+                }
+            }
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
+        }
+    }
+
+    private List<Course> load() throws IOException, ClassNotFoundException {
+        File f = new File(filename);
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        if (f.length() == 0) {
+            return new ArrayList<>();
+        }
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            List<Course> courseList = (List<Course>) ois.readObject();
+            return courseList;
+        }
+    }
+
+    private void store(List<Course> courses) throws IOException{
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(courses);
+        }
+    }
+
+>>>>>>> master
 }
