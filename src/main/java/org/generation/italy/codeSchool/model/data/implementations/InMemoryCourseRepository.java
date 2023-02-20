@@ -4,6 +4,7 @@ import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class InMemoryCourseRepository implements CourseRepository {
@@ -76,4 +77,60 @@ public class InMemoryCourseRepository implements CourseRepository {
         }
     }
 
+    public int getActiveCourses(){
+        int countActive=0;
+        for (long i=1;i<=dataSource.size();i++){
+            if (dataSource.get(i).isActive()){
+                countActive++;
+            }
+        }
+        return countActive;
+    }
+
+//    public Course findOldestActive(){
+//        List<Course> totalCourses = new ArrayList<>(dataSource.values());
+//        int pos = -1;
+//        LocalDate minDate=LocalDate.now().plusYears(100);
+//        for (int k=0;k<totalCourses.size();k++){
+//            var course = totalCourses.get(k);
+//            if (course.isActive() && course.getCreatedAt().isBefore(minDate)){
+//                pos=k;
+//                minDate=course.getCreatedAt();
+//            }
+//        }
+//        return totalCourses.get(pos);
+//    }
+//    public void deleteNumOldestCourses(int numToDelete){
+//        System.out.println(dataSource);
+//        List<Course> totalCourses = new ArrayList<>(dataSource.values());
+//        int pos = -1;
+//        LocalDate minDate=LocalDate.now().plusYears(100);
+//        for (int i=0;i<numToDelete;i++){
+//            //for (Iterator<Course> it = totalCourses.iterator(); it.hasNext();){
+//            Course oldestActive = findOldestActive();
+//            oldestActive.setActive(false);
+//        }
+//        System.out.println(dataSource);
+//    }
+    public void deleteNumOldestCourses(int numToDelete){
+        System.out.println(dataSource);
+        Collection<Course> totalCourses= dataSource.values();
+        long idToDelete = 1;
+        boolean b = true;
+        for (int i=0;i<numToDelete;i++){
+            //for (Iterator<Course> it = totalCourses.iterator(); it.hasNext();){
+            for (var c:totalCourses){
+                if(b){
+                    idToDelete = c.getId();
+                    b=false;
+                }
+                if (c.isActive() && dataSource.get(idToDelete).getCreatedAt().isAfter(c.getCreatedAt())){
+                    idToDelete=c.getId();
+                }
+            }
+            b=true;
+            dataSource.get(idToDelete).setActive(false);
+        }
+        System.out.println(dataSource);
+    }
 }

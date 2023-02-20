@@ -19,7 +19,7 @@ public class StandardDidacticService implements AbstractDidacticService {
         this.repo = repo; //iniezione delle dipendenze (tecnica) -> inversione del controllo (design pattern), inversione delle dipendenze (si)
     }
 
-    @Override
+
     public Optional<Course> findCourseById(long id) throws DataException {
         Optional<Course> oc = repo.findById(id);
         return oc;
@@ -47,12 +47,16 @@ public class StandardDidacticService implements AbstractDidacticService {
         repo.deleteById(id);
     }
 
-    @Override
+    //chiama il repository per scoprire quanti corsi sono attivi
+    //se i corsi attivi sono <= di numActive ritorniamo false (fine)
+    //altrimenti, chiameremo un metodo sul repository che cancella gli n corsi più vecchi (n parametro input)
     public boolean adjustActiveCourses(int numActive) throws DataException {
-        //chiama il repository per scoprire quanti corsi sono attivi
-        //se i corsi attivi sono <= di numActive ritorniamo false (fine)
-        //altrimenti, chiameremo un metodo sul repository che cancella gli n corsi più vecchi (n parametro input)
-
-        return false;
+        int difference = repo.getActiveCourses()-numActive;
+        System.out.println(difference);
+        if (difference<=0){
+            return false;
+        }
+        repo.deleteNumOldestCourses(difference);
+        return true;
     }
 }
