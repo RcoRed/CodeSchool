@@ -8,6 +8,7 @@ import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundExcep
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.generation.italy.codeSchool.model.data.Constants.*;
@@ -36,9 +37,8 @@ public class CSVFileCourseRepository implements CourseRepository {
                 String[] trimmed = s.split(",");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array
                 long courseId = Long.parseLong(trimmed[0]);
                 if (courseId == id){
-                    Course found = new Course(courseId,trimmed[1],trimmed[2]    //creo l'oggeto passando le stringhe letta dal file
-                            ,trimmed[3],Double.parseDouble(trimmed[4]));
-                    return Optional.of(found);
+                   Course found = CSVToCourse(s);
+                   return Optional.of(found);
                 }
             }
             return Optional.empty();
@@ -55,9 +55,8 @@ public class CSVFileCourseRepository implements CourseRepository {
             for(String s : lines){
                 String[] tokens = s.split(",");
                 if(tokens[1].contains(part)){
-                    Course found = new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
-                            tokens[3], Double.parseDouble(tokens[4]));
-                    courses.add(found);
+                   Course found = CSVToCourse(s);
+                   courses.add(found);
                 }
             }
             return courses;
@@ -126,8 +125,14 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     public String courseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
-        return String.format(Locale.US,"%d,%s,%s,%s,%.2f",c.getId(),c.getTitle()
-                ,c.getDescription(),c.getProgram(),c.getDuration());
+        return String.format(Locale.US,CSV_COURSE,c.getId(),c.getTitle()
+                ,c.getDescription(),c.getProgram(),c.getDuration(),c.isActive(),c.getCreatedAt());
+    }
+    private Course CSVToCourse(String CSVLine){
+        String[] tokens = CSVLine.split(",");
+        return new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
+                tokens[3], Double.parseDouble(tokens[4]), Boolean.parseBoolean(tokens[5]),LocalDate.parse(tokens[6]));
+
     }
 
     private void flushStringsToFile(List<String> lines) throws FileNotFoundException {
@@ -137,5 +142,6 @@ public class CSVFileCourseRepository implements CourseRepository {
             }
         }
     }
+
 
 }
