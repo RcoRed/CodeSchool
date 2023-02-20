@@ -6,138 +6,131 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.io.*;
-import java.util.*;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 public class SerializedCourseRepository implements CourseRepository {
-    private String fileName;
-    private static long nextId;
-    public static final String DEFAULT_FILE_NAME = "Corsi.txt";
-    //private static Map<Long,Course> dataSource = new HashMap<>();     //non si può serializzare non implementa serializable
-    //hashMap implementa serializable ma non ho ancora cercato come si usa
-    //ArrayList implementa serializable dovrebbe andare bene
-    //private static ArrayList<Course> dataSource = new ArrayList<>();
-    public SerializedCourseRepository() {
-        this.fileName = DEFAULT_FILE_NAME;
-    }
-    public SerializedCourseRepository(String fileName) {
-        this.fileName = fileName;
+    private static final String SERIALIZED_FILE_NAME = "courses.ser";
+    public static long nextID;
+    private String filename;
+
+    public SerializedCourseRepository(String filename) {
+        this.filename = filename;
     }
 
-    //non mi piace nessuno dei due metodi
+    public SerializedCourseRepository() {
+        this.filename = SERIALIZED_FILE_NAME;
+    }
+
     @Override
-    public Optional<Course> findById(long id) throws DataException, EntityNotFoundException {
-        ArrayList<Course> dataSource;
+    public Optional<Course> findById(long id) throws DataException {
         try {
-            dataSource = getDeserializedCourses();
-            for (Course c:dataSource){
-                if (c.getId() == id){
+            var courses = load();
+            for(var c : courses) {
+                if(c.getId() == id) {
                     return Optional.of(c);
                 }
             }
             return Optional.empty();
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Errore nella ricerca di ID: " + e.getMessage());
-        } catch (IOException e) {
-            throw new DataException("Errore nella lettura del file",e);
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new DataException("Errore nel create course", e);
         }
-    }
-    @Override
-    public List<Course> findByTitleContains(String part) throws EntityNotFoundException, DataException {
-        ArrayList<Course> dataSource;
-        try {
-            dataSource = getDeserializedCourses();
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException(e.getMessage());
-        } catch (IOException e) {
-            throw new DataException("Errore nella lettura del file",e);
-        }
-        List<Course> titleCourse = new ArrayList<>();
-        for (Course c : dataSource){
-            if (c.getTitle().contains(part)) {
-                titleCourse.add(c);
-            }
-        }
-        return titleCourse;
     }
 
     @Override
-    public Course create(Course course) throws EntityNotFoundException, DataException {
-        ArrayList<Course> dataSource;
+    public List<Course> findByTitleContains(String part) throws DataException {
+        var courses = new ArrayList<Course>();
         try {
-            dataSource = getDeserializedCourses();
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException(e.getMessage());
-        } catch (IOException e) {
-            throw new DataException("Errore nella lettura del file",e);
+            var all = load();
+            for (Course c : all) {
+                if (c.getTitle().contains(part)) {
+                    courses.add(c);
+                }
+            }
+            return courses;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel findByTitleContains", e);
         }
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))){
-            course.setId(++nextId);
-            dataSource.add(course);
-            out.writeObject(dataSource);
-        }catch (IOException e) {
-            throw new DataException("Errore nel salvataggio sul file",e);
+    }
+
+    @Override
+    public Course create(Course course) throws DataException {
+        try {
+            var courses = load();
+            course.setId(++nextID);
+            courses.add(course);
+            store(courses);
+            return course;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
         }
-        return course;
     }
 
     @Override
     public void update(Course course) throws EntityNotFoundException, DataException {
-        ArrayList<Course> dataSource;
         try {
-            dataSource = getDeserializedCourses();
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException(e.getMessage());
-        } catch (IOException e) {
-            throw new DataException("Errore nella lettura del file",e);
-        }
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))){
-            for (Course c : dataSource){
-                if (course.getId() == c.getId()) {
-                    dataSource.remove(c);
-                    dataSource.add(course);
-                    out.writeObject(dataSource);
-                    break;
+            var courses = load();
+            int pos = -1;
+            for(int i=0; i < courses.size(); i++) {
+                if(courses.get(i).getId() == course.getId()) {
+                    pos = i;
                 }
             }
-        }catch (IOException e) {
-            throw new DataException("Errore nel salvataggio sul file",e);
+            if(pos == -1) {
+                throw new EntityNotFoundException(ENTITY_NOT_FOUND + course.getId());
+            }
+            courses.set(pos, course);
+            store(courses);
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
         }
     }
 
     @Override
     public void deleteById(long id) throws EntityNotFoundException, DataException {
-        ArrayList<Course> dataSource;
         try {
-            dataSource = getDeserializedCourses();
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException(e.getMessage());
-        } catch (IOException e) {
-            throw new DataException("Errore nella lettura del file",e);
-        }
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))){
-            for (Course c : dataSource){
-                if (id == c.getId()) {
-                    dataSource.remove(c);
-                    out.writeObject(dataSource);
+            var courses = load();
+            for(Iterator<Course> it = courses.iterator(); it.hasNext();) {
+                Course c = it.next();
+                if(c.getId() == id) {
+                    it.remove();
+                    //courses.remove(c);
+                    store(courses);
                     return;
                 }
             }
-            throw new EntityNotFoundException("Non esiste un corso con ID: " + id);
-        }catch (IOException e) {
-            throw new DataException("Errore nel salvataggio sul file",e);
+            throw new EntityNotFoundException(ENTITY_NOT_FOUND + id);
+
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel create course", e);
         }
     }
-    private ArrayList<Course> getDeserializedCourses() throws EntityNotFoundException, IOException {
-        ArrayList<Course> dataSource;
-        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))){
 
-            dataSource = (ArrayList<Course>) in.readObject();
-
-            return dataSource;
-        } catch (ClassNotFoundException e) {
-            throw new EntityNotFoundException("Classe non trovata " + e.getMessage());
-        } catch (IOException e){
-            throw new IOException(e);
+    private List<Course> load() throws IOException, ClassNotFoundException {
+        File f = new File(filename);
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        if (f.length() == 0) {
+            return new ArrayList<>();
+        }
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            List<Course> courseList = (List<Course>) ois.readObject();
+            return courseList;
         }
     }
+
+    private void store(List<Course> courses) throws IOException{
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+            oos.writeObject(courses);
+        }
+    }
+
 }

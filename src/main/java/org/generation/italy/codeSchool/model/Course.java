@@ -9,6 +9,7 @@ public class Course implements Serializable {
     private String description;
     private String program;
     private double duration;
+    //private static final long serialVersionUID = 1;
 
     public Course(){
 
@@ -24,8 +25,9 @@ public class Course implements Serializable {
     public long getId() {
         return id;
     }
+
     public void setId(long id){
-        id = id;
+        this.id = id;
     }
 
     public String getTitle() {

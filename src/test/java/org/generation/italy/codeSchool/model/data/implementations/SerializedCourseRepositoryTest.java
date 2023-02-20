@@ -12,180 +12,136 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SerializedCourseRepositoryTest {
-    private static final long ID=1;
-    private static final long ID2=2;
-    private static final long ID3=3;
-    private static final long ID_NOT_PRESENT=22;
-    private static final long ID_CREATE=4;
-    private static final String TITLE="TITLE";
-    private static final String DESCRIPTION="DESCRIPTION";
-    private static final String PROGRAM="PROGRAM";
-    private static final double DURATION=200.0;
-    private static final String TEST="TEST";
-    private static final Course COURSE1 = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
-    private static final Course COURSE2 = new Course(ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1);
-    private static final Course COURSE3 = new Course(ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2);
-    private static final String FILENAME="TEST_DATA_SER.txt";
+
+
+
+    private Course c1 = new Course(ID1, TITLE, DESCRIPTION, PROGRAM, DURATION);
+    private Course c2 = new Course(ID2, TITLE2, DESCRIPTION2, PROGRAM2, DURATION2);
+    private Course c3 = new Course(ID3, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3);
+    private List<Course> courses = new ArrayList<>();
+    private SerializedCourseRepository repo = new SerializedCourseRepository(SERIALIZED_TEST_FILE_NAME);
+
+    public SerializedCourseRepositoryTest() {
+        courses.add(c1);
+        courses.add(c2);
+        courses.add(c3);
+    }
 
     @BeforeEach
     void setUp() throws IOException {
-        ArrayList<Course> dataSource = new ArrayList<>();
-        dataSource.add(COURSE1);
-        dataSource.add(COURSE2);
-        dataSource.add(COURSE3);
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILENAME))){
-            //out.write(3);
-            out.writeObject(dataSource);
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SERIALIZED_TEST_FILE_NAME))) {
+            oos.writeObject(courses);
         }
     }
 
     @AfterEach
     void tearDown() {
         try {
-            new FileOutputStream(FILENAME).close();
+            new FileOutputStream(SERIALIZED_TEST_FILE_NAME).close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Test
-    void findById_should_finds_course_when_present() {
-        // ARRANGE
-        Course c1 = new Course(ID, TITLE, DESCRIPTION, PROGRAM, DURATION);
-        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
+    void findById_finds_course_when_present()  {
         try {
-            // ACT
-            Optional<Course> x = repo.findById(ID);
-            // ASSERT
-            assertTrue(x.isPresent());
-            Course c2 = x.get();
-            assertEquals(c1, c2);
+            Optional<Course> oc = repo.findById(c2.getId());
+            assertTrue(oc.isPresent());
+            Course found = oc.get();
+            assertEquals(c2,found);
         } catch (DataException e) {
-            fail("Errore nella ricerca by id sul file di testo " + e.getMessage());
-        } catch (EntityNotFoundException e) {
-            fail(e.getMessage());
+            fail("Errore nella ricerca by id sul file serializzato " + e.getMessage());
+            e.getCause().printStackTrace();
         }
     }
 
     @Test
-    void findByTitleContains_should_find_courses_if_title_present(){
-        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
-        try{
-            // ACT
-            List<Course> dataSourceAfter = repo.findByTitleContains(TEST);
-
-            assertEquals(2,dataSourceAfter.size());
-            for (Course c:dataSourceAfter){
-                assertTrue(c.getId() == ID2 || c.getId() == ID3 );
-                assertTrue(c.getTitle().contains(TEST));
+    void findByTitleContains_should_find_courses_if_title_present() {
+        try {
+            List<Course> courses = repo.findByTitleContains(TEST_TITLE_PART);
+            assertEquals(2, courses.size());
+            for (Course c : courses) {
+                assertTrue(c.getId() == ID2 || c.getId() == ID3);
             }
-        }catch (DataException e){
-            fail("Errore nella ricerca di corsi per titolo like ", e);
-        } catch (EntityNotFoundException e) {
-            fail(e.getMessage());
+        } catch (DataException e) {
+            fail("Errore nella ricerca per titolo sul file serializzato " + e.getMessage());
         }
     }
 
     @Test
-    void create_should_add_course(){
-        // ARRANGE
-        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
-        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
-        try{
-            ArrayList<Course> dataSourceBefore;
-            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-                    dataSourceBefore = (ArrayList<Course>) in.readObject();
-            }
-
-            // ACT
-            repo.create(c);
-
-            ArrayList<Course> dataSourceAfter;
-            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-                    dataSourceAfter = (ArrayList<Course>) in.readObject();
-            }
-            // ASSERT
-            assertEquals(dataSourceBefore.size()+1,dataSourceAfter.size());
-            assertEquals(ID_CREATE,dataSourceAfter.get(dataSourceAfter.size()-1).getId());
-            assertEquals(DURATION,dataSourceAfter.get(dataSourceAfter.size()-1).getDuration());
-        } catch (EntityNotFoundException | ClassNotFoundException e){
-            fail(e.getMessage());
-        } catch (DataException | IOException e){
-            fail("Fallito il create su file SER" + e.getMessage());
+    void create() {
+        try {
+            Course c = new Course(0,TITLE,DESCRIPTION,PROGRAM,DURATION);
+            var courseBefore = load();
+            c = repo.create(c);
+            var coursesAfter = load();
+            assertEquals(courseBefore.size()+1, coursesAfter.size());
+            assertEquals(SerializedCourseRepository.nextID, coursesAfter.get(coursesAfter.size()-1).getId());
+            assertEquals(TITLE, coursesAfter.get(coursesAfter.size()-1).getTitle());
+        } catch (DataException e) {
+            fail("errore nalla creazione del corso nel file serializzato:" + e.getMessage());
+        } catch (IOException | ClassNotFoundException e) {
+            fail("errore nella lettura dati da file serializzato nel test:" + e.getMessage());
         }
     }
 
     @Test
-    void update_should_replace_course_when_present(){
-        Course c = new Course(ID2, TITLE+TEST, DESCRIPTION+TEST, PROGRAM+TEST, DURATION+1);
-        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
-        try{
-            ArrayList<Course> dataSourceBefore = new ArrayList<>();
-            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-                dataSourceBefore = (ArrayList<Course>) in.readObject();
-            }
-
-            // ACT
+    void update_should_change_course_if_present() {
+        try {
+            Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
             repo.update(c);
-
-            ArrayList<Course> dataSourceAfter = new ArrayList<>();
-            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-                dataSourceAfter = (ArrayList<Course>) in.readObject();
+            var courses = load();
+            for (var co : courses){
+                if (co.getId() == c.getId()){
+                    assertEquals(c,co);
+                    return;
+                }
             }
-            // ASSERT
-            assertEquals(dataSourceBefore.size(), dataSourceAfter.size());
-            assertEquals(dataSourceAfter.get(2).getId(), c.getId());
-            assertEquals(dataSourceAfter.get(2).getTitle(), c.getTitle());
-        }catch (EntityNotFoundException | ClassNotFoundException e){
-            fail("Errore update, Corso non trovato");
-        } catch (DataException | IOException e) {
-            fail("Errore update, errore nella ricerca ", e);
+            fail("Errore nell'update del corso:corso non trovato dopo l'update");
+        } catch (IOException | ClassNotFoundException e) {
+            fail("errore nella lettura/scrittura dati da file serializzato nel test:" + e.getMessage());
+        } catch (DataException e) {
+            fail("errore nalla creazione del corso nel file serializzato:" + e.getMessage());
+        } catch (EntityNotFoundException e) {
+            fail("update del corso nel file serializzato non trova il corso quando il corso e' presente:"
+                    + e.getMessage());
         }
+
     }
 
     @Test
-    void deleteById_should_delete_course_if_present() {
-        //ARRANGE
-        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
-        try{
-            ArrayList<Course> dataSourceBefore = new ArrayList<>();
-            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-                dataSourceBefore = (ArrayList<Course>) in.readObject();
+    void deleteById_should_delete_when_course_present() {
+        try {
+            repo.deleteById(ID2);
+            var courses = load();
+            assertEquals(2,courses.size());
+            for (var c:courses){
+                assertTrue(c.getId()==ID1 || c.getId()==ID3);
             }
-
-            // ACT
-            repo.deleteById(ID);
-
-            ArrayList<Course> dataSourceAfter = new ArrayList<>();
-            try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILENAME))){
-                dataSourceAfter = (ArrayList<Course>) in.readObject();
-            }
-            //ASSERT
-            assertEquals(dataSourceBefore.size()-1, dataSourceAfter.size());
-            assertEquals(ID2,dataSourceAfter.get(0).getId());
-
-        } catch (EntityNotFoundException | ClassNotFoundException e){
-            fail("Errore nella cancellazione di un corso " + e.getMessage());
-        } catch (DataException | IOException e){
-            fail("Errore nella cancellazione di un corso " + e.getMessage());
+        } catch (EntityNotFoundException e) {
+            fail("Errore nella cancellazione del corso: corso non trovato anche se presente:"+ e.getMessage());
+        } catch (DataException | IOException | ClassNotFoundException e) {
+            fail("Errore nella cancellazione del corso:"+ e.getMessage());
         }
+
+
     }
-    @Test
-    void deleteById_should_throw_when_course_not_present() {
-        //ARRANGE
-        SerializedCourseRepository repo = new SerializedCourseRepository(FILENAME);
-        try{
-            //ACT
-            repo.deleteById(ID_NOT_PRESENT);
-            //ASSERT
-            fail("Non Viene lanciata EntityNotFound Exception quando si cancella un corso non esistente");
-        }catch (EntityNotFoundException e){
-            //EXPECTED
-        }catch (DataException e){
-            fail("Errore nella cancellazione di un corso " + e.getMessage());
+    private List<Course> load() throws IOException, ClassNotFoundException {
+        File f = new File(SERIALIZED_TEST_FILE_NAME);
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        if (f.length() == 0) {
+            return new ArrayList<>();
+        }
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(SERIALIZED_TEST_FILE_NAME))) {
+            List courseList = (List) ois.readObject();
+            return courseList;
         }
     }
 }
