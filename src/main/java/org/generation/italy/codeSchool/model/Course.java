@@ -9,6 +9,7 @@ public class Course implements Serializable {
     private String description;
     private String program;
     private double duration;
+    //private static final long serialVersionUID = 1;
 
     public Course(){
 

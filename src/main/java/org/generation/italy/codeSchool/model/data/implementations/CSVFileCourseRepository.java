@@ -5,10 +5,7 @@ import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -30,6 +27,10 @@ public class CSVFileCourseRepository implements CourseRepository {
     @Override
     public Optional<Course> findById(long id) throws DataException{             //!!RICORDATI!! se un metodo può dare un errore allora DEVI mettere il THROWS e l'exception che "lancerà"
         try{
+            File f = new File(fileName);
+            if (!f.exists()){
+                f.createNewFile();
+            }
             List<String> lines = Files.readAllLines(Paths.get(fileName));       //apro il file
             for (String s:lines){                                               //ciclo per ogni riga letta
                 String[] trimmed = s.split(",");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array

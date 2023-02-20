@@ -48,7 +48,7 @@ public class SerializedCourseRepository implements CourseRepository {
         var courses = new ArrayList<Course>();
         try {
             var all = load();
-            for (var c : all) {
+            for (Course c : all) {
                 if (c.getTitle().contains(part)) {
                     courses.add(c);
                 }
@@ -61,9 +61,8 @@ public class SerializedCourseRepository implements CourseRepository {
 
     @Override
     public Course create(Course course) throws DataException {
-        List<Course> courses = null;
         try {
-            courses = load();
+            var courses = load();
             course.setId(++nextID);
             courses.add(course);
             store(courses);
@@ -102,6 +101,8 @@ public class SerializedCourseRepository implements CourseRepository {
                 Course c = it.next();
                 if(c.getId() == id) {
                     it.remove();
+                    //courses.remove(c);
+                    store(courses);
                     return;
                 }
             }
@@ -121,7 +122,7 @@ public class SerializedCourseRepository implements CourseRepository {
             return new ArrayList<>();
         }
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            List courseList = (List) ois.readObject();
+            List<Course> courseList = (List<Course>) ois.readObject();
             return courseList;
         }
     }

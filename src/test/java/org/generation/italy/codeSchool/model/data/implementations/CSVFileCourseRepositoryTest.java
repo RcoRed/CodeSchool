@@ -5,11 +5,8 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -82,6 +79,42 @@ class CSVFileCourseRepositoryTest {
         }catch (IOException e){
             fail("Fallita la verifica del create su file CSV" + e.getMessage());
         }
+    }
+    @Test
+    void create_should_save_even_when_file_dont_exist(){
+        try{
+            Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
+            CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
+            File f = new File(FILENAME);
+            assertTrue(f.delete());
+            repo.create(c);
+            List<String> linesAfter = Files.readAllLines(Paths.get(FILENAME));
+            // ASSERT
+            assertEquals(1,linesAfter.size());
+            String csvLine = linesAfter.get(0);
+            String[] tokens = csvLine.split(",");
+            assertEquals(CSVFileCourseRepository.nextId,Long.parseLong(tokens[0]));
+            assertEquals(DURATION,Double.parseDouble(tokens[tokens.length-1]));
+        }catch (DataException e){
+            fail("Fallito il create su file CSV" + e.getMessage());
+        }catch (IOException e){
+            fail("Fallita la verifica del create su file CSV" + e.getMessage());
+        }
+
+    }
+    @Test
+    void findById_should_not_throw_when_file_dont_exist(){
+        Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
+        try{                                                                 //obbligo a scrivere subito
+            File f = new File(FILENAME);
+            assertTrue(f.delete());
+            Optional<Course> x = repo.findById(ID1);
+            assertFalse(x.isPresent());
+        }catch (DataException e){
+            fail("Errore nella ricerca by id sul file di testo" + e.getMessage());
+        }
+
     }
     @Test
     void deleteById_should_delete_course_when_present(){

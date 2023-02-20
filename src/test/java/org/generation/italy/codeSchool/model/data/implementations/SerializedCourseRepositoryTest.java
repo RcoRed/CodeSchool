@@ -36,7 +36,6 @@ class SerializedCourseRepositoryTest {
         try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(SERIALIZED_TEST_FILE_NAME))) {
             oos.writeObject(courses);
         }
-        System.out.println("wrote courses");
     }
 
     @AfterEach
@@ -83,6 +82,7 @@ class SerializedCourseRepositoryTest {
             var coursesAfter = load();
             assertEquals(courseBefore.size()+1, coursesAfter.size());
             assertEquals(SerializedCourseRepository.nextID, coursesAfter.get(coursesAfter.size()-1).getId());
+            assertEquals(TITLE, coursesAfter.get(coursesAfter.size()-1).getTitle());
         } catch (DataException e) {
             fail("errore nalla creazione del corso nel file serializzato:" + e.getMessage());
         } catch (IOException | ClassNotFoundException e) {
@@ -96,7 +96,13 @@ class SerializedCourseRepositoryTest {
             Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
             repo.update(c);
             var courses = load();
-
+            for (var co : courses){
+                if (co.getId() == c.getId()){
+                    assertEquals(c,co);
+                    return;
+                }
+            }
+            fail("Errore nell'update del corso:corso non trovato dopo l'update");
         } catch (IOException | ClassNotFoundException e) {
             fail("errore nella lettura/scrittura dati da file serializzato nel test:" + e.getMessage());
         } catch (DataException e) {
@@ -109,9 +115,22 @@ class SerializedCourseRepositoryTest {
     }
 
     @Test
-    void deleteById() {
-    }
+    void deleteById_should_delete_when_course_present() {
+        try {
+            repo.deleteById(ID2);
+            var courses = load();
+            assertEquals(2,courses.size());
+            for (var c:courses){
+                assertTrue(c.getId()==ID1 || c.getId()==ID3);
+            }
+        } catch (EntityNotFoundException e) {
+            fail("Errore nella cancellazione del corso: corso non trovato anche se presente:"+ e.getMessage());
+        } catch (DataException | IOException | ClassNotFoundException e) {
+            fail("Errore nella cancellazione del corso:"+ e.getMessage());
+        }
 
+
+    }
     private List<Course> load() throws IOException, ClassNotFoundException {
         File f = new File(SERIALIZED_TEST_FILE_NAME);
         if (!f.exists()) {
