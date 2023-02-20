@@ -14,13 +14,15 @@ public class Course implements Serializable {
     private boolean isActive;
     private LocalDate createdAt;
 
+
     public Course(){
         this.createdAt = LocalDate.now();
     }
     public Course(long id, String title, String description, String program, double duration, LocalDate createdAt) {
         this(id,title,description,program,duration,true,createdAt);
+
     }
-    public Course(long id, String title, String description, String program, double duration, boolean isActive,LocalDate createdAt) {
+    public Course(long id, String title, String description, String program, double duration,boolean isActive, LocalDate createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -28,8 +30,10 @@ public class Course implements Serializable {
         this.duration = duration;
         this.isActive = isActive;
         this.createdAt = createdAt;
-    }
 
+
+
+    }
     public long getId() {
         return id;
     }
@@ -93,4 +97,5 @@ public class Course implements Serializable {
     public int hashCode() {
         return Objects.hash(getId());       //modifica l'hashCode in base all'equals
     }
+
 }

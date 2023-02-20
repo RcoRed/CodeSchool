@@ -37,8 +37,8 @@ public class CSVFileCourseRepository implements CourseRepository {
                 String[] trimmed = s.split(",");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array
                 long courseId = Long.parseLong(trimmed[0]);
                 if (courseId == id){
-                    Course found = CSVtoCourse(s);
-                    return Optional.of(found);
+                   Course found = CSVToCourse(s);
+                   return Optional.of(found);
                 }
             }
             return Optional.empty();
@@ -55,8 +55,8 @@ public class CSVFileCourseRepository implements CourseRepository {
             for(String s : lines){
                 String[] tokens = s.split(",");
                 if(tokens[1].contains(part)){
-                    Course found = CSVtoCourse(s);
-                    courses.add(found);
+                   Course found = CSVToCourse(s);
+                   courses.add(found);
                 }
             }
             return courses;
@@ -128,12 +128,11 @@ public class CSVFileCourseRepository implements CourseRepository {
         return String.format(Locale.US,CSV_COURSE,c.getId(),c.getTitle()
                 ,c.getDescription(),c.getProgram(),c.getDuration(),c.isActive(),c.getCreatedAt());
     }
-
-    private Course CSVtoCourse(String CSVLine){
+    private Course CSVToCourse(String CSVLine){
         String[] tokens = CSVLine.split(",");
         return new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
-                tokens[3], Double.parseDouble(tokens[4])
-                ,Boolean.parseBoolean(tokens[5]), LocalDate.parse(tokens[6]));
+                tokens[3], Double.parseDouble(tokens[4]), Boolean.parseBoolean(tokens[5]),LocalDate.parse(tokens[6]));
+
     }
 
     private void flushStringsToFile(List<String> lines) throws FileNotFoundException {
@@ -143,4 +142,6 @@ public class CSVFileCourseRepository implements CourseRepository {
             }
         }
     }
+
+
 }
