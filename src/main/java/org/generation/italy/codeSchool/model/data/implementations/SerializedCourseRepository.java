@@ -1,12 +1,11 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
-import org.generation.italy.codeSchool.model.data.abstructions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.io.*;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
