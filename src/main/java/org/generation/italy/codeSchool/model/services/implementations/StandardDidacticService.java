@@ -21,20 +21,17 @@ public class StandardDidacticService implements AbstractDidacticService {
 
     @Override
     public Optional<Course> findCourseById(long id) throws DataException {
-        Optional<Course> oc = repo.findById(id);
-        return oc;
+        return repo.findById(id);
     }
 
     @Override
     public List<Course> findCoursesByTitleContains(String part) throws DataException {
-        List<Course> lc = repo.findByTitleContains(part);
-        return lc;
+        return repo.findByTitleContains(part);
     }
 
     @Override
     public Course saveCourse(Course course) throws DataException {
-        Course c = repo.create(course);
-        return c;
+        return repo.create(course);
     }
 
     @Override
