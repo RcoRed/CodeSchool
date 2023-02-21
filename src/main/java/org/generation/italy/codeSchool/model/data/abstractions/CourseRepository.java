@@ -9,19 +9,21 @@ import java.util.Optional;
 
 public interface CourseRepository {
 
-   Optional<Course> findById(long id) throws DataException;
+    Optional<Course> findById(long id) throws DataException;
 
-   List<Course> findByTitleContains(String part) throws DataException;
+    List<Course> findByTitleContains(String part) throws DataException;
 
-   Course create(Course course) throws DataException;
+    Course create(Course course) throws DataException;
 
-   void update(Course course) throws EntityNotFoundException,DataException;
+    void update(Course course) throws EntityNotFoundException,DataException;
 
-   void deleteById(long id) throws EntityNotFoundException,DataException;
+    void deleteById(long id) throws EntityNotFoundException,DataException;
 
-   int countActivesCourses();
-   public void desactiveOldCourses(int coursesToDelete) throws EntityNotFoundException;
+    List<Course> getActiveCourses();
+
+    void deleteOldestActiveCourses(int num);
 }
+
 /*
     utitlizziamo le exceptions che abbimo creato noi (nel package "exceptions")
     così da riuscire a poter utilizzare questa interfaccia con tutte le classi che vogliamo

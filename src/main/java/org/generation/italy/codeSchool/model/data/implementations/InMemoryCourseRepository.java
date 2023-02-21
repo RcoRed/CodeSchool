@@ -4,16 +4,15 @@ import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
-import java.time.LocalDate;
 import java.util.*;
 
 public class InMemoryCourseRepository implements CourseRepository {
-   /*
-       pensalo come una arrayList(NON fanno parte della stassa famiglia) ma le posizioni vengono definite con degli id UNIVOCI
-       immaginalo come 2 colonne a sinistra l'id UNIVOCO della riga e a destra un oggetto
-    */
-   private static Map<Long,Course> dataSource = new HashMap<>();
-   private static long nextId;
+/*
+    pensalo come una arrayList(NON fanno parte della stassa famiglia) ma le posizioni vengono definite con degli id UNIVOCI
+    immaginalo come 2 colonne a sinistra l'id UNIVOCO della riga e a destra un oggetto
+ */
+    private static Map<Long,Course> dataSource = new HashMap<>();
+    private static long nextId;
 
     /*
         Optional lo vedo un pò come una variabile jolly in che senso:
@@ -26,115 +25,104 @@ public class InMemoryCourseRepository implements CourseRepository {
         si! hai capito!! serve "solo" per ricordarci/ o a dire di controllare se un dato è vuoto(null) o meno, così da evitare cappellate logiche durante la scrittura dei codici
      */
 
+    @Override
+    public Optional<Course> findById(long id) {
+        Course x = dataSource.get(id);
+        if (x != null){
+            return Optional.of(x);
+        }
+        return Optional.empty();
+    }
 
-   @Override
-   public Optional<Course> findById(long id) {
-      Course x = dataSource.get(id);
-      if (x != null){
-         return Optional.of(x);
-      }
-      return Optional.empty();
-   }
+    @Override
+    public List<Course> findByTitleContains(String part){
+        List<Course> result = new ArrayList<>();            //un pò di polimorfismo non fa mai male
+        Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
+        for (Course c:cs){
+            if (c.getTitle().contains(part)){
+                result.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
+            }
+        }
+        return result;
+    }
 
-   @Override
-   public List<Course> findByTitleContains(String part){
-      List<Course> result = new ArrayList<>();            //un pò di polimorfismo non fa mai male
-      Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
-      for (Course c:cs){
-         if (c.getTitle().contains(part)){
-            result.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
-         }
-      }
-      return result;
-   }
+    @Override
+    public Course create(Course course) {
+        nextId++;
+        dataSource.put(nextId, course);
+        course.setId(nextId);
+        return course;
+    }
 
-   @Override
-   public Course create(Course course) {
-      nextId++;
-      dataSource.put(nextId, course);
-      course.setId(nextId);
-      return course;
-   }
-
-   @Override
-   public void update(Course course) throws EntityNotFoundException {
-      if (dataSource.containsKey(course.getId())){
-         dataSource.put(course.getId(), course);                   //inseriamo l'oggeto nel hashMap
-      }else {
+    @Override
+    public void update(Course course) throws EntityNotFoundException {
+        if (dataSource.containsKey(course.getId())){
+            dataSource.put(course.getId(), course);                   //inseriamo l'oggeto nel hashMap
+        }else {
 //            EntityNotFoundException e = new EntityNotFoundException("Non esiste un corso con id: " + course.getId());
 //            throw e;
-         throw new EntityNotFoundException("Non esiste un corso con id: " + course.getId());
-      }
-   }
+            throw new EntityNotFoundException("Non esiste un corso con id: " + course.getId());
+        }
+    }
 
-   @Override
-   public void deleteById(long id) throws EntityNotFoundException {
+    @Override
+    public void deleteById(long id) throws EntityNotFoundException {
 //        Course old = dataSource.remove(id);
 //        if (old == null){
 //            throw new EntityNotFoundException("Non esiste un corso con id: " + id);
 //        }
-      if (dataSource.remove(id)==null){           //possiamo farlo perche .remove() ritornerà null se non trova l' id
-         throw new EntityNotFoundException("Non esiste un corso con id: " + id);
-      }
-   }
+        if (dataSource.remove(id)==null){           //possiamo farlo perche .remove() ritornerà null se non trova l' id
+            throw new EntityNotFoundException("Non esiste un corso con id: " + id);
+        }
+    }
 
-   public int countActivesCourses(){
-      int count=0;
-      Map.Entry<Long, Course> firstEntry = dataSource.entrySet().iterator().next();
-      long firstId = firstEntry.getKey();
-      for (Course c : dataSource.values() ) {
-         if(c.isActive()){
-            count++;
-         }
-      }
-      return count;
-   }
-
-
-//   public void deleteOldestActiveCourses(int num){
-//      ArrayList<Course> orderedActives = getActiveCourses();
-//      Collections.sort(orderedActives);
-//      Collections.sort(orderedActives, new CourseCompraratorByTitleLength());
-//      Collections.sort(orderedActives, new Comparator<Course>() {//classe interna anonima
-//         @Override
-//         public int compare(Course o1, Course o2) {
-//            return 0;
-//         }
-//      });
-//      orderedActives.sort((o1,o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
-//
-//      while (num > 0){
-//         orderedActives.get(orderedActives.size()-1).setActive(false);
-//         orderedActives.remove(orderedActives.size()-1);
-//         --num;
-//      }
-//   }
-   public void desactiveOldCourses(int coursesToInactive) throws EntityNotFoundException {
-      Map.Entry<Long, Course> firstEntry = dataSource.entrySet().iterator().next();
-      long idMin = firstEntry.getKey();
-      LocalDate minDate = dataSource.get(idMin).getCreatedAt();
-      ArrayList<Long> idToDelete = new ArrayList<>();
-      idToDelete.add(idMin);
-      while(coursesToInactive > 0){
-         for (Course c : dataSource.values() ) {
-            if(c.getCreatedAt().isBefore(minDate)){
-               idMin=c.getId();
-               idToDelete.add(idMin);
-               minDate=dataSource.get(idMin).getCreatedAt();
+    public ArrayList<Course> getActiveCourses() {
+        ArrayList<Course> actives = new ArrayList<>();
+        Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
+        for (Course c:cs){
+            if (c.isActive()){
+                actives.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
             }
-         }
-         coursesToInactive--;
-      }
-      for (Long l : idToDelete){
-         dataSource.get(l).setActive(false);
-      }
-   }
-   public long numOfCourses(){
-      return dataSource.size();
-   }
+        }
+        return actives;
+    }
+
+    @Override
+    public void deleteOldestActiveCourses(int num) {
+        ArrayList<Course> orderedActives = getActiveCourses();
+        /* Collections.sort(orderedActives);
+        Collections.sort(orderedActives, new CourseComparatorByTitleLength());
+        Collections.sort(orderedActives, new Comparator<Course>() { // classe interna anonima
+            @Override
+            public int compare(Course o1, Course o2) {
+                return (o1.getTitle().length() - o2.getTitle().length());
+            }
+        });
+        Collections.sort(orderedActives, (o1, o2) -> (o1.getTitle().length() - o2.getTitle().length()));*/ // lambda expression, function literal
+
+        orderedActives.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())); //lo sorta ascendente o discendente?
+        int count = num;
+        while (count > 0) {
+            orderedActives.get(orderedActives.size()-1).setActive(false);
+            orderedActives.remove(orderedActives.size()-1);
+            --count;
+        }
+    }
+
+
 }
- class CourseCompraratorByTitleLength implements Comparator<Course>{
-   public int compare(Course o1, Course o2){
-      return (o1.getTitle().length()-o2.getTitle().length());
-   }
- }
+
+class CourseComparatorByTitleLength implements Comparator<Course> {
+
+    @Override
+    public int compare(Course o1, Course o2) {
+        /* if (o1.getTitle().length() > o2.getTitle().length()) {
+            return 1;
+        } else if (o1.getTitle().length() < o2.getTitle().length()) {
+            return -1;
+        } else {
+            return 0;
+        } */
+        return (o1.getTitle().length() - o2.getTitle().length());
+    }
+}
