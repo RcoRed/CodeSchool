@@ -12,11 +12,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;       //!!importante!!
 
 class CSVFileCourseRepositoryTest {
@@ -57,7 +59,7 @@ class CSVFileCourseRepositoryTest {
 
     @Test
     void findById_finds_course_when_present() {
-        Course c1 = new Course(ID, TITLE, DESCRIPTION, PROGRAM, DURATION);
+        Course c1 = new Course(ID, TITLE, DESCRIPTION, PROGRAM, DURATION,LocalDate.now());
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
         try {
             Optional<Course> x = repo.findById(ID);
@@ -72,7 +74,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void create() {
         // ARRANGE
-        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT
         try{
@@ -147,10 +149,10 @@ class CSVFileCourseRepositoryTest {
     @Test
     void courseToCSV() {
         // ARRANGE      //inizializzo i dati che poi dovrò usare
-        Course c = new Course(ID,TITLE,DESCRIPTION,PROGRAM,DURATION);
+        Course c = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION, LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT          //richiamo ciò che devo testare
-        String csvLine = repo.CourseToCSV(c);
+        String csvLine = repo.courseToCSV(c);
         // ASSERT       //prego che tutto sia andato bene
         //Assertions.assertEquals(1,1);     //possiamo fare assertEquals() perchè l'import è STATIC (quindi evitiamo di scrivere "Assertations." prima)
         assertEquals(CSVLINE1,csvLine);
