@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,13 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SerializedCourseRepositoryTest {
 
-
-
-    private Course c1 = new Course(ID1, TITLE, DESCRIPTION, PROGRAM, DURATION);
-    private Course c2 = new Course(ID2, TITLE2, DESCRIPTION2, PROGRAM2, DURATION2);
-    private Course c3 = new Course(ID3, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3);
-    private List<Course> courses = new ArrayList<>();
+    private Course c1 = new Course(ID1, TITLE, DESCRIPTION, PROGRAM, DURATION,LocalDate.now());
+    private Course c2 = new Course(ID2, TITLE2, DESCRIPTION2, PROGRAM2, DURATION2,LocalDate.now());
+    private Course c3 = new Course(ID3, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,LocalDate.now());
     private SerializedCourseRepository repo = new SerializedCourseRepository(SERIALIZED_TEST_FILE_NAME);
+
+    private List<Course> courses = new ArrayList<>();
 
     public SerializedCourseRepositoryTest() {
         courses.add(c1);
@@ -76,7 +76,7 @@ class SerializedCourseRepositoryTest {
     @Test
     void create() {
         try {
-            Course c = new Course(0,TITLE,DESCRIPTION,PROGRAM,DURATION);
+            Course c = new Course(0,TITLE,DESCRIPTION,PROGRAM,DURATION, LocalDate.now());
             var courseBefore = load();
             c = repo.create(c);
             var coursesAfter = load();
@@ -93,7 +93,7 @@ class SerializedCourseRepositoryTest {
     @Test
     void update_should_change_course_if_present() {
         try {
-            Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION);
+            Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION, LocalDate.now());
             repo.update(c);
             var courses = load();
             for (var co : courses){

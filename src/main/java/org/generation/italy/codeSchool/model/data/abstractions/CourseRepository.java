@@ -5,6 +5,7 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,8 @@ public interface CourseRepository {
     void update(Course course) throws EntityNotFoundException,DataException;
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
+    ArrayList<Course> createListOfActiveCourses();
+    void cancelOldActiveCourses(int difference) ;
 }
 
 /*
