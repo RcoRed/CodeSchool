@@ -42,12 +42,12 @@ class InMemoryCourseRepositoryTest {
 
     @Test
     void getActiveCourses() {
-        int x = repo.getActiveCourses();
+        int x = repo.countActiveCourses();
         assertEquals(3,x);
     }
 
     @Test
     void deleteNumCourses() {
-        repo.deleteNumOldestCourses(2);
+        repo.deactivateNumOldestCourses(2);
     }
 }

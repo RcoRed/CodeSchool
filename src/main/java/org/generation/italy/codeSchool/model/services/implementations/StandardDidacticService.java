@@ -4,7 +4,6 @@ import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
-import org.generation.italy.codeSchool.model.data.implementations.InMemoryCourseRepository;
 import org.generation.italy.codeSchool.model.services.abstractions.AbstractDidacticService;
 
 import java.util.List;
@@ -51,12 +50,11 @@ public class StandardDidacticService implements AbstractDidacticService {
     //se i corsi attivi sono <= di numActive ritorniamo false (fine)
     //altrimenti, chiameremo un metodo sul repository che cancella gli n corsi più vecchi (n parametro input)
     public boolean adjustActiveCourses(int numActive) throws DataException {
-        int difference = repo.getActiveCourses()-numActive;
-        System.out.println(difference);
+        int difference = repo.countActiveCourses()-numActive;
         if (difference<=0){
             return false;
         }
-        repo.deleteNumOldestCourses(difference);
+        repo.deactivateNumOldestCourses(difference);
         return true;
     }
 }

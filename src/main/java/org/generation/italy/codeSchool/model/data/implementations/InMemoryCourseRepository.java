@@ -77,7 +77,7 @@ public class InMemoryCourseRepository implements CourseRepository {
         }
     }
 
-    public int getActiveCourses(){
+    public int countActiveCourses(){
         int countActive=0;
         for (long i=1;i<=dataSource.size();i++){
             if (dataSource.get(i).isActive()){
@@ -112,25 +112,22 @@ public class InMemoryCourseRepository implements CourseRepository {
 //        }
 //        System.out.println(dataSource);
 //    }
-    public void deleteNumOldestCourses(int numToDelete){
-        System.out.println(dataSource);
+    public void deactivateNumOldestCourses(int numToDelete){
         Collection<Course> totalCourses= dataSource.values();
-        long idToDelete = 1;
-        boolean b = true;
+        long idToDelete = 0;
         for (int i=0;i<numToDelete;i++){
             //for (Iterator<Course> it = totalCourses.iterator(); it.hasNext();){
             for (var c:totalCourses){
-                if(b){
+                if(idToDelete == 0 && c.isActive()){
                     idToDelete = c.getId();
-                    b=false;
+                    continue;
                 }
                 if (c.isActive() && dataSource.get(idToDelete).getCreatedAt().isAfter(c.getCreatedAt())){
                     idToDelete=c.getId();
                 }
             }
-            b=true;
             dataSource.get(idToDelete).setActive(false);
+            idToDelete = 0;
         }
-        System.out.println(dataSource);
     }
 }

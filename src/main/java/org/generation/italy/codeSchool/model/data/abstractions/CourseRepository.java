@@ -19,9 +19,9 @@ public interface CourseRepository {
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
 
-    int getActiveCourses();
+    int countActiveCourses();
 
-    void deleteNumOldestCourses(int numToDelete);
+    void deactivateNumOldestCourses(int numToDelete);
 }
 
 /*
