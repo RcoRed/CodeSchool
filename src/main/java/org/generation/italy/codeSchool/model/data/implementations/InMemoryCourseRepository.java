@@ -112,17 +112,17 @@ public class InMemoryCourseRepository implements CourseRepository {
 
 }
 
-class CourseComparatorByTitleLength implements Comparator<Course> {
-
-    @Override
-    public int compare(Course o1, Course o2) {
-        /* if (o1.getTitle().length() > o2.getTitle().length()) {
-            return 1;
-        } else if (o1.getTitle().length() < o2.getTitle().length()) {
-            return -1;
-        } else {
-            return 0;
-        } */
-        return (o1.getTitle().length() - o2.getTitle().length());
-    }
-}
+//class CourseComparatorByTitleLength implements Comparator<Course> {
+//
+//    @Override
+//    public int compare(Course o1, Course o2) {
+//        /* if (o1.getTitle().length() > o2.getTitle().length()) {
+//            return 1;
+//        } else if (o1.getTitle().length() < o2.getTitle().length()) {
+//            return -1;
+//        } else {
+//            return 0;
+//        } */
+//        return (o1.getTitle().length() - o2.getTitle().length());
+//    }
+//}
