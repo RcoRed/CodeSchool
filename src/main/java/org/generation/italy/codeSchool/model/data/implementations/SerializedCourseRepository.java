@@ -112,6 +112,16 @@ public class SerializedCourseRepository implements CourseRepository {
         }
     }
 
+    @Override
+    public List<Course> getActiveCourses() {
+        return null;
+    }
+
+    @Override
+    public void deleteOldestActiveCourses(int num) {
+
+    }
+
     private List<Course> load() throws IOException, ClassNotFoundException {
         File f = new File(filename);
         if (!f.exists()) {
