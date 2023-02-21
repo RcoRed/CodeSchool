@@ -11,9 +11,8 @@ import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {//ricordati di eliminare eventuali THROWS del main!
-        var repo = new InMemoryCourseRepository();
-        var service = new StandardDidacticService(repo);
-
+        var console = new UserInterfaceConsole(new StandardDidacticService(new InMemoryCourseRepository()));
+        console.start();
 
     }
 }
