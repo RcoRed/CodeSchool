@@ -46,16 +46,36 @@ public class Course implements Comparable<Course>, Serializable {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getProgram() {
         return program;
     }
 
+    public void setProgram(String program) {
+        this.program = program;
+    }
+
     public double getDuration() {
         return duration;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 
     public boolean isActive() {

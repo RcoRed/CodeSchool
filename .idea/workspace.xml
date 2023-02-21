@@ -6,13 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="adjusts method adjustActiveCourses to falsify the oldest active courses">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +23,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -151,9 +150,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.StandardDidacticServiceTest.adjustActiveCourses_should_return_false_when_actives_already_less_than_desired" />
         <item itemvalue="JUnit.StandardDidacticServiceTest.adjustActiveCourses_should_deactivate_oldest_courses_when_actives_are_more_than_desired" />
         <item itemvalue="JUnit.StandardDidacticServiceTest.adjustActiveCourses_should_deactivate_courses_when_actives_are_more_than_desired" />
-        <item itemvalue="JUnit.StandardDidacticServiceTest.adjustActiveCourses_should_return_false_when_actives_already_less_than_desired" />
         <item itemvalue="JUnit.SerializedCourseRepositoryTest" />
         <item itemvalue="JUnit.CSVFileCourseRepositoryTest" />
       </list>
