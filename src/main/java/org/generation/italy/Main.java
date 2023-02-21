@@ -11,9 +11,10 @@ import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {//ricordati di eliminare eventuali THROWS del main!
-        var repo = new InMemoryCourseRepository();
-        var service = new StandardDidacticService(repo);
-
+        /*var repo = new InMemoryCourseRepository();
+        var service = new StandardDidacticService(repo);*/
+        UserInterfaceConsole userConsole = new UserInterfaceConsole();
+        userConsole.start();
 
     }
 }
