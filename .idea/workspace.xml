@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="adjusts method adjustActiveCourses to falsify the oldest active courses">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +70,7 @@
       <recent name="org.generation.italy.codeSchool.model.data.implementations" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.SerializedCourseRepositoryTest">
+  <component name="RunManager" selected="JUnit.StandardDidacticServiceTest.adjustActiveCourses_should_deactivate_oldest_courses_when_actives_are_more_than_desired">
     <configuration name="CSVFileCourseRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
@@ -76,22 +82,6 @@
       <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
       <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CSVFileCourseRepositoryTest.update_should_modify_existing_course" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CodeSchool" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="update_should_modify_existing_course" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -111,33 +101,49 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SerializedCourseRepositoryTest.create_should_add_new_course" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StandardDidacticServiceTest.adjustActiveCourses_should_deactivate_courses_when_actives_are_more_than_desired" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.services.implementations.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.SerializedCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="create_should_add_new_course" />
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.services.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.services.implementations.StandardDidacticServiceTest" />
+      <option name="METHOD_NAME" value="adjustActiveCourses_should_deactivate_courses_when_actives_are_more_than_desired" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SerializedCourseRepositoryTest.findById_should_find_a_course_if_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StandardDidacticServiceTest.adjustActiveCourses_should_deactivate_oldest_courses_when_actives_are_more_than_desired" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.services.implementations.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.SerializedCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="findById_should_find_a_course_if_present" />
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.services.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.services.implementations.StandardDidacticServiceTest" />
+      <option name="METHOD_NAME" value="adjustActiveCourses_should_deactivate_oldest_courses_when_actives_are_more_than_desired" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StandardDidacticServiceTest.adjustActiveCourses_should_return_false_when_actives_already_less_than_desired" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodeSchool" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.services.implementations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.services.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.services.implementations.StandardDidacticServiceTest" />
+      <option name="METHOD_NAME" value="adjustActiveCourses_should_return_false_when_actives_already_less_than_desired" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -145,11 +151,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.StandardDidacticServiceTest.adjustActiveCourses_should_deactivate_oldest_courses_when_actives_are_more_than_desired" />
+        <item itemvalue="JUnit.StandardDidacticServiceTest.adjustActiveCourses_should_deactivate_courses_when_actives_are_more_than_desired" />
+        <item itemvalue="JUnit.StandardDidacticServiceTest.adjustActiveCourses_should_return_false_when_actives_already_less_than_desired" />
         <item itemvalue="JUnit.SerializedCourseRepositoryTest" />
         <item itemvalue="JUnit.CSVFileCourseRepositoryTest" />
-        <item itemvalue="JUnit.SerializedCourseRepositoryTest.findById_should_find_a_course_if_present" />
-        <item itemvalue="JUnit.SerializedCourseRepositoryTest.create_should_add_new_course" />
-        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.update_should_modify_existing_course" />
       </list>
     </recent_temporary>
   </component>
@@ -225,7 +231,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676928865947</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="adjusts method adjustActiveCourses to falsify the oldest active courses">
+      <created>1676930202119</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1676930202119</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -113,7 +113,7 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public List<Course> countActiveCourses() {
+    public List<Course> getActiveCourses() {
         return null;
     }
 

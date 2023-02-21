@@ -19,7 +19,7 @@ public interface CourseRepository {
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
 
-    List<Course> countActiveCourses();
+    List<Course> getActiveCourses();
 
     void deleteOldestActiveCourses(int num);
 }

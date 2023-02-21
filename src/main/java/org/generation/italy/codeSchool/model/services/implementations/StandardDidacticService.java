@@ -45,9 +45,9 @@ public class StandardDidacticService implements AbstractDidacticService {
 
     @Override
     public boolean adjustActiveCourses(int numActive) {
-        int actives = repo.countActiveCourses().size(); //chiama il repository per scoprire quanti corsi sono attivi
+        int actives = repo.getActiveCourses().size(); //chiama il repository per scoprire quanti corsi sono attivi
         if (actives <= numActive) return false; //se i corsi attivi sono <= di numActive ritorniamo false (fine)
-        int remaining = numActive - actives;
+        int remaining = actives - numActive;
         repo.deleteOldestActiveCourses(remaining); //altrimenti, chiameremo un metodo sul repository che cancella
         return true;                        // gli n corsi più vecchi (n parametro input)
     }
