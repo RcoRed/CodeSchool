@@ -31,6 +31,8 @@ public class Course implements Comparable<Course>, Serializable {
         this.isActive = isActive;
         this.createdAt = createdAt;
 
+
+
     }
     public long getId() {
         return id;
@@ -97,7 +99,14 @@ public class Course implements Comparable<Course>, Serializable {
     }
 
     @Override
-    public int compareTo(Course o) {
+    public int compareTo(Course o) { // ordinamento naturale della classe
+        /* if (this.createdAt.isBefore(o.getCreatedAt())) {
+            return -1;
+        } else if (this.createdAt.isAfter(o.getCreatedAt())){
+            return 1;
+        } else {
+            return 0;
+        } */
         return this.createdAt.compareTo(o.createdAt);
     }
 }

@@ -2,7 +2,6 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
-import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.util.*;
@@ -77,26 +76,53 @@ public class InMemoryCourseRepository implements CourseRepository {
         }
     }
 
-    @Override
-    public int countActive(){
-        int countActive = 0;
-        for( var course : dataSource.values()) {
-            if(course.isActive()){
-                countActive++;
+    public ArrayList<Course> getActiveCourses() {
+        ArrayList<Course> actives = new ArrayList<>();
+        Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
+        for (Course c:cs){
+            if (c.isActive()){
+                actives.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
             }
         }
-        return countActive;
+        return actives;
     }
 
     @Override
-    public List<Course> getOldestActive(int n) {
-        List<Course> courseList = new ArrayList<>(dataSource.values());
-        Collections.sort(courseList);
-        List<Course> oldestN = new ArrayList<>();
-        for(int i=0; i < n; i++) {
-            oldestN.add(courseList.get(i));
+    public void deleteOldestActiveCourses(int num) {
+        ArrayList<Course> orderedActives = getActiveCourses();
+        /* Collections.sort(orderedActives);
+        Collections.sort(orderedActives, new CourseComparatorByTitleLength());
+        Collections.sort(orderedActives, new Comparator<Course>() { // classe interna anonima
+            @Override
+            public int compare(Course o1, Course o2) {
+                return (o1.getTitle().length() - o2.getTitle().length());
+            }
+        });
+        Collections.sort(orderedActives, (o1, o2) -> (o1.getTitle().length() - o2.getTitle().length()));*/ // lambda expression, function literal
+
+        orderedActives.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())); //lo sorta ascendente o discendente?
+        int count = num;
+        while (count > 0) {
+            orderedActives.get(orderedActives.size()-1).setActive(false);
+            orderedActives.remove(orderedActives.size()-1);
+            --count;
         }
-        return oldestN;
     }
 
+
+}
+
+class CourseComparatorByTitleLength implements Comparator<Course> {
+
+    @Override
+    public int compare(Course o1, Course o2) {
+        /* if (o1.getTitle().length() > o2.getTitle().length()) {
+            return 1;
+        } else if (o1.getTitle().length() < o2.getTitle().length()) {
+            return -1;
+        } else {
+            return 0;
+        } */
+        return (o1.getTitle().length() - o2.getTitle().length());
+    }
 }

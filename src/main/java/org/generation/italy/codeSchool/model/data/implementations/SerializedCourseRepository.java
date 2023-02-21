@@ -113,13 +113,13 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int countActive() throws DataException {
-        return 0;
+    public List<Course> getActiveCourses() {
+        return null;
     }
 
     @Override
-    public List<Course> getOldestActive(int n) {
-        return null;
+    public void deleteOldestActiveCourses(int num) {
+
     }
 
     private List<Course> load() throws IOException, ClassNotFoundException {

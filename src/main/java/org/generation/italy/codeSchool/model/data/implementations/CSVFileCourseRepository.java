@@ -124,6 +124,16 @@ public class CSVFileCourseRepository implements CourseRepository {
 
     }
 
+    @Override
+    public List<Course> getActiveCourses() {
+        return null;
+    }
+
+    @Override
+    public void deleteOldestActiveCourses(int num) {
+
+    }
+
     public String courseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
         return String.format(Locale.US,CSV_COURSE,c.getId(),c.getTitle()
                 ,c.getDescription(),c.getProgram(),c.getDuration(),c.isActive(),c.getCreatedAt());
