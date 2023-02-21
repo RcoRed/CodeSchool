@@ -2,11 +2,13 @@ package org.generation.italy.codeSchool.view;
 
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
+import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.services.abstractions.AbstractDidacticService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 
@@ -19,7 +21,6 @@ public class UserInterfaceConsole {
         this.console = new Scanner(System.in);
     }
     public void start(){
-        pr("<==== INTERFACCIA UTENTE ====>");
         String answer;
         do{
             showMainMenu();
@@ -31,50 +32,83 @@ public class UserInterfaceConsole {
                         pr("corso salvato con id "+ c.getId());
                         break;
                     case "r":
-                        List<Course> coursesList = showCoursesByTitleLike(); //non trova il testo se in maiuscolo
+                        List<Course> coursesList = showCoursesByTitleLike();
                         printList(coursesList);
                         break;
                     case "i":
-                        showCourseByID();
+                        Course course1 = showCourseByID();
+                        pr(course1.toString());
                         break;
                     case "d":
-                        deleteCourseById();
+                        long deletedId = deleteCourseById();
+                        pr("É stato eliminato corretamente il corso con id: " + deletedId);
                         break;
                     case "u":
-                        upDateCourseById();
+                        Course course2 = updateCourseById();
+                        pr("Il corso è stato aggiornato correttamente con il nuovo/i parametro/i : ");
+                        pr(course2.toString());
                         break;
                     case "j":
-                        setActiveCourses();
+                        if (setActiveCourses()){
+                            pr("Aggiornamento corsi attivi avvenuto con successo");
+                        }else {
+                            pr("Nessun corso è stato aggiornato");
+                        }
                         break;
                     case "q":
+                        pr("Termino il programma...");
+                        pr("<==== ARRIVEDERCI ====>");
                         break;
                     default:
-                        System.out.println("comando non compreso!");
+                        System.out.println("comando non compreso! !Riprova!");
                 }
 
+            } catch (EntityNotFoundException e){
+                System.out.println("Errore nella ricerca! " + e.getMessage());
             } catch (DataException e){
-                System.out.println("Errore connessione sorgente dati, riprovare piu tardi!");
+                System.out.println("Errore connessione sorgente dati, riprovare piu tardi! " + e.getMessage());
             }
 
         } while(!answer.equalsIgnoreCase("q"));
     }
 
-    private void setActiveCourses() {
+    private boolean setActiveCourses() throws DataException {
+        int id = (int)getLong("Inserisci quanti Corsi (i più recenti) dovranno rimanere attivi");
+        return service.adjustActiveCourses(id);
     }
 
-    private void upDateCourseById() {
+    private Course updateCourseById() throws DataException, EntityNotFoundException {
+        long id = getLong("inserisci ID del corso da aggiornare");
+        String title = getLine("inserisci il titolo");
+        String desc = getLine("inseerisci descrizione");
+        String program = getLine("inserisci il programma");
+        double duration = getDouble("inserisci la durata");
+        boolean active = getBoolean("il corso è attivo?");
+        LocalDate createAt = getDate("inserisci data creazione");
+        Course c = new Course(id,title,desc,program,duration,active,createAt);
+        service.updateCourse(c);
+        return c;
     }
 
-    private void deleteCourseById() {
+    private long deleteCourseById() throws EntityNotFoundException, DataException {
+        long id = getLong("inserisci ID da eliminare");
+        service.deleteCourseById(id);
+        return id;
     }
 
-    private void showCourseByID() {
+    private Course showCourseByID() throws EntityNotFoundException, DataException {
+        long id = getLong("inserisci ID da cercare");
+        Optional<Course> optionalCourse = service.findCourseById(id);
+        if (optionalCourse.isPresent()){
+            Course course = optionalCourse.get();
+            return course;
+        }
+        throw new EntityNotFoundException("Errore nella ricerca del corso: Corso non trovato");
     }
 
     private List<Course> showCoursesByTitleLike() throws DataException {
         String title = getLine("inserisci titolo da cercare");
-        List<Course> coursesList = service.findCoursesByTitleContains(title);
-        return coursesList;
+        return service.findCoursesByTitleContains(title);
     }
 
     private Course saveCourse() throws DataException {
@@ -83,13 +117,12 @@ public class UserInterfaceConsole {
         String program = getLine("inserisci il programma");
         double duration = getDouble("inserisci la durata");
         boolean active = getBoolean("il corso è attivo?");
-        LocalDate createat = getDate("inserisci data creazione");
-        Course c = new Course(0,title,desc,program,duration,active,createat);
-        Course result= service.saveCourse(c);
-        return result;
+        LocalDate createAt = getDate("inserisci data creazione");
+        return service.saveCourse(new Course(0,title,desc,program,duration,active,createAt));
     }
 
     private void showMainMenu() {
+        pr("<==== INTERFACCIA UTENTE ====>");
         pr("|- s -|per salvare un nuovo corso");
         pr("|- r -|cerca corsi per titolo");
         pr("|- i -|cerca un corso per id");
@@ -116,7 +149,7 @@ public class UserInterfaceConsole {
             try {
                 return Double.parseDouble(answer);
             } catch (NumberFormatException e) {
-                pr("formato inserito non corretto");
+                pr("formato inserito non corretto. !Riprova!");
             }
         }while (true);
     }
