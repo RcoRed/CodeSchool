@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Course implements Serializable {
+public class Course implements Comparable<Course>, Serializable {
     private long id;
     private String title;
     private String description;
@@ -94,4 +94,15 @@ public class Course implements Serializable {
         return Objects.hash(getId());       //modifica l'hashCode in base all'equals
     }
 
+    @Override
+    public int compareTo(Course o) { // ordinamento naturale della classe
+        /* if (this.createdAt.isBefore(o.getCreatedAt())) {
+            return -1;
+        } else if (this.createdAt.isAfter(o.getCreatedAt())){
+            return 1;
+        } else {
+            return 0;
+        } */
+        return this.createdAt.compareTo(o.createdAt);
+    }
 }

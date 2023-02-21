@@ -11,7 +11,7 @@ public interface CourseRepository {
 
     Optional<Course> findById(long id) throws DataException;
 
-    List<Course> findByTitleContains(String part) throws  DataException;
+    List<Course> findByTitleContains(String part) throws DataException;
 
     Course create(Course course) throws DataException;
 
@@ -19,9 +19,9 @@ public interface CourseRepository {
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
 
-    int countActiveCourses();
+    List<Course> getActiveCourses();
 
-    void deactivateNumOldestCourses(int numToDelete);
+    void deleteOldestActiveCourses(int num);
 }
 
 /*

@@ -4,7 +4,6 @@ import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
-import java.time.LocalDate;
 import java.util.*;
 
 public class InMemoryCourseRepository implements CourseRepository {
@@ -77,57 +76,53 @@ public class InMemoryCourseRepository implements CourseRepository {
         }
     }
 
-    public int countActiveCourses(){
-        int countActive=0;
-        for (long i=1;i<=dataSource.size();i++){
-            if (dataSource.get(i).isActive()){
-                countActive++;
+    public ArrayList<Course> getActiveCourses() {
+        ArrayList<Course> actives = new ArrayList<>();
+        Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
+        for (Course c:cs){
+            if (c.isActive()){
+                actives.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
             }
         }
-        return countActive;
+        return actives;
     }
 
-//    public Course findOldestActive(){
-//        List<Course> totalCourses = new ArrayList<>(dataSource.values());
-//        int pos = -1;
-//        LocalDate minDate=LocalDate.now().plusYears(100);
-//        for (int k=0;k<totalCourses.size();k++){
-//            var course = totalCourses.get(k);
-//            if (course.isActive() && course.getCreatedAt().isBefore(minDate)){
-//                pos=k;
-//                minDate=course.getCreatedAt();
-//            }
-//        }
-//        return totalCourses.get(pos);
-//    }
-//    public void deleteNumOldestCourses(int numToDelete){
-//        System.out.println(dataSource);
-//        List<Course> totalCourses = new ArrayList<>(dataSource.values());
-//        int pos = -1;
-//        LocalDate minDate=LocalDate.now().plusYears(100);
-//        for (int i=0;i<numToDelete;i++){
-//            //for (Iterator<Course> it = totalCourses.iterator(); it.hasNext();){
-//            Course oldestActive = findOldestActive();
-//            oldestActive.setActive(false);
-//        }
-//        System.out.println(dataSource);
-//    }
-    public void deactivateNumOldestCourses(int numToDelete){
-        Collection<Course> totalCourses= dataSource.values();
-        long idToDelete = 0;
-        for (int i=0;i<numToDelete;i++){
-            //for (Iterator<Course> it = totalCourses.iterator(); it.hasNext();){
-            for (var c:totalCourses){
-                if(idToDelete == 0 && c.isActive()){
-                    idToDelete = c.getId();
-                    continue;
-                }
-                if (c.isActive() && dataSource.get(idToDelete).getCreatedAt().isAfter(c.getCreatedAt())){
-                    idToDelete=c.getId();
-                }
+    @Override
+    public void deleteOldestActiveCourses(int num) {
+        ArrayList<Course> orderedActives = getActiveCourses();
+        /* Collections.sort(orderedActives);
+        Collections.sort(orderedActives, new CourseComparatorByTitleLength());
+        Collections.sort(orderedActives, new Comparator<Course>() { // classe interna anonima
+            @Override
+            public int compare(Course o1, Course o2) {
+                return (o1.getTitle().length() - o2.getTitle().length());
             }
-            dataSource.get(idToDelete).setActive(false);
-            idToDelete = 0;
+        });
+        Collections.sort(orderedActives, (o1, o2) -> (o1.getTitle().length() - o2.getTitle().length()));*/ // lambda expression, function literal
+
+        orderedActives.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt())); //lo sorta ascendente o discendente?
+        int count = num;
+        while (count > 0) {
+            orderedActives.get(orderedActives.size()-1).setActive(false);
+            orderedActives.remove(orderedActives.size()-1);
+            --count;
         }
+    }
+
+
+}
+
+class CourseComparatorByTitleLength implements Comparator<Course> {
+
+    @Override
+    public int compare(Course o1, Course o2) {
+        /* if (o1.getTitle().length() > o2.getTitle().length()) {
+            return 1;
+        } else if (o1.getTitle().length() < o2.getTitle().length()) {
+            return -1;
+        } else {
+            return 0;
+        } */
+        return (o1.getTitle().length() - o2.getTitle().length());
     }
 }

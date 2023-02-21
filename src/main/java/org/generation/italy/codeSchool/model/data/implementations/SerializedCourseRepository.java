@@ -113,12 +113,12 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int countActiveCourses() {
-        return 0;
+    public List<Course> getActiveCourses() {
+        return null;
     }
 
     @Override
-    public void deactivateNumOldestCourses(int numToDelete) {
+    public void deleteOldestActiveCourses(int num) {
 
     }
 
