@@ -39,7 +39,7 @@ public class InMemoryCourseRepository implements CourseRepository {
         List<Course> result = new ArrayList<>();            //un pò di polimorfismo non fa mai male
         Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
         for (Course c:cs){
-            if (c.getTitle().contains(part)){
+            if (c.getTitle().toLowerCase().contains(part.toLowerCase())){
                 result.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
             }
         }
