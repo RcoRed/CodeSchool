@@ -4,7 +4,6 @@ import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
-import org.generation.italy.codeSchool.model.data.implementations.InMemoryCourseRepository;
 import org.generation.italy.codeSchool.model.services.abstractions.AbstractDidacticService;
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
@@ -53,7 +52,7 @@ public class StandardDidacticService implements AbstractDidacticService {
       int numActiveCourses =repo.countActivesCourses();
       if(numActiveCourses>numActiveMax){
          try {
-            repo.deleteOldCourses(numActiveCourses-numActiveMax);
+            repo.desactiveOldCourses(numActiveCourses-numActiveMax);
          } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException(ENTITY_NOT_FOUND);
          }

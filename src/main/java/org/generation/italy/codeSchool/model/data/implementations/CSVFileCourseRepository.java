@@ -130,7 +130,7 @@ public class CSVFileCourseRepository implements CourseRepository {
    }
 
    @Override
-   public void deleteOldCourses(int coursesToDelete) {
+   public void desactiveOldCourses(int coursesToDelete) {
 
    }
 

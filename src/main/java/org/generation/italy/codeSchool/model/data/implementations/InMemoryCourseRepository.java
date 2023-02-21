@@ -82,19 +82,40 @@ public class InMemoryCourseRepository implements CourseRepository {
       int count=0;
       Map.Entry<Long, Course> firstEntry = dataSource.entrySet().iterator().next();
       long firstId = firstEntry.getKey();
-      for (long i = firstId; i < dataSource.size(); i++){ //Ci stavo sclerando, nextId inizia da 1 non da 0
-         dataSource.get(i).isActive();
-         count++;
+      for (Course c : dataSource.values() ) {
+         if(c.isActive()){
+            count++;
+         }
       }
       return count;
    }
-   public void deleteOldCourses(int coursesToDelete) throws EntityNotFoundException {
+
+
+//   public void deleteOldestActiveCourses(int num){
+//      ArrayList<Course> orderedActives = getActiveCourses();
+//      Collections.sort(orderedActives);
+//      Collections.sort(orderedActives, new CourseCompraratorByTitleLength());
+//      Collections.sort(orderedActives, new Comparator<Course>() {//classe interna anonima
+//         @Override
+//         public int compare(Course o1, Course o2) {
+//            return 0;
+//         }
+//      });
+//      orderedActives.sort((o1,o2) -> o1.getCreatedAt().compareTo(o2.getCreatedAt()));
+//
+//      while (num > 0){
+//         orderedActives.get(orderedActives.size()-1).setActive(false);
+//         orderedActives.remove(orderedActives.size()-1);
+//         --num;
+//      }
+//   }
+   public void desactiveOldCourses(int coursesToInactive) throws EntityNotFoundException {
       Map.Entry<Long, Course> firstEntry = dataSource.entrySet().iterator().next();
       long idMin = firstEntry.getKey();
       LocalDate minDate = dataSource.get(idMin).getCreatedAt();
       ArrayList<Long> idToDelete = new ArrayList<>();
       idToDelete.add(idMin);
-      while(coursesToDelete > 0){
+      while(coursesToInactive > 0){
          for (Course c : dataSource.values() ) {
             if(c.getCreatedAt().isBefore(minDate)){
                idMin=c.getId();
@@ -102,13 +123,18 @@ public class InMemoryCourseRepository implements CourseRepository {
                minDate=dataSource.get(idMin).getCreatedAt();
             }
          }
-         coursesToDelete--;
+         coursesToInactive--;
       }
       for (Long l : idToDelete){
-         deleteById(l);
+         dataSource.get(l).setActive(false);
       }
    }
    public long numOfCourses(){
       return dataSource.size();
    }
 }
+ class CourseCompraratorByTitleLength implements Comparator<Course>{
+   public int compare(Course o1, Course o2){
+      return (o1.getTitle().length()-o2.getTitle().length());
+   }
+ }

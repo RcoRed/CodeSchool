@@ -20,7 +20,7 @@ public interface CourseRepository {
    void deleteById(long id) throws EntityNotFoundException,DataException;
 
    int countActivesCourses();
-   public void deleteOldCourses(int coursesToDelete) throws EntityNotFoundException;
+   public void desactiveOldCourses(int coursesToDelete) throws EntityNotFoundException;
 }
 /*
     utitlizziamo le exceptions che abbimo creato noi (nel package "exceptions")
