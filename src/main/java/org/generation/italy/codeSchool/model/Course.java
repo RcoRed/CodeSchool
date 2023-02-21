@@ -78,8 +78,8 @@ public class Course implements Serializable {
 //                ", duration=" + duration +
 //                '}';
 //        ritorna la stessa cosa, anzi è fatta meglio
-        return String.format("Course{id=%d, title=%s, description=%s, program=%s, duration=%f}",
-                id,title,description,program,duration);
+        return String.format("Course{id=%d, title=%s, description=%s, program=%s, duration=%f, isActive = %b, createdAt = %s}",
+                id,title,description,program,duration, isActive, createdAt);
     }
 
     @Override

@@ -6,7 +6,6 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.*;
 
 public class InMemoryCourseRepository implements CourseRepository {
@@ -79,7 +78,8 @@ public class InMemoryCourseRepository implements CourseRepository {
         }
     }
 
-    public boolean adjustActiveCourses(int numActive) throws DataException {
+    @Override
+    public int getActiveCourses() {
         int activeCourses = 0;
         Collection<Course> collection = dataSource.values();
         for (Course c : collection) {                          //scorro la collection per vedere quanti corsi attivi ci sono
@@ -87,31 +87,42 @@ public class InMemoryCourseRepository implements CourseRepository {
                 activeCourses++;
             }
         }
-        if (activeCourses <= numActive) {
+        return activeCourses;
+    }
+
+    @Override
+    public boolean adjustActiveCourses(int nCoursesToDelete) throws DataException {
+        int activeCourses = getActiveCourses();
+        ArrayList<Course> arrayList = new ArrayList<>(dataSource.values());
+        if (activeCourses <= nCoursesToDelete) {
             return false;
         } else {
-            int nCoursesToDelete = activeCourses - numActive;
-            for (int i = 0; i < nCoursesToDelete; i++) {
-                LocalDate toDelete = LocalDate.now();
-                for (Iterator<Course> it = collection.iterator(); it.hasNext(); ) {
-                    Iterator<Course> it2 = it;
-                    it2.next();
-                    Course c1 = it.next();
-                    Course c2 = it2.next();
-                    if (it2.hasNext()) {
-                        c2 = it2.next();
+            try{
+                for (int i = 0; i < nCoursesToDelete; i++) {
+                    LocalDate toDelete = LocalDate.now();
+                    for (ListIterator<Course> it = arrayList.listIterator(); it.hasNext();) {
+                        Course c1 = it.next();
+                        int f = it.nextIndex();
+                        if(f > arrayList.size() - 1){
+                            break;
+                        }
+                        Course c2 = arrayList.get(f);
+                        if (c1.getCreatedAt().isAfter(c2.getCreatedAt()) && c2.getCreatedAt().isBefore(toDelete)) {
+                            toDelete = c2.getCreatedAt();
+                        } else if (c1.getCreatedAt().isBefore(c2.getCreatedAt()) && c1.getCreatedAt().isBefore(toDelete)) {
+                            toDelete = c1.getCreatedAt();
+                        }
                     }
-                    if (c1.getCreatedAt().isAfter(c2.getCreatedAt()) && c2.getCreatedAt().isBefore(toDelete)) {
-                        toDelete = c2.getCreatedAt();
-                    } else if (c1.getCreatedAt().isBefore(c2.getCreatedAt()) && c1.getCreatedAt().isBefore(toDelete)) {
-                        toDelete = c1.getCreatedAt();
+                    for (Course c : arrayList) {                              //la collections contiene quelli che devono rimanere nella mappa
+                        if (c.getCreatedAt() == toDelete) {
+                            c.setActive(false);
+                            arrayList.remove(c);
+                            break;
+                        }
                     }
                 }
-                for (Course c : collection) {             //la collections contiene quelli che devono rimanere nella mappa
-                    if (c.getCreatedAt() == toDelete) {
-                        dataSource.remove(c.getId());
-                    }
-                }
+            }catch (NoSuchElementException e){
+                throw new DataException("Elementi nella lista inferiori a quelli da controllare", e);
             }
             return true;
         }

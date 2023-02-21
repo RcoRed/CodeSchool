@@ -49,7 +49,6 @@ public class StandardDidacticService implements AbstractDidacticService {
         //che non è stato necessario apportare alcuna modifica
         //altrimenti chiameremo un metodo sul repository che cancella gli
         //n corsi più vecchi
-        InMemoryCourseRepository m = new InMemoryCourseRepository();
-        return m.adjustActiveCourses(numActive);
+        return repo.adjustActiveCourses(numActive);
     }
 }
