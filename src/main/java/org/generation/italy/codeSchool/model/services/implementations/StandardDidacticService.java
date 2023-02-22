@@ -1,11 +1,9 @@
 package org.generation.italy.codeSchool.model.services.implementations;
 
-import org.generation.italy.codeSchool.model.Course;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
-import org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepository;
-import org.generation.italy.codeSchool.model.data.implementations.InMemoryCourseRepository;
 import org.generation.italy.codeSchool.model.services.abstractions.AbstractDidacticService;
 
 import java.util.List;
