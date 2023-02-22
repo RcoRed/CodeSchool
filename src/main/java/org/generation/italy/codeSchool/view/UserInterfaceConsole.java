@@ -104,60 +104,61 @@ public class UserInterfaceConsole {
                System.out.println(title + " è il nome corretto?(s/n): ");
                r = scanner.next().charAt(0);
                System.out.println(r);
-            }while( (Character.compare(r,'s') == 0) || r!='n' );
+               System.out.println(r != 's' && r != 'n');
+            }while( r!='s'  && r!='n' );
             if(r == 's'){
                correct=true;
             } else {
                System.out.println("Introduci il nome del nuovo corso: ");
-               title = scanner.nextLine();
+               title = scanner.next();
             }
          }
          correct = false;
 
          System.out.println("Introduci la descrizione del nuovo corso: ");
-         description = scanner.nextLine();
+         description = scanner.next();
          while(!correct){
             do {
                System.out.println(description + " è la descrizione corretta?(s/n): ");
                r = scanner.next().charAt(0);
-            }while(r!='s' || r!='n');
+            }while(r!='s' && r!='n');
             if(r == 's'){
                correct=true;
             } else {
                System.out.println("Introduci la descrizione del nuovo corso: ");
-               description = scanner.nextLine();
+               description = scanner.next();
             }
          }
          correct = false;
 
          System.out.println("Introduci il programma del nuovo corso: ");
-         program = scanner.nextLine();
+         program = scanner.next();
          while(!correct){
             do {
                System.out.println(program + " è programma corretto?(s/n): ");
                r = scanner.next().charAt(0);
-            }while(r!='s' || r!='n');
+            }while(r!='s' && r!='n');
             if(r == 's'){
                correct=true;
             } else {
                System.out.println("Introduci il programma del nuovo corso: ");
-               program = scanner.nextLine();
+               program = scanner.next();
             }
          }
          correct = false;
 
          System.out.println("Introduci la durata del nuovo corso: ");
-         duration = scanner.nextLine();
+         duration = scanner.next();
          while(!correct){
             do {
                System.out.println(duration + " è la durata corretta?(s/n): ");
                r = scanner.next().charAt(0);
-            }while(r!='s' || r!='n');
+            }while(r!='s' && r!='n');
             if(r == 's'){
                correct=true;
             } else {
                System.out.println("Introduci la durata del nuovo corso: ");
-               duration = scanner.nextLine();
+               duration = scanner.next();
             }
          }
          correct = false;
@@ -182,7 +183,7 @@ public class UserInterfaceConsole {
                   System.out.println("Vuoi impostare il corso come attivo?(s/n): ");
                   r1 = scanner.next().charAt(0);
                }
-            }while(r1!='s' || r1!='n');
+            }while(r1!='s' && r1!='n');
          }
          if(r1 == 's'){
             isActive = true; //di default è false, se è 'n' non bisogna fare niente
@@ -196,16 +197,16 @@ public class UserInterfaceConsole {
    }
    private void searchId(){
       id = scanner.nextLong();
-      Optional<Course> find = null;
+      Optional<Course> find;
       try {
          find = service.findCourseById(id);
+         if(find.isEmpty()){
+            System.out.printf("Ci dispiace, corso non trovato all'id corrispondente: %d\n",id);
+         } else {
+            System.out.println("Corso trovato! *** " + find.toString());
+         }
       } catch (DataException e) {
          new DataException(e.getMessage(),e);
-      }
-      if(find.isEmpty()){
-         System.out.printf("Ci dispiace, corso non trovato all'id corrispondente: %d\n",id);
-      } else {
-         System.out.println("Corso trovato! *** " + find.toString());
       }
    }
    private void delById(){
