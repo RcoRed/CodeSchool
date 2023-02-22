@@ -52,7 +52,7 @@ public class UserInterfaceConsole {
                         deleteCourseById();
                         break;
                     case "u":
-                        //updateCourseById();
+                        updateCourseById();
                         break;
                     case "j":
                         //setActiveCourses();
@@ -114,11 +114,22 @@ public class UserInterfaceConsole {
         service.deleteCourseById(id);
     }
 
-//    public void updateCourseById() throws DataException { ///////////////////////////////////////////////////////////
-//        long id = getLong("Aggiorna corso con ID");
-//        Optional<Course> c = service.findCourseById(id);
-//
-//    }
+    public void updateCourseById() throws DataException {
+        long id = getLong("Aggiorna corso con ID");
+        Optional<Course> c = service.findCourseById(id);
+        if(c.isEmpty()){
+            System.out.println("Questo corso non esiste");
+        } else{
+            String title = getLine("Inserisci titolo corso");
+            String desc = getLine("Inserisci la descrizione del corso");
+            String program = getLine("Inserisci il programma");
+            double duration = getDouble("Durata corso");
+            boolean active = getBoolean("Il corso è attivo?");
+            LocalDate createdAt = getDate("Inserisci data di creazione");
+
+            Course c1 = new Course(0, title, desc, program, duration, active, createdAt);
+        }
+    }
 
     private void pr(String s){
         System.out.println(s);
