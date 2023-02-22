@@ -30,7 +30,7 @@ public class UserInterfaceConsole {
     }
     public void userInteraction(){
         welcome();
-        char a = console.next().charAt(0);
+        char a = console.nextLine().charAt(0);
         while (a != 'e'){
             try {
                 switch (a){
@@ -54,6 +54,7 @@ public class UserInterfaceConsole {
                         break;
                     default:
                         System.out.println("\nNon esiste un'opzione associata a questo tasto\n");
+                        break;
                 }
             }catch (DataException e){
                 System.out.println("Errore nella connessione con la sorgente dati");
@@ -87,15 +88,12 @@ public class UserInterfaceConsole {
             System.out.println("\nNon esiste un corso con id " + idToUpdate + " da aggiornare\n");
         }else{
             System.out.println("\nStai aggiornando il corso:\n" + toUpdate);
-            System.out.println("Immetti il titolo:");
-            String title1 = console.next();
-            System.out.println("Immetti la descrizione:");
-            String description1 = console.next();
-            System.out.println("Immetti il programma:");
-            String program1 = console.next();
-            System.out.println("Immetti la durata in ore:");
-            double duration1 = console.nextDouble();
-            Course c2 = new Course(idToUpdate, title1, description1, program1, duration1, true, LocalDate.now());
+            String title1 = readString("Immetti il titolo:");
+            String description1 = readString("Immetti la descrizione:");
+            String program1 = readString("Immetti il programma:");
+            double duration1 = readDouble("Immetti la durata in ore:");
+            boolean active = readBoolean("Scrivi s per attivare il corso o n per disattivarlo");
+            Course c2 = new Course(idToUpdate, title1, description1, program1, duration1, active, LocalDate.now());
             try {
                 service.updateCourse(c2);
                 System.out.println("\nIl corso è stato aggiornato! Adesso il corso è composto da:\n" + c2 + "\n");
@@ -142,20 +140,62 @@ public class UserInterfaceConsole {
 
     private void addCourse() throws DataException {
         long id = 0;
-        System.out.println("Immetti il titolo:");
-        String title = console.next();
-        System.out.println("Immetti la descrizione:");
-        String description = console.next();
-        System.out.println("Immetti il programma:");
-        String program = console.next();
-        System.out.println("Immetti la durata in ore:");
-        double duration = console.nextDouble();
-        Course c = new Course(id, title, description, program, duration, true, LocalDate.now());
+        String title = readString("Immetti il titolo:");
+        String description = readString("Immetti la descrizione:");
+        String program = readString("Immetti il programma:");
+        double duration = readDouble("Immetti la durata in ore:");
+        boolean active = readBoolean("Scrivi s per attivare il corso o n per disattivarlo");
+        Course c = new Course(id, title, description, program, duration, active, LocalDate.now());
         service.saveCourse(c);
         System.out.println("\nCorso salvato!\n");
     }
 
     public void welcome(){
-        System.out.println("Benvenuto all'interfaccia, premi:\ns per salvare un nuovo corso \nr per ricerca corsi per titolo \ni per ricerca corso per id\nd per cancellare un corso per id\nu per eseuire update di un corso per id\nj per limitare il numero di corsi attivi ad un certo numero n\ne per uscire dal programma");
+        System.out.println("Benvenuto all'interfaccia, premi:\ns per salvare un nuovo corso \nr per ricerca corsi" +
+                " per titolo \ni per ricerca corso per id\nd per cancellare un corso per id\nu per eseuire update " +
+                "di un corso per id\nj per limitare il numero di corsi attivi ad un certo numero n\ne per uscire dal programma");
+    }
+
+    public double readDouble(String s){
+        do {
+            System.out.print(s + " ");
+            String s1 = console.nextLine();
+            try {
+                return Double.parseDouble(s1);
+            }catch (NumberFormatException e){
+                System.out.println("Formato inserito non valido");
+            }
+        }while (true);
+    }
+
+    public boolean readBoolean(String s){
+        do {
+            System.out.print(s + " ");
+            String s1 = console.nextLine();
+            if(s1.equalsIgnoreCase("s")){
+                return true;
+            } else if(s1.equalsIgnoreCase("n")){
+                return false;
+            }else {
+                System.out.println("Devi inserire s o n");
+            }
+        }while (true);
+    }
+
+    public long readLong(String s){
+        do {
+            System.out.print(s + " ");
+            String s1 = console.nextLine();
+            try {
+                return Long.parseLong(s1);
+            }catch (NumberFormatException e){
+                System.out.println("Formato inserito non valido");
+            }
+        }while (true);
+    }
+
+    public String readString(String s){
+        System.out.println(s + " ");
+        return console.nextLine();
     }
 }
