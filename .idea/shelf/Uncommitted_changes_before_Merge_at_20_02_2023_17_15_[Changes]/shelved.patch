@@ -1,0 +1,16 @@
+Index: src/main/java/org/generation/italy/codeSchool/model/data/abstructions/CourseRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/generation/italy/codeSchool/model/data/abstructions/CourseRepository.java b/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java
+rename from src/main/java/org/generation/italy/codeSchool/model/data/abstructions/CourseRepository.java
+rename to src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java
+--- a/src/main/java/org/generation/italy/codeSchool/model/data/abstructions/CourseRepository.java	
++++ b/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java	
+@@ -1,4 +1,4 @@
+-package org.generation.italy.codeSchool.model.data.abstructions;
++package org.generation.italy.codeSchool.model.data.abstractions;
+ 
+ import org.generation.italy.codeSchool.model.Course;
+ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
