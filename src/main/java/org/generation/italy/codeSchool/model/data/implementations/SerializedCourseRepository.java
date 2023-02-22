@@ -1,6 +1,6 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
-import org.generation.italy.codeSchool.model.Course;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
@@ -113,13 +113,13 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public List<Course> getActiveCourses() {
-        return null;
+    public int getActiveCourses() {
+        return 0;
     }
 
     @Override
-    public void deleteOldestActiveCourses(int num) {
-
+    public boolean adjustActiveCourses(int NumActive) throws DataException {
+        return false;
     }
 
     private List<Course> load() throws IOException, ClassNotFoundException {
@@ -141,6 +141,5 @@ public class SerializedCourseRepository implements CourseRepository {
             oos.writeObject(courses);
         }
     }
-
 
 }
