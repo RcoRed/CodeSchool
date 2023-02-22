@@ -14,7 +14,7 @@ package org.generation.italy.codeSchool.view;
 import org.generation.italy.codeSchool.model.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
-import org.generation.italy.codeSchool.model.data.services.implementations.StandardDidacticService;
+import org.generation.italy.codeSchool.model.data.services.abstractions.AbstractDidacticService;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -29,8 +29,8 @@ public class UserInterfaceConsole {
     private String askActive = "Inserisci se il corso è attivo: "; //si o no
     private String askCreateAt = "Inserisci la data di creazione del corso: "; //yy-mm-dd
     private String password = "java";
-    private StandardDidacticService service;
-    public UserInterfaceConsole(StandardDidacticService service) {
+    private AbstractDidacticService service;
+    public UserInterfaceConsole(AbstractDidacticService service) {
         this.service = service;
     }
     public void start(){
@@ -162,7 +162,7 @@ public class UserInterfaceConsole {
             System.out.println(s + " ");
             String s1 = sc.nextLine();
             try{
-                return Long.parseLong(s);
+                return Long.parseLong(s1);
             }catch (NumberFormatException e){
                 System.out.println("Formato inserito non valido");
             }
