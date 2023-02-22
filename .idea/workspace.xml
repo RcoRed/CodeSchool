@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="adjusts method adjustActiveCourses to falsify the oldest active courses">
+    <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="creates UserInterfaceConsole but doesn't handle its exceptions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -237,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676930202119</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="creates UserInterfaceConsole but doesn't handle its exceptions">
+      <created>1677018367174</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1677018367175</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -262,6 +270,7 @@
     <MESSAGE value="merges from master for adjustActiveCourses method arrangements" />
     <MESSAGE value="creates method adjustActiveCourses in StandardDidacticService" />
     <MESSAGE value="adjusts method adjustActiveCourses to falsify the oldest active courses" />
-    <option name="LAST_COMMIT_MESSAGE" value="adjusts method adjustActiveCourses to falsify the oldest active courses" />
+    <MESSAGE value="creates UserInterfaceConsole but doesn't handle its exceptions" />
+    <option name="LAST_COMMIT_MESSAGE" value="creates UserInterfaceConsole but doesn't handle its exceptions" />
   </component>
 </project>

@@ -5,7 +5,7 @@ import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundExcep
 import org.generation.italy.codeSchool.view.UserInterfaceConsole;
 
 public class Main {
-    public static void main(String[] args) throws DataException, EntityNotFoundException { // absolutely nope
+    public static void main(String[] args) { // absolutely nope
         UserInterfaceConsole console = new UserInterfaceConsole();
         console.start();
     }
