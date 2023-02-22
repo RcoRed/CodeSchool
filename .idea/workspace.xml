@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="Aggiunge service, console e main">
+    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="Aggiunge password e più testo visibile sul terminale">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" afterDir="false" />
@@ -220,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677001615356</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Aggiunge password e più testo visibile sul terminale">
+      <created>1677071366759</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1677071366759</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -269,6 +276,7 @@
     <MESSAGE value="Aggiunge implements serializzazione" />
     <MESSAGE value="Aggiunge la master, con il serialized completo" />
     <MESSAGE value="Aggiunge service, console e main" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunge service, console e main" />
+    <MESSAGE value="Aggiunge password e più testo visibile sul terminale" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunge password e più testo visibile sul terminale" />
   </component>
 </project>

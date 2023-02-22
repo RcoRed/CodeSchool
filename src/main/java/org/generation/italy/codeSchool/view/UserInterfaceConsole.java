@@ -26,14 +26,14 @@ public class UserInterfaceConsole {
     private String askDescription = "Inserisci la descrizione del corso: ";
     private String askProgram = "Inserisci il programma del corso: ";
     private String askDuration = "Inserisci la durata del corso: ";
-    private String askActive = "Inserisci se il corso è attivo: "; //true or false
+    private String askActive = "Inserisci se il corso è attivo: "; //si o no
     private String askCreateAt = "Inserisci la data di creazione del corso: "; //yy-mm-dd
     private String password = "java";
     private StandardDidacticService service;
     public UserInterfaceConsole(StandardDidacticService service) {
         this.service = service;
     }
-    public void start() throws DataException, EntityNotFoundException {
+    public void start(){
         System.out.println("Buongiorno benvenuto nel sistema di gestione corsi.");
         putPassword();
     }
@@ -41,7 +41,7 @@ public class UserInterfaceConsole {
         System.out.println(prompt);
         return sc.nextLine();
     }
-    public void putPassword() throws DataException, EntityNotFoundException {
+    public void putPassword(){
         for(int i =0; i<2 ;i++) {
             String givePassword = askCommand("Inserire la password per accedere ai comandi premium " +
                     "o 'skip' per accedere ai comandi base: ");
@@ -73,53 +73,110 @@ public class UserInterfaceConsole {
             }
         }
     }
-    public void menu(String command) throws DataException {
-        if(command.equalsIgnoreCase("i")){
-            String ss = "Puoi ora cercare un corso dal suo id: ";
-            long idToSearch = Long.parseLong(askCommand(ss));
-            System.out.println(service.findCourseById(idToSearch));
-        }else if(command.equalsIgnoreCase("r")){
-            String ss = "Puoi ora cercare se una stringa di testo è contenuta nel titolo di un corso, inserisci la stringa: ";
-            String titleToSearch = askCommand(ss);
-            System.out.println(service.findCoursesByTitleContains(titleToSearch).toString());
-        }else if(command.equalsIgnoreCase("stop")){
-            System.out.println("Grazie per aver usato il nostro servizio di gestione corsi, arrivederci!");
-            System.exit(0);
-        }else{
-            System.out.println("Il comando inserito non esiste.");
+    public void menu(String command){
+        try {
+            if (command.equalsIgnoreCase("i")) {
+                String ss = "Puoi ora cercare un corso dal suo id: ";
+                long idToSearch = readLong(askCommand(ss));
+                System.out.println(service.findCourseById(idToSearch));
+            } else if (command.equalsIgnoreCase("r")) {
+                String ss = "Puoi ora cercare se una stringa di testo è contenuta nel titolo di un corso, inserisci la stringa: ";
+                String titleToSearch = askCommand(ss);
+                System.out.println(service.findCoursesByTitleContains(titleToSearch).toString());
+            } else if (command.equalsIgnoreCase("stop")) {
+                System.out.println("Grazie per aver usato il nostro servizio di gestione corsi, arrivederci!");
+                System.exit(0);
+            } else {
+                System.out.println("Il comando inserito non esiste.");
+            }
+        }catch (DataException e){
+            System.out.println("Non è stato trovato ciò che si cercava.");
         }
     }
 
-    public void menuPremium(String premiumCommand) throws DataException, EntityNotFoundException {
-        if (premiumCommand.equalsIgnoreCase("s")) {
-            System.out.println("Puoi ora salvare un nuovo corso.");
-            service.saveCourse(subMenu());
-        } else if (premiumCommand.equalsIgnoreCase("d")) {
-            String ss = "Puoi ora cancellare un corso dal suo id: ";
-            long idToDelete = Long.parseLong(askCommand(ss));
-            service.deleteCourseById(idToDelete);
-            System.out.println("Il corso è stato eliminato");
-        } else if (premiumCommand.equalsIgnoreCase("u")) {
-            System.out.println("Puoi ora fare un update ad un corso: ");
-            subMenu();
-            service.updateCourse(subMenu());
-        } else if (premiumCommand.equalsIgnoreCase("j")) {
-            System.out.println("Puoi ora controllare i corsi attivi.");
-            int numMaxActive = Integer.parseInt(askCommand("Inserisci il numero massimo di corsi attivi: "));
-            System.out.println(service.adjustActiveCourses(numMaxActive));
-        } else{
-            menu(premiumCommand);
+    public void menuPremium(String premiumCommand) {
+        try{
+            if (premiumCommand.equalsIgnoreCase("s")) {
+                System.out.println("Puoi ora salvare un nuovo corso.");
+                service.saveCourse(subMenu());
+            } else if (premiumCommand.equalsIgnoreCase("d")) {
+                String ss = "Puoi ora cancellare un corso dal suo id: ";
+                long idToDelete = readLong(askCommand(ss));
+                service.deleteCourseById(idToDelete);
+                System.out.println("Il corso è stato eliminato");
+            } else if (premiumCommand.equalsIgnoreCase("u")) {
+                System.out.println("Puoi ora fare un update ad un corso: ");
+                subMenu();
+                service.updateCourse(subMenu());
+            } else if (premiumCommand.equalsIgnoreCase("j")) {
+                System.out.println("Puoi ora controllare i corsi attivi.");
+                int numMaxActive = (int) (readInt(askCommand("Inserisci il numero massimo di corsi attivi: ")));
+                System.out.println(service.adjustActiveCourses(numMaxActive));
+            } else{
+                menu(premiumCommand);
+            }
+        }catch (DataException | EntityNotFoundException e){
+            System.out.println("Non è stato trovato ciò che si cercava.");
         }
     }
     public Course subMenu(){
-        long id = Long.parseLong(askCommand(askId));
+        long id = readLong(askCommand(askId));
         String title = askCommand(askTitle);
         String description = askCommand(askDescription);
         String program = askCommand(askProgram);
-        double duration = Double.parseDouble(askCommand(askDuration));
-        boolean isActive = Boolean.parseBoolean(askCommand(askActive));
+        double duration = readDouble(askCommand(askDuration));
+        boolean isActive = readBoolean(askCommand(askActive));
         LocalDate createAt = LocalDate.parse(askCommand(askCreateAt));
 
         return new Course(id,title,description,program,duration,isActive,createAt);
+    }
+
+    public double readDouble(String s){
+        do {
+            System.out.println(s + " ");
+            String s1 = sc.nextLine();
+            try{
+                return Double.parseDouble(s1);
+            }catch (NumberFormatException e){
+                System.out.println("Formato inserito non valido");
+            }
+        }while (true);
+    }
+
+    public boolean readBoolean(String s){
+        do {
+            System.out.println(s +" ");
+            String s1 =sc.nextLine();
+            if (s1.equalsIgnoreCase("si")){
+                return true;
+            } else if (s1.equalsIgnoreCase("no")) {
+                return false;
+            }else {
+                System.out.println("Devi inserire si o no");
+            }
+        }while (true);
+    }
+
+    public long readLong(String s){
+        do {
+            System.out.println(s + " ");
+            String s1 = sc.nextLine();
+            try{
+                return Long.parseLong(s);
+            }catch (NumberFormatException e){
+                System.out.println("Formato inserito non valido");
+            }
+        }while (true);
+    }
+    public long readInt(String s){
+        do {
+            System.out.println(s + " ");
+            String s1 = sc.nextLine();
+            try{
+                return Integer.parseInt(s1);
+            }catch (NumberFormatException e){
+                System.out.println("Formato inserito non valido");
+            }
+        }while (true);
     }
 }
