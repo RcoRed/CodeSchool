@@ -1,6 +1,6 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
-import org.generation.italy.codeSchool.model.Course;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
@@ -37,8 +37,8 @@ public class CSVFileCourseRepository implements CourseRepository {
                 String[] trimmed = s.split(",");                          //uso un metodo della classe String che creerà una nuova stringa per ogni , che incontrerà, ogni stringa verrà salvata in un array
                 long courseId = Long.parseLong(trimmed[0]);
                 if (courseId == id){
-                   Course found = CSVToCourse(s);
-                   return Optional.of(found);
+                    Course found = CSVToCourse(s);
+                    return Optional.of(found);
                 }
             }
             return Optional.empty();
@@ -55,8 +55,8 @@ public class CSVFileCourseRepository implements CourseRepository {
             for(String s : lines){
                 String[] tokens = s.split(",");
                 if(tokens[1].contains(part)){
-                   Course found = CSVToCourse(s);
-                   courses.add(found);
+                    Course found = CSVToCourse(s);
+                    courses.add(found);
                 }
             }
             return courses;
@@ -73,7 +73,7 @@ public class CSVFileCourseRepository implements CourseRepository {
             PintWriter sarà colui che effettivamente scriverà sul file
          */
         try (FileOutputStream output = new FileOutputStream(fileName,true);
-                PrintWriter pw = new PrintWriter(output)){
+             PrintWriter pw = new PrintWriter(output)){
             course.setId(++nextId);
             pw.println(courseToCSV(course));                //è qui che scrivo sul file (si con una println) richiamando un metodo creato da noi(sta verso la fine)
             return course;                                  //ovviamente nelle parentesi gli passo la stringa che voglio sivere sul file
@@ -125,26 +125,25 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public List<Course> getActiveCourses() {
-        return null;
+    public int getActiveCourses() {
+        return 0;
     }
 
     @Override
-    public void deleteOldestActiveCourses(int num) {
-
+    public boolean adjustActiveCourses(int NumActive) throws DataException {
+        return false;
     }
 
     public String courseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
         return String.format(Locale.US,CSV_COURSE,c.getId(),c.getTitle()
                 ,c.getDescription(),c.getProgram(),c.getDuration(),c.isActive(),c.getCreatedAt());
     }
+
     private Course CSVToCourse(String CSVLine){
         String[] tokens = CSVLine.split(",");
         return new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
-                tokens[3], Double.parseDouble(tokens[4]), Boolean.parseBoolean(tokens[5]),LocalDate.parse(tokens[6]));
-
+                tokens[3], Double.parseDouble(tokens[4]),Boolean.parseBoolean(tokens[5]) ,LocalDate.parse(tokens[6]));
     }
-
     private void flushStringsToFile(List<String> lines) throws FileNotFoundException {
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(fileName))) {
             for (String st : lines) {
@@ -152,6 +151,4 @@ public class CSVFileCourseRepository implements CourseRepository {
             }
         }
     }
-
-
 }

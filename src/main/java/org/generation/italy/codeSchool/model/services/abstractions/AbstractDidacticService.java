@@ -1,6 +1,6 @@
 package org.generation.italy.codeSchool.model.services.abstractions;
 
-import org.generation.italy.codeSchool.model.Course;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
@@ -17,7 +17,6 @@ public interface AbstractDidacticService {
     void updateCourse(Course course) throws EntityNotFoundException,DataException;
 
     void deleteCourseById(long id) throws EntityNotFoundException,DataException;
-    boolean adjustActiveCourses(int numActive) throws DataException; //scoprire quanti corsi attivi ci sono
 
-
+    boolean adjustActiveCourses(int numActive) throws DataException;  //se corsi attivi > numActive disattiva i più vecchi
 }
