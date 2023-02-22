@@ -187,7 +187,7 @@ public class UserInterfaceConsole {
             if(answer.equalsIgnoreCase("s")){
                 return true;
             }
-            if(answer.equalsIgnoreCase("n")){
+            else if(answer.equalsIgnoreCase("n")){
                 return false;
             }
             pr("Inserisci s o n");
