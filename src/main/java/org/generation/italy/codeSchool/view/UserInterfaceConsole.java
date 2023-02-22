@@ -108,7 +108,7 @@ public class UserInterfaceConsole {
         added.setProgram(sc.nextLine());
         System.out.println("Inserisci la durata del tuo corso");
         added.setDuration(sc.nextLong());
-        System.out.println("Desideri che questo corso sia attivo fin da subito?");
+        System.out.println("Desideri che questo corso sia attivo fin da subito? y/n");
         switch (sc.next().charAt(0)) {
             case 'y':
                 added.setActive(true);

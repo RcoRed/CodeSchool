@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="creates UserInterfaceConsole but doesn't handle its exceptions">
+    <list default="true" id="87e37e51-a85a-4fb4-bfb8-d80808e44c3b" name="Changes" comment="divide and conquer in UserInterfaceConsole start() method">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -245,7 +244,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677018367175</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="divide and conquer in UserInterfaceConsole start() method">
+      <created>1677056814978</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1677056814978</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -271,6 +277,7 @@
     <MESSAGE value="creates method adjustActiveCourses in StandardDidacticService" />
     <MESSAGE value="adjusts method adjustActiveCourses to falsify the oldest active courses" />
     <MESSAGE value="creates UserInterfaceConsole but doesn't handle its exceptions" />
-    <option name="LAST_COMMIT_MESSAGE" value="creates UserInterfaceConsole but doesn't handle its exceptions" />
+    <MESSAGE value="divide and conquer in UserInterfaceConsole start() method" />
+    <option name="LAST_COMMIT_MESSAGE" value="divide and conquer in UserInterfaceConsole start() method" />
   </component>
 </project>
