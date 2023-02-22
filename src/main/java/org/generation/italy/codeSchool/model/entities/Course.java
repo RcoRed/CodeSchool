@@ -1,4 +1,4 @@
-package org.generation.italy.codeSchool.model;
+package org.generation.italy.codeSchool.model.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
