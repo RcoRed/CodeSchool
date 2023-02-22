@@ -9,9 +9,9 @@ import org.generation.italy.codeSchool.view.UserInterfaceConsole;
 public class Main {
     public static void main(String[] args){       //ricordati di eliminare eventuali THROWS del main!
 
-        var repo = new InMemoryCourseRepository();
-        var service = new StandardDidacticService(repo); // gli passo il repository su cui service lavora
-        var console = new UserInterfaceConsole(service);
+        //var repo = new InMemoryCourseRepository();
+        //var service = new StandardDidacticService(repo); // gli passo il repository su cui service lavora
+        var console = new UserInterfaceConsole(new StandardDidacticService(new InMemoryCourseRepository()));
         try {
             console.start();
         } catch (DataException | EntityNotFoundException e) {

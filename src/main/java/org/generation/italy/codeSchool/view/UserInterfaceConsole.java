@@ -12,14 +12,11 @@
 package org.generation.italy.codeSchool.view;
 
 import org.generation.italy.codeSchool.model.Course;
-import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
-import org.generation.italy.codeSchool.model.data.implementations.InMemoryCourseRepository;
 import org.generation.italy.codeSchool.model.data.services.implementations.StandardDidacticService;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class UserInterfaceConsole {
@@ -30,55 +27,88 @@ public class UserInterfaceConsole {
     private String askProgram = "Inserisci il programma del corso: ";
     private String askDuration = "Inserisci la durata del corso: ";
     private String askActive = "Inserisci se il corso è attivo: "; //true or false
-    private String askCreateAt = "Inserisci la data di creazione del corso: ";
-
-    //private CourseRepository repo = new InMemoryCourseRepository();
-    //private StandardDidacticService service = new StandardDidacticService(repo);
+    private String askCreateAt = "Inserisci la data di creazione del corso: "; //yy-mm-dd
+    private String password = "java";
     private StandardDidacticService service;
     public UserInterfaceConsole(StandardDidacticService service) {
         this.service = service;
     }
     public void start() throws DataException, EntityNotFoundException {
         System.out.println("Buongiorno benvenuto nel sistema di gestione corsi.");
-        for(;;){
-            String s = askCommand("Buongiorno si prega di selezionare l'azione desiderata: ");
-            menu(s);
-        }
+        putPassword();
     }
     public String askCommand(String prompt){
         System.out.println(prompt);
         return sc.nextLine();
     }
-    public void menu(String s) throws DataException, EntityNotFoundException {
-
-        if(s.equalsIgnoreCase("s")){
-            System.out.println("Benvenuto, puoi ora salvare un nuovo corso: ");
-            service.saveCourse(subMenu());
-        }else if(s.equalsIgnoreCase("i")){
-            String ss = "Benvenuto, puoi ora cercare un corso dal suo id: ";
+    public void putPassword() throws DataException, EntityNotFoundException {
+        for(int i =0; i<2 ;i++) {
+            String givePassword = askCommand("Inserire la password per accedere ai comandi premium " +
+                    "o 'skip' per accedere ai comandi base: ");
+            if (givePassword.equals(password)) {
+                System.out.println("Benvenuto nell'area per gli utenti premium. \n"
+                        + "Hai a disposizione i seguenti comandi per gli utenti premium: \n"
+                        + "s = salvare un nuovo corso.\n"
+                        + "d = cancellare un corso per id.\n"
+                        + "u = eseguire update di un corso per id.\n"
+                        + "j = limitare il numero di corsi attivi ad un certo numero n.\n"
+                        + "i = ricerca un corso per id.\n"
+                        + "r = ricerca corsi per una stringa.\n"
+                        + "stop = termina il progrmamma.\n");
+                for (;;) {
+                    String premiumCommand = askCommand("Selezionare l'azione premium desiderata: ");
+                    menuPremium(premiumCommand);
+                }
+            } else if (givePassword.equalsIgnoreCase("skip")) {
+                System.out.println("Hai a disposizione i seguenti comandi per gli utenti base: \n"
+                        + "i = ricerca un corso per id.\n"
+                        + "r = ricerca corsi per una stringa.\n"
+                        + "stop = termina il progrmamma.\n");
+                for (;;) {
+                    String command = askCommand("Selezionare l'azione desiderata: ");
+                    menu(command);
+                }
+            } else {
+                System.out.println("Password errata, hai " + (2-i) +" tentativi rimasti.");
+            }
+        }
+    }
+    public void menu(String command) throws DataException {
+        if(command.equalsIgnoreCase("i")){
+            String ss = "Puoi ora cercare un corso dal suo id: ";
             long idToSearch = Long.parseLong(askCommand(ss));
             System.out.println(service.findCourseById(idToSearch));
-        }else if(s.equalsIgnoreCase("r")){
-            String ss = "Benvenuto, puoi ora cercare se una stringa di testo è contenuta nel titolo di un corso, inserisci la stringa: ";
+        }else if(command.equalsIgnoreCase("r")){
+            String ss = "Puoi ora cercare se una stringa di testo è contenuta nel titolo di un corso, inserisci la stringa: ";
             String titleToSearch = askCommand(ss);
             System.out.println(service.findCoursesByTitleContains(titleToSearch).toString());
-        }else if(s.equalsIgnoreCase("d")){
-            String ss = "Benvenuto, puoi cancellare un corso dal suo id: ";
-            long idToDelete = Long.parseLong(askCommand(ss));
-            service.deleteCourseById(idToDelete);
-            System.out.println("Il corso è stato eliminato");
-        }else if(s.equalsIgnoreCase("u")) {
-            System.out.println("Benvenuto, puoi ora fare un update ad un corso: ");
-            subMenu();
-            service.updateCourse(subMenu());
-        }else if (s.equalsIgnoreCase("j")) {
-            System.out.println("Benvenuto, puoi controllare i corsi attivi.");
-            int numMaxActive = Integer.parseInt(askCommand("Inserisci il numero massimo di corsi attivi: "));
-            System.out.println(service.adjustActiveCourses(numMaxActive));
-        }else if(s.equalsIgnoreCase("stop")){
+        }else if(command.equalsIgnoreCase("stop")){
+            System.out.println("Grazie per aver usato il nostro servizio di gestione corsi, arrivederci!");
             System.exit(0);
         }else{
             System.out.println("Il comando inserito non esiste.");
+        }
+    }
+
+    public void menuPremium(String premiumCommand) throws DataException, EntityNotFoundException {
+        if (premiumCommand.equalsIgnoreCase("s")) {
+            System.out.println("Puoi ora salvare un nuovo corso.");
+            service.saveCourse(subMenu());
+        } else if (premiumCommand.equalsIgnoreCase("d")) {
+            String ss = "Puoi ora cancellare un corso dal suo id: ";
+            long idToDelete = Long.parseLong(askCommand(ss));
+            service.deleteCourseById(idToDelete);
+            System.out.println("Il corso è stato eliminato");
+        } else if (premiumCommand.equalsIgnoreCase("u")) {
+            System.out.println("Puoi ora fare un update ad un corso: ");
+            subMenu();
+            service.updateCourse(subMenu());
+        } else if (premiumCommand.equalsIgnoreCase("j")) {
+            System.out.println("Puoi ora controllare i corsi attivi.");
+            int numMaxActive = Integer.parseInt(askCommand("Inserisci il numero massimo di corsi attivi: "));
+            System.out.println(service.adjustActiveCourses(numMaxActive));
+        } else{
+            menu(premiumCommand);
         }
     }
     public Course subMenu(){
