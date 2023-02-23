@@ -23,8 +23,10 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
         var result = data.values().stream().max(Comparator.comparingDouble(CourseEdition :: getCost));
         if(result.isPresent()){
             return result.get();
+        }else {
+            System.out.println("Non sono presenti CourseEdition");
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -34,16 +36,17 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
 
     @Override
     public Iterable<Double> findAllDuration() {
-        return null;
+        return data.values().stream().map(e -> e.getCourse().getDuration()).toList();
     }
 
     @Override
     public Iterable<CourseEdition> findByCourse(long courseId) {
-        return null;
+        return data.values().stream().filter(e -> e.getId()==courseId).toList();
     }
 
     @Override
     public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart, LocalDate startAt, LocalDate endAt) {
+
         return null;
     }
 
