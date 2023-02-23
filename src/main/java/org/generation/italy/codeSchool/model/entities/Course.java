@@ -30,9 +30,6 @@ public class Course implements Comparable<Course>, Serializable {
         this.duration = duration;
         this.isActive = isActive;
         this.createdAt = createdAt;
-
-
-
     }
     public long getId() {
         return id;
