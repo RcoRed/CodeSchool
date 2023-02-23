@@ -1,6 +1,6 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
-import org.generation.italy.codeSchool.model.Course;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

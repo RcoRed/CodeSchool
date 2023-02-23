@@ -4,10 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="Aggiunge i read">
+    <list default="true" id="f4979f01-35d8-4864-abe1-8bd8961e2052" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseEditionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseEditionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_02_23__12_56__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_02_23__12_56__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_02_23__12_56__Changes_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_02_23__12_56__Changes_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/services/abstractions/AbstractDidacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/services/abstractions/AbstractDidacticService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/services/implementations/StandardDidacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/services/implementations/StandardDidacticService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseEdition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseEdition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Enrollment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Enrollment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/TestDidacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/TestDidacticService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/services/implementations/StandardDidacticServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/services/implementations/StandardDidacticServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,9 +36,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
