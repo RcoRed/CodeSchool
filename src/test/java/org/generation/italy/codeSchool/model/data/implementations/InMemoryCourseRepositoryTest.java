@@ -1,13 +1,11 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
-import org.generation.italy.codeSchool.model.Course;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Locale;
 
 import static org.generation.italy.codeSchool.model.data.Constants.CSV_COURSE;

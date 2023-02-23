@@ -1,11 +1,9 @@
 package org.generation.italy.codeSchool.view;
 
-import org.generation.italy.codeSchool.model.Course;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.data.implementations.InMemoryCourseRepository;
-import org.generation.italy.codeSchool.model.services.implementations.StandardDidacticService;
-import com.sun.tools.jconsole.JConsoleContext;
 import org.generation.italy.codeSchool.model.services.implementations.StandardDidacticService;
 
 import java.time.LocalDate;
@@ -114,6 +112,7 @@ public class UserInterfaceConsole {
             }
          }
          correct = false;
+         r='\0';
 
          System.out.println("Introduci la descrizione del nuovo corso: ");
          description = scanner.next();
@@ -130,7 +129,7 @@ public class UserInterfaceConsole {
             }
          }
          correct = false;
-
+         r='\0';
          System.out.println("Introduci il programma del nuovo corso: ");
          program = scanner.next();
          while(!correct){
@@ -146,7 +145,7 @@ public class UserInterfaceConsole {
             }
          }
          correct = false;
-
+         r='\0';
          System.out.println("Introduci la durata del nuovo corso: ");
          duration = scanner.next();
          while(!correct){
@@ -162,7 +161,7 @@ public class UserInterfaceConsole {
             }
          }
          correct = false;
-
+         r='\0';
          System.out.println("Vuoi impostare il corso come attivo?(s/n): ");
          char r1 = scanner.next().charAt(0);
          while(!correct){
@@ -340,6 +339,50 @@ public class UserInterfaceConsole {
          System.out.printf("Bene! Ci sono %d numeri di corsi attivi o anche meno!\n", n);
       }
    }
+
+   public double readDouble(String s){
+      do{
+         System.out.print(s + " ");
+         String s1 = scanner.nextLine();
+         try{
+            return Double.parseDouble(s1);
+         }catch (NumberFormatException e){
+            System.out.println("Formato inserito non valido");
+         }
+      }while (true);
+   }
+
+   public boolean readBoolean(String s){
+      do{
+         System.out.print(s +" ");
+         String s1 = scanner.nextLine();
+         if(s1.equalsIgnoreCase("s")){
+            return true;
+         } else if (s1.equalsIgnoreCase("n")){
+            return false;
+         } else {
+            System.out.println("Devi inserire (s/n):");
+         }
+      } while (true);
+   }
+
+
+   public String readString(String s){
+      System.out.println(s +" ");
+      return scanner.nextLine();
+   }
+   public double readLong(String s){
+      do{
+         System.out.print(s + " ");
+         String s1 = scanner.nextLine();
+         try{
+            return Long.parseLong(s1);
+         }catch (NumberFormatException e){
+            System.out.println("Formato inserito non valido");
+         }
+      }while (true);
+   }
+
 }
     /*
    Iniezione di dipendenza nella console
