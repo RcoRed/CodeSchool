@@ -10,13 +10,10 @@ public interface CourseEditionRepository {
     double getTotalCost();
     CourseEdition getMostExpensive();
     double getAverageCost();
-    List<Double> getDurationList();
-    List<CourseEdition> getCourseEditionsById(long courseId);
-    List<CourseEdition> getCourseEditionsInTime(String name, LocalDate from, LocalDate to);
-
-    //7. Restituisce la CourseEdition ha il costo mediano
-    //   Se sono pari, restituiremo la media fra i due che sono nel mezzo
-
-    Course getModeCosts();
+    Iterable<Double> getDurationList();
+    Iterable<CourseEdition> getCourseEditionsById(long courseId);
+    Iterable<CourseEdition> getCourseEditionsInTime(String name, LocalDate from, LocalDate to);
+    Iterable<CourseEdition> getMiddleCourseEdition();
+    Course getMode();
 
 }
