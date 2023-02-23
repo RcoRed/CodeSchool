@@ -46,17 +46,27 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
 
     @Override
     public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart, LocalDate startAt, LocalDate endAt) {
-
-        return null;
+        return data.values().stream().filter(e -> e.getCourse().getTitle().contains(titlePart)
+                                             && e.getStartedAt().isAfter(startAt)
+                                             && e.getStartedAt().isBefore(endAt)).toList();
     }
 
     @Override
     public Iterable<CourseEdition> findMedian() {
-        return null;
+        List <CourseEdition> medianPrice = new ArrayList<>();
+        var result = data.values().stream().sorted(Comparator.comparingDouble(CourseEdition :: getCost)).toList();
+        if(data.size()%2==1) {
+            medianPrice.add(result.get((data.size()+1)/2));
+            return medianPrice;
+        }else {
+            medianPrice.add(result.get(data.size()/2));
+            medianPrice.add(result.get((data.size()/2)+1));
+            return medianPrice;
+        }
     }
 
     @Override
-    public Course findModeByEditionCost() {
+    public Iterable<CourseEdition> findModeByEditionCost() {
         return null;
     }
 }

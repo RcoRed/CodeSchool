@@ -15,6 +15,6 @@ public interface CourseEditionRepository {
     Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart,
                                                           LocalDate startAt, LocalDate endAt);
     Iterable<CourseEdition> findMedian();
-    Course findModeByEditionCost();
+    Iterable<CourseEdition> findModeByEditionCost();
 
 }
