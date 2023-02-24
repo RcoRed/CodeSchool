@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Course implements Comparable<Course>, Serializable {
+public class Course implements Serializable {
     private long id;
     private String title;
     private String description;
@@ -14,14 +14,13 @@ public class Course implements Comparable<Course>, Serializable {
     private boolean isActive;
     private LocalDate createdAt;
 
-
-    public Course(){
+    public Course() {
         this.createdAt = LocalDate.now();
     }
     public Course(long id, String title, String description, String program, double duration, LocalDate createdAt) {
-        this(id,title,description,program,duration,true,createdAt);
-
+        this(id, title, description, program, duration, true, createdAt);
     }
+
     public Course(long id, String title, String description, String program, double duration,boolean isActive, LocalDate createdAt) {
         this.id = id;
         this.title = title;
@@ -30,10 +29,8 @@ public class Course implements Comparable<Course>, Serializable {
         this.duration = duration;
         this.isActive = isActive;
         this.createdAt = createdAt;
-
-
-
     }
+
     public long getId() {
         return id;
     }
@@ -54,8 +51,12 @@ public class Course implements Comparable<Course>, Serializable {
         return program;
     }
 
-    public double getDuration() {
+    public Double getDuration() {
         return duration;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
     }
 
     public boolean isActive() {
@@ -64,10 +65,6 @@ public class Course implements Comparable<Course>, Serializable {
 
     public void setActive(boolean active) {
         isActive = active;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
     }
 
     //override del metodo madre Object toString() e lo facciamo meglio
@@ -81,8 +78,8 @@ public class Course implements Comparable<Course>, Serializable {
 //                ", duration=" + duration +
 //                '}';
 //        ritorna la stessa cosa, anzi è fatta meglio
-        return String.format("Course{id=%d, title=%s, description=%s, program=%s, duration=%f}",
-                id,title,description,program,duration);
+        return String.format("Course{id=%d, title=%s, description=%s, program=%s, duration=%f, isActive = %b, createdAt = %s}",
+                id,title,description,program,duration, isActive, createdAt);
     }
 
     @Override
@@ -98,15 +95,5 @@ public class Course implements Comparable<Course>, Serializable {
         return Objects.hash(getId());       //modifica l'hashCode in base all'equals
     }
 
-    @Override
-    public int compareTo(Course o) { // ordinamento naturale della classe
-        /* if (this.createdAt.isBefore(o.getCreatedAt())) {
-            return -1;
-        } else if (this.createdAt.isAfter(o.getCreatedAt())){
-            return 1;
-        } else {
-            return 0;
-        } */
-        return this.createdAt.compareTo(o.createdAt);
-    }
+
 }

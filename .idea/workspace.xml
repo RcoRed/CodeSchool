@@ -5,9 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="Aggiunge Println di commit su branch">
+      <change afterPath="$PROJECT_DIR$/.idea/csv-editor.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseEditionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseEditionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Enrollment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TESTDATA.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/courses.ser" beforeDir="false" afterPath="$PROJECT_DIR$/courses.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Attendance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Attendance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/ClassRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/ClassRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Competence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Competence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Course.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseEdition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseEdition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/EditionModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/EditionModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Enrollement.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Lesson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Lesson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Level.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/RemotePlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/RemotePlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Sex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Sex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Skill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Skill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/abstractions/AbstractDidacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/abstractions/AbstractDidacticService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/view/UserInterfaceConsole.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,9 +49,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JUnit5 Test Class" />
         <option value="Interface" />
         <option value="Class" />
-        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -30,6 +62,10 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/services/implementations/StandardDidacticService.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -42,7 +78,9 @@
     </option>
   </component>
   <component name="ProjectId" id="2LlvnJWhJRi6wXFaI3TDqL3L8PW" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -203,6 +241,11 @@
                 </map>
               </option>
             </State>
+          </value>
+        </entry>
+        <entry key="a9e645d6-4de2-44db-a87b-53b404495ab7">
+          <value>
+            <State />
           </value>
         </entry>
       </map>

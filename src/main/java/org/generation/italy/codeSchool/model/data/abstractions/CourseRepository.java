@@ -18,14 +18,7 @@ public interface CourseRepository {
     void update(Course course) throws EntityNotFoundException,DataException;
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
-
-    List<Course> getActiveCourses();
-
-    void deleteOldestActiveCourses(int num);
+    int getActiveCourses();
+    boolean adjustActiveCourses(int NumActive) throws DataException;
 }
 
-/*
-    utitlizziamo le exceptions che abbimo creato noi (nel package "exceptions")
-    così da riuscire a poter utilizzare questa interfaccia con tutte le classi che vogliamo
-    e gestire l'errore in maniera SPECIFICA!
- */

@@ -113,13 +113,13 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public List<Course> getActiveCourses() {
-        return null;
+    public int getActiveCourses() {
+        return 0;
     }
 
     @Override
-    public void deleteOldestActiveCourses(int num) {
-
+    public boolean adjustActiveCourses(int NumActive) throws DataException {
+        return false;
     }
 
     private List<Course> load() throws IOException, ClassNotFoundException {
@@ -141,6 +141,5 @@ public class SerializedCourseRepository implements CourseRepository {
             oos.writeObject(courses);
         }
     }
-
 
 }

@@ -1,4 +1,5 @@
 package org.generation.italy.codeSchool.model.services.implementations;
+
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
@@ -9,29 +10,29 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class StandardDidacticServiceTest {
+class StandardDidacticServiceTest {
     private CourseRepository repo;
     private StandardDidacticService service;
     private Course c1;
     private Course c2;
     private Course c3;
-
+    private Course c4;
     @BeforeEach
     void setUp() {
         repo = new InMemoryCourseRepository();
-        service = new StandardDidacticService(repo);
-        c1 = new Course(0,TITLE, DESCRIPTION, PROGRAM, DURATION, true, LocalDate.of(2021, 12, 3));
-        c2 = new Course(0,TITLE2, DESCRIPTION2, PROGRAM2, DURATION2, false, LocalDate.of(2020, 1, 14));
-        c3 = new Course(0,TITLE3, DESCRIPTION3, PROGRAM3, DURATION3, true, LocalDate.of(2018, 6, 20));
+        c1 = new Course(1, "Title1", "Description1", "Program1", 200,true, LocalDate.of(2023,02,17));
+        c2 = new Course(2, "Title2", "Description2", "Program2", 201,true, LocalDate.of(2023,02,18));
+        c3 = new Course(3, "Title3", "Description3", "Program3", 202,true, LocalDate.of(2023,02,16));
+        c4 = new Course(4, "Title4", "Description4", "Program4", 203,true, LocalDate.of(2023,02,19));
         try {
             repo.create(c1);
             repo.create(c2);
             repo.create(c3);
+            repo.create(c4);
         } catch (DataException e) {
-            fail("Errore nell'inserimento corsi nel setup: "+e.getMessage());
+            fail("Errore nell'inserimento corsi del setup: " + e.getMessage());
         }
     }
 
@@ -40,19 +41,48 @@ public class StandardDidacticServiceTest {
     }
 
     @Test
-    void adjustActiveCourses_should_return_false_when_actives_already_less_than_desired() {
-        boolean result = service.adjustActiveCourses(2);
-        assertFalse(result);
-        assertEquals(true, c1.isActive());
-        assertEquals(true, c3.isActive());
-        assertEquals(false, c2.isActive());
+    void findCourseById() {
+    }
+
+    @Test
+    void findCoursesByTitleContains() {
+    }
+
+    @Test
+    void saveCourse() {
+    }
+
+    @Test
+    void updateCourse() {
+    }
+
+    @Test
+    void deleteCourseById() {
     }
 
     @Test
     void adjustActiveCourses_should_deactivate_oldest_courses_when_actives_are_more_than_desired() {
-        assertTrue(service.adjustActiveCourses(1));
-        assertTrue(c1.isActive());
-        assertFalse(c2.isActive());
-        assertFalse(c3.isActive());
+        try {
+            assertTrue(service.adjustActiveCourses(2));
+            assertFalse(c1.isActive());
+            assertTrue(c2.isActive());
+            assertFalse(c3.isActive());
+            assertTrue(c4.isActive());
+        } catch (DataException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Test
+    void adjustActiveCourses_should_return_false_when_actives_already_less_than_desired() {
+        try {
+            boolean result = service.adjustActiveCourses(4);
+            assertFalse(result);
+            assertTrue(c1.isActive());
+            assertTrue(c2.isActive());
+            assertTrue(c3.isActive());
+            assertTrue(c4.isActive());
+        } catch (DataException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
