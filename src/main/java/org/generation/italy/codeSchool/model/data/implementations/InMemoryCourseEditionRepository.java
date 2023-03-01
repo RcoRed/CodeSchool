@@ -7,6 +7,8 @@ import org.generation.italy.codeSchool.model.entities.CourseEdition;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class InMemoryCourseEditionRepository implements CourseEditionRepository {
 
@@ -14,19 +16,12 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
 
     @Override
     public double getTotalCost() {
-        var result = data.values().stream().mapToDouble(CourseEdition :: getCost).sum();
-        return result;
+        return data.values().stream().mapToDouble(CourseEdition :: getCost).sum();
     }
 
     @Override
-    public CourseEdition findMostExpensive() {
-        var result = data.values().stream().max(Comparator.comparingDouble(CourseEdition :: getCost));
-        if(result.isPresent()){
-            return result.get();
-        }else {
-            System.out.println("Non sono presenti CourseEdition");
-            return null;
-        }
+    public Optional<CourseEdition> findMostExpensive() {
+        return data.values().stream().max(Comparator.comparingDouble(CourseEdition :: getCost));
     }
 
     @Override
@@ -45,10 +40,12 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
     }
 
     @Override
-    public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart, LocalDate startAt, LocalDate endAt) {
+    public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart,
+                                                                 LocalDate startAt, LocalDate endAt){
         return data.values().stream().filter(e -> e.getCourse().getTitle().contains(titlePart)
-                                             && e.getStartedAt().isAfter(startAt)
-                                             && e.getStartedAt().isBefore(endAt)).toList();
+                &&e.isStartedInRange(startAt, endAt)).toList();
+                                             /*&& e.getStartedAt().isAfter(startAt)
+                                             && e.getStartedAt().isBefore(endAt)).toList();*/
     }
 
     @Override
@@ -56,17 +53,29 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
         List <CourseEdition> medianPrice = new ArrayList<>();
         var result = data.values().stream().sorted(Comparator.comparingDouble(CourseEdition :: getCost)).toList();
         if(data.size()%2==1) {
-            medianPrice.add(result.get((data.size()+1)/2));
+            medianPrice.add(result.get((data.size()-1)/2));
             return medianPrice;
         }else {
-            medianPrice.add(result.get(data.size()/2));
-            medianPrice.add(result.get((data.size()/2)+1));
+            medianPrice.add(result.get((data.size()/2)));
+            medianPrice.add(result.get((data.size()/2-1)));
             return medianPrice;
         }
     }
 
     @Override
-    public Iterable<CourseEdition> findModeByEditionCost() {
-        return null;
+    public Optional<Double> getCourseEditionCostMode() {
+        /*Stream<Course> cs = data.values().stream().filter(e->e.getCost()>1000).map(e->e.getCourse()).distinct();
+        List<Course> ls =cs.toList();
+        Optional<Course> os=ls.stream().findFirst();
+        Optional<Course> mc=ls.stream().max((c1, c2)->(int) (c1.getDuration()-c2.getDuration()));*/
+
+        Stream<CourseEdition> stream =data.values().stream();
+        var x = stream.collect(Collectors.groupingBy(CourseEdition :: getCost, Collectors.counting())); //è come se avesse Collectors.toList()
+        var max =x.entrySet().stream().max(Comparator.comparingLong(Map.Entry::getValue)); //ritorna optional di Map.Entry
+        /*if (max.isPresent()){
+            return Optional.of((max.get().getKey()));
+        }
+        return Optional.empty();*/
+        return max.map(Map.Entry::getKey);  //sta traformando un optional di chiave e valore in un optional di chiave(double)
     }
 }

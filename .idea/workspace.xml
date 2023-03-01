@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f4979f01-35d8-4864-abe1-8bd8961e2052" name="Changes" comment="Aggiunge findDuration e findId">
+    <list default="true" id="f4979f01-35d8-4864-abe1-8bd8961e2052" name="Changes" comment="Aggiunge findTitle e findMedian">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_02_23,_12_56_[Changes]1/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_20_02_23__12_56__Changes_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseEditionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseEditionRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseEditionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseEditionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseEdition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseEdition.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,7 +169,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="" />
+      <changelist id="f4979f01-35d8-4864-abe1-8bd8961e2052" name="Changes" comment="Aggiunge findTitle e findMedian" />
       <created>1676458651426</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -249,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677173565911</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Aggiunge findTitle e findMedian">
+      <created>1677176976748</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1677176976748</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -302,6 +312,7 @@
     <MESSAGE value="Aggiunge i read" />
     <MESSAGE value="Aggiunge entities, CourseEditionRepository e InMemoryCourseEditionRepository" />
     <MESSAGE value="Aggiunge findDuration e findId" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunge findDuration e findId" />
+    <MESSAGE value="Aggiunge findTitle e findMedian" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunge findTitle e findMedian" />
   </component>
 </project>
