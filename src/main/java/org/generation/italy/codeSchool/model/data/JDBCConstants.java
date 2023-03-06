@@ -5,15 +5,34 @@ public class JDBCConstants {
     public static final String USER_NAME="postgresMaster";
     public static final String PASSWORD ="goPostgresGo";
     public static final String COURSE_QUERY="""
-                SELECT id,title,description,program,duration,is_active,created_at
-                FROM course""";
+                SELECT id_course,title,description,program,duration,is_active,created_at
+                FROM courses""";
     public static final String FIND_COURSE_BY_ID ="""
-                SELECT id,title,description,program, duration,is_active,created_at
-                FROM course WHERE id = ? 
+                SELECT id_course,title,description,program, duration,is_active,created_at
+                FROM courses WHERE id = ? 
                 """;
     public static final String DELETE_COURSE_BY_ID= """
-               DELETE FROM course
+               DELETE FROM courses
                WHERE id = ?
             """;
-
+    public static final String FIND_BY_TITLE_CONTAINS= """
+            SELECT id_course,title,description,program, duration,is_active,created_at
+            FROM courses WHERE title like '%?%'
+            """;
+    public static final String INSERT_COURSE= """
+            INSERT INTO courses(id_course, title, description, program,duration, is_active, created_at)
+              VALUES(?,'?', '?', '?', ?, ?, '?');
+            """;
+    public static final String NEXT_VAL_COURSE= """
+            SELECT nextval('courses_sequence');
+            """;
+    public static final String UP_DATE_COURSE= """
+            UPDATE courses
+            SET title = 'java ciao'
+            SET title = 'java ciao'
+            SET title = 'java ciao'
+            SET title = 'java ciao'
+            SET title = 'java ciao'
+            WHERE id_course = 1;
+            """;
 }
