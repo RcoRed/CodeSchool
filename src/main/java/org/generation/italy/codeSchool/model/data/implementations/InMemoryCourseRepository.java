@@ -28,6 +28,11 @@ public class InMemoryCourseRepository implements CourseRepository {
      */
 
     @Override
+    public List<Course> findAll() throws DataException {
+        return new ArrayList<>(dataSource.values());
+    }
+
+    @Override
     public Optional<Course> findById(long id) {
         Course x = dataSource.get(id);
         if (x != null) {
