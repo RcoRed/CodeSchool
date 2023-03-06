@@ -26,6 +26,15 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
+    public List<Course> findAll() throws DataException {
+        try {
+            return load();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel findByTitleContains", e);
+        }
+    }
+
+    @Override
     public Optional<Course> findById(long id) throws DataException {
         try {
             var courses = load();
