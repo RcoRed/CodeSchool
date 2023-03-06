@@ -9,5 +9,4 @@ public class Attendance {
     private LocalDate startDate;
     private LocalDate endDate;
     private String comment;
-
 }

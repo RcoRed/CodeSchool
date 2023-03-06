@@ -6,5 +6,4 @@ public class Student extends Person{
     private String regNumber;
     private LocalDate lastContact;
     private LocalDate dateOfReg;
-
 }

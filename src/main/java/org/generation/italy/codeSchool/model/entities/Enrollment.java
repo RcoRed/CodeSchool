@@ -9,9 +9,8 @@ public class Enrollment {
     private Student student;
     private CourseEdition courseEdition;
     private String courseEvaluation;
-    private double courseVote;
+    private int courseVote;
     private String studentEvaluation;
     private double studentVote;
     private boolean hasPaid;
-
 }

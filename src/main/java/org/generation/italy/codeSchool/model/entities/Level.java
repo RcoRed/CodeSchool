@@ -1,5 +1,5 @@
 package org.generation.italy.codeSchool.model.entities;
 
 public enum Level {
-        BASE,INTERMEDIATE,ADVANCE,GURU
+    BASE,INTERMEDIATE,ADVANCED,GURU
 }

@@ -11,7 +11,6 @@ public abstract class Person {
     protected String email;
     protected String cellNumber;
     protected Address address;
-    private String username;
-    private String password;
-
+    protected String username;
+    protected String password;
 }

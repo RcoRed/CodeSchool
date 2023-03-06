@@ -26,6 +26,15 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
+    public List<Course> findAll() throws DataException {
+        try {
+            return load();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel findByTitleContains", e);
+        }
+    }
+
+    @Override
     public Optional<Course> findById(long id) throws DataException {
         try {
             var courses = load();
@@ -113,13 +122,13 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public List<Course> getActiveCourses() {
-        return null;
+    public int getActiveCourses() {
+        return 0;
     }
 
     @Override
-    public void deleteOldestActiveCourses(int num) {
-
+    public boolean adjustActiveCourses(int NumActive) throws DataException {
+        return false;
     }
 
     private List<Course> load() throws IOException, ClassNotFoundException {
@@ -141,6 +150,5 @@ public class SerializedCourseRepository implements CourseRepository {
             oos.writeObject(courses);
         }
     }
-
 
 }

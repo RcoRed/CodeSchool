@@ -8,5 +8,4 @@ public class ClassRoom {
     private boolean isComputerized;
     private boolean hasProjector;
     private RemotePlatform platform;
-
 }

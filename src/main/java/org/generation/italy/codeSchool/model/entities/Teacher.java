@@ -5,10 +5,9 @@ import java.util.Set;
 
 public class Teacher extends Person{
     private String pIVA;
-    private boolean isEmployee;     //impiegato diretto dell'azienda o meno
+    private boolean isEmployee;
     private LocalDate hireDate;
-    private LocalDate firedDate;
+    private LocalDate fireDate;
     private Level level;
     private Set<Competence> competences;
-
 }

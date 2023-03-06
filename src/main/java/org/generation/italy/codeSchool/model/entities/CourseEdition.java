@@ -6,7 +6,6 @@ public class CourseEdition {
     private long id;
     private Course course;
     private LocalDate startedAt;
-    private double price;
+    private double cost;
     private ClassRoom assignedClassRoom;
-
 }

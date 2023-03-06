@@ -1,209 +1,201 @@
 package org.generation.italy.codeSchool.view;
 
+
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.services.abstractions.AbstractDidacticService;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-
 public class UserInterfaceConsole {
-    private AbstractDidacticService service;
-    private Scanner console;
+    //parla solo con standardDidacticService
+    //deve avere un metodo star
+    //iniezione di indipendenza dalle console
+    //dovrà contenere un menù: inserisci:
+    //s per salvare un nuovo corso
+    //r per ricerca corsi per titolo
+    //i per ricerca corso per id
+    //d per cancellare un corso per id
+    //u per eseuire update di un corso per id con un sottomenu per i dati del corso
+    //j per limitare il numero di corsi attivi ad un certo numero n
 
-    public UserInterfaceConsole(AbstractDidacticService service) {
+    private AbstractDidacticService service;
+    private Scanner console = new Scanner(System.in);
+    public UserInterfaceConsole(AbstractDidacticService service){
         this.service = service;
-        this.console = new Scanner(System.in);
     }
-    public void start(){
-        String answer;
-        do{
-            showMainMenu();
-            answer = console.nextLine();
+    public void userInteraction(){
+        welcome();
+        char a = console.nextLine().charAt(0);
+        while (a != 'e'){
             try {
-                switch (answer) {
-                    case "s":
-                        Course c = saveCourse();
-                        pr("corso salvato con id "+ c.getId());
+                switch (a){
+                    case 's':
+                        addCourse();
                         break;
-                    case "r":
-                        List<Course> coursesList = showCoursesByTitleLike();
-                        printList(coursesList);
+                    case 'r':
+                        researchCourseByTitle();
                         break;
-                    case "i":
-                        Course course1 = showCourseByID();
-                        pr(course1.toString());
+                    case 'i':
+                        findCourseByID();
                         break;
-                    case "d":
-                        long deletedId = deleteCourseById();
-                        pr("É stato eliminato corretamente il corso con id: " + deletedId);
+                    case 'd':
+                        deleteCourseByID();
                         break;
-                    case "u":
-                        Course course2 = updateCourseById();
-                        pr("Il corso è stato aggiornato correttamente con il nuovo/i parametro/i : ");
-                        pr(course2.toString());
+                    case 'u':
+                        updateCourseByID();
                         break;
-                    case "j":
-                        if (setActiveCourses()){
-                            pr("Aggiornamento corsi attivi avvenuto con successo");
-                        }else {
-                            pr("Nessun corso è stato aggiornato");
-                        }
-                        break;
-                    case "q":
-                        pr("Termino il programma...");
-                        pr("<==== ARRIVEDERCI ====>");
+                    case 'j':
+                        deleteOldCourses();
                         break;
                     default:
-                        System.out.println("comando non compreso! !Riprova!");
+                        System.out.println("\nNon esiste un'opzione associata a questo tasto\n");
+                        break;
                 }
-
-            } catch (EntityNotFoundException e){
-                System.out.println("Errore nella ricerca! " + e.getMessage());
-            } catch (DataException e){
-                System.out.println("Errore connessione sorgente dati, riprovare piu tardi! " + e.getMessage());
+            }catch (DataException e){
+                System.out.println("Errore nella connessione con la sorgente dati");
+                System.out.println(e.getCause().getMessage());
             }
-
-        } while(!answer.equalsIgnoreCase("q"));
-    }
-
-    private boolean setActiveCourses() throws DataException {
-        int id = (int)getLong("Inserisci quanti Corsi (i più recenti) dovranno rimanere attivi");
-        return service.adjustActiveCourses(id);
-    }
-
-    private Course updateCourseById() throws DataException, EntityNotFoundException {
-        long id = getLong("inserisci ID del corso da aggiornare");
-        String title = getLine("inserisci il titolo");
-        String desc = getLine("inseerisci descrizione");
-        String program = getLine("inserisci il programma");
-        double duration = getDouble("inserisci la durata");
-        boolean active = getBoolean("il corso è attivo?");
-        LocalDate createAt = getDate("inserisci data creazione");
-        Course c = new Course(id,title,desc,program,duration,active,createAt);
-        service.updateCourse(c);
-        return c;
-    }
-
-    private long deleteCourseById() throws EntityNotFoundException, DataException {
-        long id = getLong("inserisci ID da eliminare");
-        service.deleteCourseById(id);
-        return id;
-    }
-
-    private Course showCourseByID() throws EntityNotFoundException, DataException {
-        long id = getLong("inserisci ID da cercare");
-        Optional<Course> optionalCourse = service.findCourseById(id);
-        if (optionalCourse.isPresent()){
-            Course course = optionalCourse.get();
-            return course;
+            welcome();
+            a = console.next().charAt(0);
         }
-        throw new EntityNotFoundException("Errore nella ricerca del corso: Corso non trovato");
     }
 
-    private List<Course> showCoursesByTitleLike() throws DataException {
-        String title = getLine("inserisci titolo da cercare");
-        return service.findCoursesByTitleContains(title);
+    private void deleteOldCourses() throws DataException{
+        System.out.println("Quanti corsi vuoi eliminare?\nRicorda: verranno eliminati gli n corsi più vecchi");
+        int nCoursesToDelete = console.nextInt();
+        boolean results = service.adjustActiveCourses(nCoursesToDelete);
+        if(!results){
+            System.out.println("\nIl numero di corsi da eliminare è pari o inferiore al numero di corsi presenti");
+        }else{
+            if(nCoursesToDelete == 1){
+                System.out.printf("E' stato eliminato %d corso\n", nCoursesToDelete);
+            }else{
+                System.out.printf("Sono stati eliminati %d corsi\n", nCoursesToDelete);
+            }
+        }
     }
 
-    private Course saveCourse() throws DataException {
-        String title = getLine("inserisci il titolo");
-        String desc = getLine("inseerisci descrizione");
-        String program = getLine("inserisci il programma");
-        double duration = getDouble("inserisci la durata");
-        boolean active = getBoolean("il corso è attivo?");
-        LocalDate createAt = getDate("inserisci data creazione");
-        return service.saveCourse(new Course(0,title,desc,program,duration,active,createAt));
+    private void updateCourseByID() throws DataException{
+        System.out.println("Immetti l'id del corso da aggiornare:");
+        long idToUpdate = console.nextLong();
+        Optional<Course> toUpdate = service.findCourseById(idToUpdate);
+        if(toUpdate.isEmpty()){
+            System.out.println("\nNon esiste un corso con id " + idToUpdate + " da aggiornare\n");
+        }else{
+            System.out.println("\nStai aggiornando il corso:\n" + toUpdate);
+            String title1 = readString("Immetti il titolo:");
+            String description1 = readString("Immetti la descrizione:");
+            String program1 = readString("Immetti il programma:");
+            double duration1 = readDouble("Immetti la durata in ore:");
+            boolean active = readBoolean("Scrivi s per attivare il corso o n per disattivarlo");
+            Course c2 = new Course(idToUpdate, title1, description1, program1, duration1, active, LocalDate.now());
+            try {
+                service.updateCourse(c2);
+                System.out.println("\nIl corso è stato aggiornato! Adesso il corso è composto da:\n" + c2 + "\n");
+            } catch (EntityNotFoundException e) {
+                System.out.printf("Il corso con id %d non è stato trovato", idToUpdate);
+            }
+        }
     }
 
-    private void showMainMenu() {
-        pr("<==== INTERFACCIA UTENTE ====>");
-        pr("|- s -|per salvare un nuovo corso");
-        pr("|- r -|cerca corsi per titolo");
-        pr("|- i -|cerca un corso per id");
-        pr("|- d -|cancella corso per id");
-        pr("|- u -|aggiorna corso per id");
-        pr("|- j -|limita corsi attivi");
-        pr("|- q -|esci");
+    private void deleteCourseByID() throws DataException{
+        System.out.println("Immetti l'id del corso da cancellare:");
+        long idToDel = console.nextLong();
+        try {
+            service.deleteCourseById(idToDel);
+            System.out.printf("Il corso con id %d è stato cancellato%n", idToDel);
+        } catch (EntityNotFoundException e) {
+            System.out.printf("Il corso con id %d non è stato trovato", idToDel);
+        }
     }
-    private void pr(String s){
-        System.out.println(s);
 
+    private void findCourseByID() throws DataException {
+        System.out.println("Inserisci l'id del corso da cercare");
+        long idToFind = console.nextLong();
+        Optional<Course> optionalCourse = service.findCourseById(idToFind);
+        if(optionalCourse.isEmpty()){
+            System.out.println("\nNon c'è un corso associato a questo id\n");
+        }else {
+            System.out.println("Ho trovato questo corso\n" + optionalCourse.get());
+        }
     }
-    private void p(String s){
-        System.out.print(s+" ");
+
+    private void researchCourseByTitle() throws DataException {
+        System.out.println("Inserisci il titolo del corso da cercare:");
+        String part = console.next();
+        List<Course> result = service.findCoursesByTitleContains(part);
+        if(result.size() == 0){
+            System.out.println("Non ci sono ancora corsi\n");
+        }else if(result.size() == 1){
+            System.out.println("Ho trovato questo corso:\n" + result);
+        }else{
+            System.out.println("Ho trovato questi corsi:\n" + result);
+        }
     }
-    private String getLine(String prompt){
-        System.out.print(prompt+" ");
+
+    private void addCourse() throws DataException {
+        long id = 0;
+        String title = readString("Immetti il titolo:");
+        String description = readString("Immetti la descrizione:");
+        String program = readString("Immetti il programma:");
+        double duration = readDouble("Immetti la durata in ore:");
+        boolean active = readBoolean("Scrivi s per attivare il corso o n per disattivarlo");
+        Course c = new Course(id, title, description, program, duration, active, LocalDate.now());
+        service.saveCourse(c);
+        System.out.println("\nCorso salvato!\n");
+    }
+
+    public void welcome(){
+        System.out.println("Benvenuto all'interfaccia, premi:\ns per salvare un nuovo corso \nr per ricerca corsi" +
+                " per titolo \ni per ricerca corso per id\nd per cancellare un corso per id\nu per eseuire update " +
+                "di un corso per id\nj per limitare il numero di corsi attivi ad un certo numero n\ne per uscire dal programma");
+    }
+
+    public double readDouble(String s){
+        do {
+            System.out.print(s + " ");
+            String s1 = console.nextLine();
+            try {
+                return Double.parseDouble(s1);
+            }catch (NumberFormatException e){
+                System.out.println("Formato inserito non valido");
+            }
+        }while (true);
+    }
+
+    public boolean readBoolean(String s){
+        do {
+            System.out.print(s + " ");
+            String s1 = console.nextLine();
+            if(s1.equalsIgnoreCase("s")){
+                return true;
+            } else if(s1.equalsIgnoreCase("n")){
+                return false;
+            }else {
+                System.out.println("Devi inserire s o n");
+            }
+        }while (true);
+    }
+
+    public long readLong(String s){
+        do {
+            System.out.print(s + " ");
+            String s1 = console.nextLine();
+            try {
+                return Long.parseLong(s1);
+            }catch (NumberFormatException e){
+                System.out.println("Formato inserito non valido");
+            }
+        }while (true);
+    }
+
+    public String readString(String s){
+        System.out.println(s + " ");
         return console.nextLine();
     }
-    private double getDouble(String prompt){
-        do {
-            System.out.print(prompt + " ");
-            String answer = console.nextLine();
-            try {
-                return Double.parseDouble(answer);
-            } catch (NumberFormatException e) {
-                pr("formato inserito non corretto. !Riprova!");
-            }
-        }while (true);
-    }
-    private long getLong(String prompt){
-        do {
-            System.out.print(prompt + " ");
-            String answer = console.nextLine();
-            try {
-                return Long.parseLong(answer);
-            } catch (NumberFormatException e) {
-                pr("formato inserito non corretto");
-            }
-        }while (true);
-    }
-    private LocalDate getDate(String prompt){
-        do {
-            System.out.print(prompt + " aaaa-mm-gg ");
-            String answer = console.nextLine();
-            try {
-                return LocalDate.parse(answer);
-            } catch (DateTimeParseException e) {
-                pr("formato inserito non corretto");
-            }
-        }while (true);
-    }
-    private boolean getBoolean(String prompt){
-        do {
-            System.out.print(prompt + " s/n ");
-            String answer = console.nextLine();
-            if (answer.equalsIgnoreCase("s")) {
-                return true;
-            }
-            if (answer.equalsIgnoreCase("n")) {
-                return false;
-            }
-            pr("Devi inserire s o n");
-        } while (true);
-
-    }
-    private void printList(List<Course> list){
-        for(Course c : list){
-            pr(c.toString());
-        }
-    }
-
-
 }
-//dovrà parlare solo con StandardDidacticService
-//iniezione di indipendeza nella console
-//deve avere un metodo start
-//dovrà contenere un menù:
-// s=salvare un nuovo corso
-// r=ricerca per corsi titoloLike
-// i=ricerca corso per ID
-// d=cancellare un corso per ID
-// u=eseguire update di un corso per ID
-// j=limitare il numero di corsi attivi ad un certo numero n
