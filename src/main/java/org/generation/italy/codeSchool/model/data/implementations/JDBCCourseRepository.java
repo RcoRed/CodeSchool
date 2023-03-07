@@ -3,6 +3,7 @@ package org.generation.italy.codeSchool.model.data.implementations;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.generation.italy.codeSchool.model.data.exceptions.LogicException;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.postgresql.Driver;
 
@@ -193,7 +194,16 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public void deactivateOldest(int n) throws DataException {
-
+        try(Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        PreparedStatement st = con.prepareStatement(DEACTIVATE_OLDEST_COURSES)){
+            st.setInt(1, n);
+            int result = st.executeUpdate();
+            if(result != n){
+                throw new DataException("Errore nella disattivazione dei corsi. Non ci sono abbastanza corsi attivi");
+            }
+        } catch (SQLException e){
+            throw new DataException("Errore nella disattivazione dei corsi", e);
+        }
     }
 
     @Override

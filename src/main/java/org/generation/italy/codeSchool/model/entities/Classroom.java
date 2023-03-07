@@ -1,6 +1,6 @@
 package org.generation.italy.codeSchool.model.entities;
 
-public class Classroom {
+public class ClassRoom {
     private long id;
     private String name;
     private int maxCapacity;

@@ -47,4 +47,12 @@ public class JDBCConstants {
             WHERE is_active = true           
             """;
 
+    public static final String DEACTIVATE_OLDEST_COURSES = """
+        UPDATE courses
+        SET is_active = false
+        WHERE id_course in(SELECT id_course
+            FROM courses
+            WHERE is_active = true
+            ORDER BY created_at
+            LIMIT ? );""";
 }
