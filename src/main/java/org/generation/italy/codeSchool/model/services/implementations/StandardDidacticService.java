@@ -6,6 +6,7 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.services.abstractions.AbstractDidacticService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +48,11 @@ public class StandardDidacticService implements AbstractDidacticService {
         //che non è stato necessario apportare alcuna modifica
         //altrimenti chiameremo un metodo sul repository che cancella gli
         //n corsi più vecchi
+        int activeCourses = repo.getActiveCourses();
+        if (activeCourses <= numActive) {
+            return false;
+        }
+
         return repo.adjustActiveCourses(numActive);
     }
 }
