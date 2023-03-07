@@ -21,7 +21,7 @@ public interface CourseRepository {
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
     ArrayList<Course> createListOfActiveCourses() throws DataException;
-    void cancelOldActiveCourses(int difference) ;
+    void cancelOldActiveCourses(int difference) throws EntityNotFoundException, DataException;
 }
 
 /*

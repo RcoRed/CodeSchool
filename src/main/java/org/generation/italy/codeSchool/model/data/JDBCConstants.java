@@ -12,8 +12,13 @@ public class JDBCConstants {
                     FROM course
                     WHERE id = ?""";
     public static final String CREATE_COURSE = """
-                    SELECT id, title, description, program, duration, is_active, create_at
-                    FROM course""";
+                    INSERT course
+                    SET id = ?, title = ?, description = ?, program = ?, duration = ?, is_active = ?, create_at = ?
+                    """;
+    public static final String UPDATE_COURSE = """
+                    UPDATE course
+                    SET id = ?, title = ?, description = ?, program = ?, duration = ?, is_active = ?, create_at = ?
+                    WHERE id = ?;""";
     public static final String FIND_COURSES_BY_TITLE_CONTAIN = """
                     SELECT id, title, description, program, duration, is_active, create_at
                     FROM course
@@ -27,11 +32,13 @@ public class JDBCConstants {
                     WHERE is_active = true""";
     public static final String DELETE_OLD_ACTIVE_COURSES = """
                     DELETE FROM course
-                    WHERE is_active = true && LIMIT
-                    
-                    SELECT id, title, description, program, duration, is_active, create_at
-                    FROM course
-                    WHERE is_active = true
-                    ORDER BY create_at
-                    LIMIT 10""";
+                    WHERE id IN (
+                      SELECT id
+                      FROM course
+                      WHERE is_active = true
+                      GROUP BY id
+                      HAVING COUNT(*) > ?
+                      ORDER BY create_at
+                      LIMIT ?
+                    );""";
 }

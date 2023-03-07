@@ -4,17 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f4979f01-35d8-4864-abe1-8bd8961e2052" name="Changes" comment="Aggiunge final">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/JDBCConstants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/JDBCCourseRepository.java" afterDir="false" />
+    <list default="true" id="f4979f01-35d8-4864-abe1-8bd8961e2052" name="Changes" comment="Aggiunge metodi database">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/JDBCConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/JDBCConstants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/CourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/CSVFileCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/InMemoryCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/SerializedCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/EditionModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/EditionModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/RemotePlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/RemotePlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/JDBCCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/JDBCCourseRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -271,7 +265,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677685612655</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Aggiunge metodi database">
+      <created>1678174903932</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1678174903932</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -326,6 +327,7 @@
     <MESSAGE value="Aggiunge findDuration e findId" />
     <MESSAGE value="Aggiunge findTitle e findMedian" />
     <MESSAGE value="Aggiunge final" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunge final" />
+    <MESSAGE value="Aggiunge metodi database" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunge metodi database" />
   </component>
 </project>

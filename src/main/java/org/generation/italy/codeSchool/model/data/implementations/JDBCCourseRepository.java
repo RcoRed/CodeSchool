@@ -93,6 +93,7 @@ public class JDBCCourseRepository implements CourseRepository {
     public Course create(Course course) throws DataException {
         try(Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
             PreparedStatement st = con.prepareStatement(CREATE_COURSE)) {
+            modifyDatabase(course, st);
             try(ResultSet rs = st.executeQuery()){
                 if(rs.next()) {
                     return databaseToJava(rs);
@@ -106,7 +107,13 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public void update(Course course) throws EntityNotFoundException, DataException {
-
+        try(Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+            PreparedStatement st = con.prepareStatement(UPDATE_COURSE)) {
+            modifyDatabase(course, st);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataException("Errore nella lettura dei corsi da database", e);
+        }
     }
 
     @Override
@@ -142,9 +149,21 @@ public class JDBCCourseRepository implements CourseRepository {
     }
 
     @Override
-    public void cancelOldActiveCourses(int difference) {
-
+    public void cancelOldActiveCourses(int difference) throws EntityNotFoundException, DataException {
+        try(Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+            PreparedStatement st = con.prepareStatement(DELETE_OLD_ACTIVE_COURSES)) {
+            st.setInt(1, difference);
+            st.setInt(2, difference);
+            int numLines = st.executeUpdate();
+            if (numLines!=difference){
+                throw new EntityNotFoundException("Non sono stati trovati sufficenti corsi attivi");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataException("Errore nella lettura dei corsi da database", e);
+        }
     }
+
     public Course databaseToJava(ResultSet rs) throws DataException {
         try {
             return new Course(
@@ -161,6 +180,20 @@ public class JDBCCourseRepository implements CourseRepository {
         }
     }
 
+    public void modifyDatabase(Course course, PreparedStatement st){
+        try {
+            st.setLong(1, course.getId());
+            st.setString(2, course.getTitle());
+            st.setString(3, course.getDescription());
+            st.setString(4, course.getProgram());
+            st.setDouble(5, course.getDuration());
+            st.setBoolean(6, course.isActive());
+            st.setDate(7, Date.valueOf(course.getCreateAt()));
+            st.setLong(8, course.getId());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }
 /*for (Course course: courseList){
