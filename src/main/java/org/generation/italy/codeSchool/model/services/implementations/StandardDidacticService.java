@@ -47,6 +47,11 @@ public class StandardDidacticService implements AbstractDidacticService {
         //che non è stato necessario apportare alcuna modifica
         //altrimenti chiameremo un metodo sul repository che cancella gli
         //n corsi più vecchi
-        return repo.adjustActiveCourses(numActive);
+        int actives = repo.countActiveCourses();
+        if (actives <= numActive){
+            return false;
+        }
+        repo.deactivateOldest(actives - numActive);
+        return true;
     }
 }
