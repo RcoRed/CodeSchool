@@ -116,8 +116,13 @@ public class JDBCCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int getActiveCourses() {
+    public int countActiveCourses() {
         return 0;
+    }
+
+    @Override
+    public void deactivateOldest(int n) {
+
     }
 
     @Override
