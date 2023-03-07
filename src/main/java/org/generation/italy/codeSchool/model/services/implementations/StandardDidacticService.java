@@ -41,12 +41,12 @@ public class StandardDidacticService implements AbstractDidacticService {
     }
 
     @Override
-    public boolean adjustActiveCourses(int numActive) throws DataException {
-        //chiama il repository per scoprire quanti corsi attivi esistono
-        //se i corsi attivi sono <= numActive ritorniamo false per segnalare
-        //che non è stato necessario apportare alcuna modifica
-        //altrimenti chiameremo un metodo sul repository che cancella gli
-        //n corsi più vecchi
-        return repo.adjustActiveCourses(numActive);
+    public boolean adjustActiveCourses(int numActive) throws DataException, EntityNotFoundException {
+        int actives = repo.countActiveCourses();
+        if(actives <= numActive){
+            return false;
+        }
+        repo.deactivateOldest(actives - numActive);
+        return true;//repo.adjustActiveCourses(numActive);
     }
 }

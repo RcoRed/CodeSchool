@@ -4,7 +4,6 @@ import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.entities.Course;
-import org.postgresql.Driver;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -15,113 +14,217 @@ import java.util.Optional;
 import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
 
 public class JDBCCourseRepository implements CourseRepository {
-    /*public static int askToClient;
-    static{
-        System.out.println("inizializzazione statica");
-        Driver d=new Driver();
-        try {
-            DriverManager.registerDriver(d);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-    @Override
-    public List<Course> findAll() throws DataException{
-        try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
-            Statement st = con.createStatement();//factory method pattern
-            ResultSet rs = st.executeQuery(COURSE_QUERY);
-        ){
-            //Class.forName("org.postgresql.Driver");   //hack
-            List<Course> courseList = new ArrayList<>();
-            while (rs.next()){
-                Course c = new Course(rs.getLong("id"),
-                                      rs.getString("title"),
-                                      rs.getString("description"),
-                                      rs.getString("program"),
-                                      rs.getDouble("duration"),
-                                      rs.getBoolean("is_active"),
-                                      rs.getDate("created_at").toLocalDate());
-                courseList.add(c);
-            }
-            return courseList;
+
+   /*public static int askToClient;
+   static{
+       System.out.println("inizializzazione statica");
+       Driver d=new Driver();
+       try {
+           DriverManager.registerDriver(d);
+       } catch (SQLException e) {
+           throw new RuntimeException(e);
+       }
+   }*/
+   @Override
+   public List<Course> findAll() throws DataException{
+      try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
+          Statement st = con.createStatement();//factory method pattern
+          ResultSet rs = st.executeQuery(COURSE_QUERY);
+      ){
+         //Class.forName("org.postgresql.Driver");   //hack
+         List<Course> courseList = new ArrayList<>();
+         while (rs.next()){
+            courseList.add(databaseToCourse(rs));
+         }
+         return courseList;
             /*for(Course course: courseList){
                 System.out.println(course.getTitle());
             }*/
-            //courseList.forEach(c-> System.out.println(c.getTitle()));
-            //courseList.forEach(System.out::println);
+         //courseList.forEach(c-> System.out.println(c.getTitle()));
+         //courseList.forEach(System.out::println);
             /*courseList.stream().map(Course::getTitle)
                                .forEach(System.out::println);*/
-        }catch(SQLException e){
-            e.printStackTrace();
-            throw new DataException("errore nella lettura dei corsi da database",e);
-        }
+      }catch(SQLException e){
+         e.printStackTrace();
+         throw new DataException("errore nella lettura dei corsi da database",e);
+      }
 
-    }
+   }
 
-    @Override
-    public Optional<Course> findById(long id) throws DataException {
-        try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
-            PreparedStatement st = con.prepareStatement(FIND_COURSE_BY_ID);//factory method pattern
-        ){
-            st.setLong(1,id);
-            try(ResultSet rs = st.executeQuery()){
-                if(rs.next()){
-                    Course c = new Course(rs.getLong("id"),
-                            rs.getString("title"),
-                            rs.getString("description"),
-                            rs.getString("program"),
-                            rs.getDouble("duration"),
-                            rs.getBoolean("is_active"),
-                            rs.getDate("created_at").toLocalDate());
-                    return Optional.of(c);
-                }
-                return Optional.empty();
+   @Override
+   public Optional<Course> findById(long id) throws DataException {
+      try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
+          PreparedStatement st = con.prepareStatement(FIND_COURSE_BY_ID)//factory method pattern
+      ){
+         st.setLong(1,id);
+         try(ResultSet rs = st.executeQuery()){
+            if(rs.next()){
+               return Optional.of(databaseToCourse(rs));
             }
+            return Optional.empty();
+         }
 
-        }catch(SQLException e){
-            e.printStackTrace();
-            throw new DataException("errore nella lettura dei corsi da database",e);
-        }
-    }
+      }catch(SQLException e){
+         e.printStackTrace();
+         throw new DataException("Errore nella lettura dei corsi da database. ",e);
+      }
+   }
 
-    @Override
-    public List<Course> findByTitleContains(String part) throws DataException {
-        return null;
-    }
-
-    @Override
-    public Course create(Course course) throws DataException {
-        return null;
-    }
-
-    @Override
-    public void update(Course course) throws EntityNotFoundException, DataException {
-
-    }
-
-    @Override
-    public void deleteById(long id) throws EntityNotFoundException, DataException {
-        try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
-            PreparedStatement st = con.prepareStatement(DELETE_COURSE_BY_ID);//factory method pattern
-        ){
-            st.setLong(1,id);
-            int numLines = st.executeUpdate();
-            if(numLines!=1){
-                throw new EntityNotFoundException("Non e' stato trovato il corso con quell'id");
+   @Override
+   public List<Course> findByTitleContains(String part) throws DataException {
+      try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
+          PreparedStatement st = con.prepareStatement(FIND_BY_TITLE_CONTAINS)//factory method pattern
+      ){
+         st.setString(1,"%" + part + "%");
+         try(ResultSet rs = st.executeQuery()){
+            List<Course> coursesList = new ArrayList<>();
+            while(rs.next()){
+               coursesList.add(databaseToCourse(rs));
             }
-        }catch(SQLException e){
-            e.printStackTrace();
-            throw new DataException("errore nella lettura dei corsi da database",e);
-        }
-    }
+            return coursesList;
+         }
+      }catch(SQLException e){
+         e.printStackTrace();
+         throw new DataException("Errore nella lettura dei corsi da database. ",e);
+      }
+   }
 
-    @Override
-    public int getActiveCourses() {
-        return 0;
-    }
+   @Override
+   public Course create(Course course) throws DataException {
+      try (Connection conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+           PreparedStatement st = conn.prepareStatement(INSERT_COURSE);
+           Statement st2 = conn.createStatement();
+           ResultSet rs = st2.executeQuery(NEXT_VAL_COURSE);
+      ){
+         rs.next();
+         int nextVal = rs.getInt("nextval");
+         course.setId(nextVal);
+         st.setLong(1, course.getId());
+         st.setString(2, course.getTitle());
+         st.setString(3, course.getDescription());
+         st.setString(4, course.getProgram());
+         st.setDouble(5, course.getDuration());
+         st.setBoolean(6, course.isActive());
+         st.setDate(7, Date.valueOf(course.getCreatedAt()));
+         int numLines = st.executeUpdate();
+         return course;
+      } catch (SQLException e) {
+         e.printStackTrace();
+         throw new DataException("Errore nell'inserimento del corso. ", e);
+      }
+   }
 
-    @Override
-    public boolean adjustActiveCourses(int NumActive) throws DataException {
-        return false;
-    }
+   public Course create2(Course course) throws DataException{
+      try (Connection conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+           PreparedStatement st = conn.prepareStatement(INSERT_COURSE_RETURNING_ID, Statement.RETURN_GENERATED_KEYS)
+      ) {
+         st.setString(1, course.getTitle());
+         st.setString(2, course.getDescription());
+         st.setString(3, course.getProgram());
+         st.setDouble(4, course.getDuration());
+         st.setBoolean(5, course.isActive());
+         st.setDate(6, Date.valueOf(course.getCreatedAt()));
+         st.executeUpdate();
+         try (ResultSet keys = st.getGeneratedKeys()){
+            keys.next();
+            long key = keys.getLong(1);
+            course.setId(key);
+            return course;
+         }
+      } catch (SQLException e){
+         e.printStackTrace();
+         throw new DataException("Errore nell'inserimento del corso. ",e);
+      }
+   }
+
+   @Override
+   public void update(Course course) throws EntityNotFoundException, DataException {
+      try (Connection conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+           PreparedStatement st = conn.prepareStatement(UPDATE_COURSE)
+      ) {
+         st.setString(1, course.getTitle());
+         st.setString(2, course.getDescription());
+         st.setString(3, course.getProgram());
+         st.setDouble(4, course.getDuration());
+         st.setBoolean(5, course.isActive());
+         st.setDate(6, Date.valueOf(course.getCreatedAt()));
+         st.setLong(7, course.getId());
+         int numLines = st.executeUpdate();
+         if (numLines != 1) {
+            throw new EntityNotFoundException("Non e' stato trovato il corso con quell'id");
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+         throw new DataException("Errore nella lettura dei corsi da database", e);
+      }
+   }
+
+   @Override
+   public void deleteById(long id) throws EntityNotFoundException, DataException {
+      try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
+          PreparedStatement st = con.prepareStatement(DELETE_COURSE_BY_ID);//factory method pattern
+      ){
+         st.setLong(1,id);
+         int numLines = st.executeUpdate();
+         if(numLines!=1){
+            throw new EntityNotFoundException("Non e' stato trovato il corso con quell'id");
+         }
+      }catch(SQLException e){
+         e.printStackTrace();
+         throw new DataException("errore nella lettura dei corsi da database",e);
+      }
+   }
+
+   @Override
+   public int countActiveCourses() throws DataException {
+      try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
+          Statement st = con.createStatement();//factory method pattern
+          ResultSet rs = st.executeQuery(COUNT_ACTIVES_COURSES)
+      ){
+         rs.next();
+         return rs.getInt(1);
+      }catch(SQLException e){
+         e.printStackTrace();
+         throw new DataException("errore nella lettura dei corsi da database",e);
+      }
+   }
+
+   @Override
+   public void deactivateOldest(int n) throws EntityNotFoundException, DataException {
+      try (Connection conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+           PreparedStatement st = conn.prepareStatement(DEACTIVATE_OLDEST)
+      ) {
+         st.setInt(1, n);
+         int numLines = st.executeUpdate();
+         if (numLines != 1) {
+            throw new EntityNotFoundException("Non e' stato trovato il corso con quell'id");
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+         throw new DataException("Errore nella lettura dei corsi da database", e);
+      }
+   }
+
+   @Override
+   public boolean adjustActiveCourses(int NumActive) throws DataException {
+//      if(countActiveCourses() > NumActive){
+//         List<Course> activeCourses = new ArrayList<>();
+//
+//         return true;
+//      }
+      return false;
+   }
+   private Course databaseToCourse(ResultSet rs) throws SQLException {
+      try{
+         return new Course(rs.getLong("course_id"),
+                           rs.getString("title"),
+                           rs.getString("description"),
+                           rs.getString("course_program"),
+                           rs.getDouble("duration"),
+                           rs.getBoolean("is_active"),
+                           rs.getDate("create_date").toLocalDate());
+      } catch (SQLException e){
+         throw new SQLException("Errore nella lettura dei corsi dal database. ", e);
+      }
+   }
 }

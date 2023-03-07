@@ -6,10 +6,8 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 public class SerializedCourseRepository implements CourseRepository {
@@ -122,8 +120,27 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int getActiveCourses() {
-        return 0;
+    public int countActiveCourses() throws DataException{
+        try {
+            return (int) load().stream()
+                               .filter(Course::isActive)
+                               .count();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel conteggio dei corsi attvi", e);
+        }
+    }
+
+    @Override
+    public void deactivateOldest(int n) throws DataException{
+        try {
+            load().stream()
+                  .filter(Course::isActive)
+                  .sorted(Comparator.comparing(Course::getCreatedAt))
+                  .limit(n)
+                  .forEach(Course::deactivate);
+        }catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nela disattivazione dei corsi attvi", e);
+        }
     }
 
     @Override

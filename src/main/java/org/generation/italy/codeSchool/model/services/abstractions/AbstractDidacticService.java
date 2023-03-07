@@ -18,5 +18,5 @@ public interface AbstractDidacticService {
 
     void deleteCourseById(long id) throws EntityNotFoundException,DataException;
 
-    boolean adjustActiveCourses(int numActive) throws DataException;  //se corsi attivi > numActive disattiva i più vecchi
+    boolean adjustActiveCourses(int numActive) throws DataException, EntityNotFoundException;  //se corsi attivi > numActive disattiva i più vecchi
 }

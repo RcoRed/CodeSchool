@@ -62,6 +62,11 @@ public class Course implements Serializable {
     public boolean isActive() {
         return isActive;
     }
+    public boolean deactivate(){
+        boolean wasActive = isActive;
+        isActive = false;
+        return isActive != wasActive;
+    }
 
     public void setActive(boolean active) {
         isActive = active;
