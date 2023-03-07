@@ -4,6 +4,8 @@ import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,6 +15,10 @@ import java.util.*;
 
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
+
+
+@Repository
+@Profile("csv")
 public class CSVFileCourseRepository implements CourseRepository {
     private String fileName;
     public static long nextId;

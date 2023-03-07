@@ -9,9 +9,11 @@ target/
 .idea/compiler.xml
 .idea/libraries/
 .idea/workspace.xml
+.idea/jpa-buddy.xml
 *.iws
 *.iml
 *.ipr
+
 
 ### Eclipse ###
 .apt_generated
