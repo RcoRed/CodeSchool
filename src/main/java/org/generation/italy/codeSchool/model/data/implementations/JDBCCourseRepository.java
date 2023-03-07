@@ -71,7 +71,7 @@ public class JDBCCourseRepository implements CourseRepository {
         try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
             PreparedStatement st = con.prepareStatement(FIND_BY_TITLE_CONTAINS)         //factory method pattern
         ){
-            st.setString(1,part);
+            st.setString(1,"%"+part+"%");
             try(ResultSet rs = st.executeQuery()){
                 List<Course> courseList = new ArrayList<>();
                 while (rs.next()){
@@ -87,20 +87,20 @@ public class JDBCCourseRepository implements CourseRepository {
     @Override
     public Course create(Course course) throws DataException {
         try(Connection con = DriverManager.getConnection(URL,USER_NAME,PASSWORD);
-            PreparedStatement st = con.prepareStatement(INSERT_COURSE)
+            PreparedStatement st = con.prepareStatement(INSERT_COURSE);
+            Statement st2 = con.createStatement();//factory method pattern
+            ResultSet rs = st2.executeQuery(NEXT_VAL_COURSE)
         ){
-            try (Statement st2 = con.createStatement();//factory method pattern
-                 ResultSet rs = st2.executeQuery(NEXT_VAL_COURSE)){
-                int nextVal = rs.getInt("nextval");
-                course.setId(nextVal);
-            }
-            st.setInt(1, (int) course.getId());
+            int nextVal = rs.getInt("nextval");
+            rs.next();
+            course.setId(nextVal);
+            st.setLong(1,course.getId());
             st.setString(2,course.getTitle());
             st.setString(3,course.getDescription());
             st.setString(4,course.getProgram());
             st.setDouble(5,course.getDuration());
             st.setBoolean(6,course.isActive());
-            st.setDate(7, Date.valueOf(course.getCreatedAt()));
+            st.setDate(7,Date.valueOf(course.getCreatedAt()));
             int numLines = st.executeUpdate();
             if(numLines!=1){
                 throw new SQLException("errore nell'inserimento del corso");

@@ -16,7 +16,7 @@ public class JDBCConstants {
     public static final String FIND_BY_TITLE_CONTAINS= """
                 SELECT id_course,title,description,course_program,duration,is_active,created_at
                 FROM courses
-                WHERE title LIKE '%?%'
+                WHERE title LIKE ?
             """;//chiedere!!!!!!!!!!!
     public static final String DELETE_COURSE_BY_ID= """
                 DELETE FROM courses
@@ -24,19 +24,19 @@ public class JDBCConstants {
             """;
     public static final String INSERT_COURSE= """
                 INSERT INTO courses(id_course,title,description,course_program, duration,is_active,created_at)
-               	    VALUES(?,'?','?','?',?,?,'?')
+               	    VALUES(?,?,?,?,?,?,?)
             """;
     public static final String NEXT_VAL_COURSE= """
                 SELECT nextval('courses_sequence')
             """;
     public static final String UPDATE_COURSE= """
                 UPDATE courses
-                SET title = '?'
-                SET description = '?'
-                SET course_program = '?'
+                SET title = ?
+                SET description = ?
+                SET course_program = ?
                 SET duration = ?
                 SET is_active = ?
-                SET created_at = '?'
+                SET created_at = ?
                 WHERE id_course = ?;
             """;
     public static final String GET_ACTIVE_COURSES= """
