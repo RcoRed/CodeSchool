@@ -6,10 +6,8 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
 public class SerializedCourseRepository implements CourseRepository {
@@ -23,6 +21,15 @@ public class SerializedCourseRepository implements CourseRepository {
 
     public SerializedCourseRepository() {
         this.filename = SERIALIZED_FILE_NAME;
+    }
+
+    @Override
+    public List<Course> findAll() throws DataException {
+        try {
+            return load();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel findByTitleContains", e);
+        }
     }
 
     @Override
@@ -113,13 +120,34 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public List<Course> getActiveCourses() {
-        return null;
+    public int countActiveCourses() throws DataException {
+        try {
+          return (int) load().stream()
+                    .filter(Course::isActive)
+                    .count();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel conteggio dei corsi attivi", e);
+        }
     }
 
     @Override
-    public void deleteOldestActiveCourses(int num) {
+    public void deactivateOldest(int n) throws DataException {
+       try {
+           load().stream()
+                   .filter(Course::isActive)
+                   .sorted(Comparator.comparing(Course::getCreatedAt))
+                   .limit(n)
+                   .forEach(Course::deactivate);
+       }catch (IOException | ClassNotFoundException e) {
+           throw new DataException("Errore nella disattivazione dei corsi più vecchi", e);
+       }
 
+
+    }
+
+    @Override
+    public boolean adjustActiveCourses(int NumActive) throws DataException {
+        return false;
     }
 
     private List<Course> load() throws IOException, ClassNotFoundException {
@@ -141,6 +169,5 @@ public class SerializedCourseRepository implements CourseRepository {
             oos.writeObject(courses);
         }
     }
-
 
 }
