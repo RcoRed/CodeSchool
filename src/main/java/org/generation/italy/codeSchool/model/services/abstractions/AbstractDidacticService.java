@@ -1,9 +1,8 @@
 package org.generation.italy.codeSchool.model.services.abstractions;
 
-import org.generation.italy.codeSchool.model.Course;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
-import org.generation.italy.codeSchool.model.services.BusinessLogicException;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +18,5 @@ public interface AbstractDidacticService {
 
     void deleteCourseById(long id) throws EntityNotFoundException,DataException;
 
-    boolean adjustActiveCourses(int numActive) throws DataException, BusinessLogicException;
-
+    boolean adjustActiveCourses(int numActive) throws DataException;  //se corsi attivi > numActive disattiva i più vecchi
 }
