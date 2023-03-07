@@ -56,4 +56,8 @@ public class CourseEdition {
     public void setAssignedClassroom(Classroom assignedClassroom) {
         this.assignedClassroom = assignedClassroom;
     }
+
+    public boolean startedInRange(LocalDate start, LocalDate end){
+        return !(getStartedAt().isBefore(start) || getStartedAt().isAfter(end));
+    }
 }

@@ -7,13 +7,13 @@ import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 public class InMemoryCourseEditionRepository implements CourseEditionRepository{
 
     private Map<Long, CourseEdition> data = new HashMap<>();
     private static long nextId;
-
 
     @Override
     public double getCourseEditionTotalCost() {
@@ -24,7 +24,8 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository{
     @Override
     public Optional<CourseEdition> getMostExpensiveCourseEdition() {
         Stream<CourseEdition> stream = data.values().stream();
-        Optional<CourseEdition> optional = stream.max((o1, o2) -> (int)Math.signum(o1.getCost() - o2.getCost()));
+        //Optional<CourseEdition> optional = stream.max((o1, o2) -> (int)Math.signum(o1.getCost() - o2.getCost()));
+        Optional<CourseEdition> optional = stream.max(Comparator.comparingDouble(CourseEdition::getCost));
         return optional;
     }
 
@@ -39,65 +40,61 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository{
     @Override
     public List<Double> getCourseEditionsDuration() {
         Stream<CourseEdition> stream = data.values().stream();
-//        var os = stream.map(e -> e.getCourse().getDuration());
-//        var ps = stream.mapToDouble(e -> e.getCourse().getDuration());
+        var os = stream.map(e -> e.getCourse().getDuration());
+        var ps = stream.mapToDouble(e -> e.getCourse().getDuration());
         var totalDuration = stream.map(e -> e.getCourse().getDuration()).toList();
         return totalDuration;
     }
 
     @Override
-    public Optional<CourseEdition> getCourseEditionByCourseId(long id) {
+    public List<CourseEdition> getCourseEditionsByCourseId(long id) {
         Stream<CourseEdition> stream = data.values().stream();
-        Optional<CourseEdition> idList = stream.filter(e -> e.getCourse().getId() == id).findAny();
+        List<CourseEdition> idList = stream.filter(e -> e.getCourse().getId() == id).toList();
         return idList;
     }
 
     @Override
     public List<CourseEdition> getCourseEditionByCourseByTitleAndDateRange(String title, LocalDate fromDate, LocalDate toDate) {
         Stream<CourseEdition> stream = data.values().stream();
-        List<CourseEdition> courses = stream.filter(e -> e.getCourse().getTitle().contains(title) &&
-                e.getCourse().getCreatedAt().isAfter(fromDate) && e.getCourse().getCreatedAt().isBefore(toDate)).toList();
+        List<CourseEdition> courses = stream.filter(e -> e.getCourse().getTitle().contains(title) && 
+                e.startedInRange(fromDate, toDate)).toList();
         return courses;
     }
+
     @Override
     public List<CourseEdition> getMedianCourseEdition() {
-        Stream<CourseEdition> stream = data.values().stream();
-        long key = 0;
+        Stream<CourseEdition> stream = data.values().stream().sorted(Comparator.comparingDouble(CourseEdition::getCost));
+        List<CourseEdition> sorted = stream.toList();
+        int pos = 0;
         List<CourseEdition> list = new ArrayList<>();
-        if(data.size() % 2 != 0){ // dispari
-            key =(long) data.size() / 2;
-             list.add(data.get(key + 1)) ;
-            return list;
+        if(sorted.size() % 2 != 0){ // dispari
+             pos = sorted.size() / 2;
+             list.add(sorted.get(pos));
+             return list;
 
-        } else if (data.size() != 0){
-            key = (long) data.size() / 2;
-            list.add(data.get(key));
-            list.add(data.get(key + 1));
+        } else {
+            pos = sorted.size() / 2;
+            list.add(sorted.get(pos - 1));
+            list.add(sorted.get(pos));
             return list;
-        }
-
-        return list;
+        }        
     }
 
     @Override
-    public Optional<CourseEdition> getModeCourseEdition() {
+    public Optional<Double> getCourseEditionCostMode() {
         Stream<CourseEdition> stream = data.values().stream();
-        var x = stream.collect(Collectors.groupingBy(CourseEdition::getCost, Collectors.toList())); // chiave: costo, valore: lista
-        var max = x.entrySet().stream().max((kv1, kv2) -> kv1.getValue().size() - kv2.getValue().size()); // cerchiamo la list più lunga (srà la nostra moda)
+//        var x = stream.collect(Collectors.groupingBy(CourseEdition::getCost)); // chiave: costo, valore: lista
+//        var max = x.entrySet().stream().max((kv1, kv2) -> kv1.getValue().size() - kv2.getValue().size()); // cerchiamo la list più lunga (srà la nostra moda)
+        var x = stream.collect(Collectors.groupingBy(CourseEdition::getCost, Collectors.counting())); // chiave: costo, valore: lista
+        var max = x.entrySet().stream().max(Comparator.comparingLong(Map.Entry::getValue));
 
-//        return max.map(kv -> kv.getValue().get(0)); // se kv è vuoto, map ritorna un optional empty
+        return max.map(Map.Entry::getKey);
 //        return max.isPresent()? Optional.of(max.get().getValue().get(0)) : Optional.empty(); // se è vero (return...) se è falso (return...)
 
-        if(max.isPresent()){
-            return Optional.of(max.get().getValue().get(0));
-        }
-        return Optional.empty();
-//        var x = stream.collect(Collectors.groupingBy(CourseEdition::getCost, Collectors.counting())); // chiave: costo, valore: lista
-//        var max = x.entrySet().stream().max((kv1, kv2) -> (int)(kv1.getValue() - kv2.getValue()));
-
-//        for(var kv : x.entrySet()){
-//            System.out.println(kv.getKey() + " " + kv.getValue());
+//        if(max.isPresent()){
+//            return Optional.of(max.get().getKey());
 //        }
+//        return Optional.empty();
     }
 
     public CourseEdition createEdition(CourseEdition course){
