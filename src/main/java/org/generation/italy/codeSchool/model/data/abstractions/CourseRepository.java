@@ -19,7 +19,7 @@ public interface CourseRepository {
     void update(Course course) throws EntityNotFoundException,DataException;
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
-    int getActiveCourses();
+    int getActiveCourses() throws DataException;
     boolean adjustActiveCourses(int NumActive) throws DataException;
 
 }
