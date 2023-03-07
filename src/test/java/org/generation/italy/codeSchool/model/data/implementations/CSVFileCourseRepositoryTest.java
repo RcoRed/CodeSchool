@@ -106,7 +106,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void findById_should_not_throw_when_file_dont_exist(){
         Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
-        CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
         try{                                                                 //obbligo a scrivere subito
             File f = new File(FILENAME);
             assertTrue(f.delete());
