@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CourseRepository {
+    List<Course> findAll() throws DataException;
 
     Optional<Course> findById(long id) throws DataException;
 
@@ -18,8 +19,10 @@ public interface CourseRepository {
     void update(Course course) throws EntityNotFoundException,DataException;
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
-    int getActiveCourses();
+    int countActiveCourses() throws DataException;
+    void deactivateOldest(int n) throws DataException;
     boolean adjustActiveCourses(int NumActive) throws DataException;
+
 }
 
 /*

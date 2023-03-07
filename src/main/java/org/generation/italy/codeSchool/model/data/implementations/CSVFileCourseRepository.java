@@ -26,6 +26,20 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
+    public List<Course> findAll() throws DataException {
+         try {
+            List<String> lines = Files.readAllLines(Paths.get(fileName));
+            List<Course> courses = new ArrayList<>();
+            for(String s : lines){
+                courses.add(CSVToCourse(s));
+            }
+            return courses;
+        }catch (IOException e){
+            throw new DataException("Errore nella lettura del file", e);
+        }
+    }
+
+    @Override
     public Optional<Course> findById(long id) throws DataException{             //!!RICORDATI!! se un metodo può dare un errore allora DEVI mettere il THROWS e l'exception che "lancerà"
         try{
             File f = new File(fileName);
@@ -125,8 +139,13 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int getActiveCourses() {
+    public int countActiveCourses() {
         return 0;
+    }
+
+    @Override
+    public void deactivateOldest(int n) {
+
     }
 
     @Override
