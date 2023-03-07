@@ -20,7 +20,7 @@ public class JDBCCourseRepository implements CourseRepository {
         System.out.println("inizializzazione statica");
         Driver d=new Driver();
         try {
-            DriverManager.registerDriver(d);
+            DriverManager.registerDriver(d);//
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
