@@ -177,10 +177,10 @@ public class JDBCCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int getActiveCourses() throws DataException{
+    public int countActiveCourses() throws DataException{
         try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
              Statement st = con.createStatement();//factory method pattern
-             ResultSet rs = st.executeQuery(ACTIVE_COURSES){
+             ResultSet rs = st.executeQuery(ACTIVE_COURSES)){
                  rs.next();
                  return rs.getInt(1);
 
@@ -188,6 +188,11 @@ public class JDBCCourseRepository implements CourseRepository {
             e.printStackTrace();
             throw new DataException("errore nella lettura dei corsi da database", e);
         }
+
+    }
+
+    @Override
+    public void deactivateOldest(int n) throws DataException {
 
     }
 
