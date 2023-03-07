@@ -31,6 +31,12 @@ public class InMemoryCourseRepository implements CourseRepository {
     public static Map<Long, Course> getDataSource() {
         return dataSource;
     }
+
+    @Override
+    public List<Course> findAll() {
+        return new ArrayList<>(dataSource.values());
+    }
+
     @Override
     public Optional<Course> findById(long id) {
         Course x = dataSource.get(id);

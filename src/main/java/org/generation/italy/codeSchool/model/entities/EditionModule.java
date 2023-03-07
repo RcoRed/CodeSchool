@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class EditionModule {
     private long id;
     private CourseModule courseModule;
-    private EditionModule editionModule;
+    private CourseEdition courseEdition;
     private Teacher teacher;
     private LocalDate startDate;
     private LocalDate endDate;

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CourseRepository {
-
+    List<Course> findAll() throws DataException;
     Optional<Course> findById(long id) throws DataException;
 
     List<Course> findByTitleContains(String part) throws DataException;
@@ -20,7 +20,7 @@ public interface CourseRepository {
     void update(Course course) throws EntityNotFoundException,DataException;
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
-    ArrayList<Course> createListOfActiveCourses();
+    ArrayList<Course> createListOfActiveCourses() throws DataException;
     void cancelOldActiveCourses(int difference) ;
 }
 
