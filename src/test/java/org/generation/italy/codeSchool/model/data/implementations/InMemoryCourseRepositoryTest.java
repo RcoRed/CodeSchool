@@ -59,7 +59,7 @@ class InMemoryCourseRepositoryTest {
 
     @Test
     void cancelOldActiveCourses() {
-        courses = repo.cancelOldActiveCourses2(courses, 2);
+        repo.deactivateOldest( 2);
         try (PrintWriter pw = new PrintWriter(new FileOutputStream(FILE_NAME))) {
             pw.println(courses);
         }catch (FileNotFoundException e){

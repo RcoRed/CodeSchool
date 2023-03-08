@@ -51,13 +51,11 @@ public class StandardDidacticService implements AbstractDidacticService {
         //se i corsi attivi sono <= numActive abbiamo finito, ritorniamo false perchè non è stato necessario fare modifiche
         //se i corsi attivi sono > numActive chiameremo un metodo su repository che cancella gli n corsi più vecchi (n parametro input)
         // ritorna poi true nel secondo caso
-        int actives = repo.createListOfActiveCourses().size();
-        if (actives<=numActive){
+        int actives = repo.countActiveCourses();
+        if (actives <= numActive){
             return false;
-        }else{
-            int remaining = actives -numActive;
-            repo.cancelOldActiveCourses(remaining);
-            return true;
         }
+        repo.deactivateOldest(actives - numActive);
+        return true;
     }
 }

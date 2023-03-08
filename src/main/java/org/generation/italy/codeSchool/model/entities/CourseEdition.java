@@ -1,14 +1,13 @@
 package org.generation.italy.codeSchool.model.entities;
 
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 
 public class CourseEdition {
     private long id;
     private Course course;
     private LocalDate startedAt;
     private double cost;
-    private ClassRoom assignedClassRoom;
+    private Classroom assignedClassRoom;
 
     public CourseEdition(long id, Course course, LocalDate startedAt, double cost){
         this.id=id;
@@ -33,7 +32,7 @@ public class CourseEdition {
         return cost;
     }
 
-    public ClassRoom getAssignedClassRoom() {
+    public Classroom getAssignedClassRoom() {
         return assignedClassRoom;
     }
     public boolean isStartedInRange(LocalDate start, LocalDate end){
