@@ -14,3 +14,4 @@ public class Enrollment {
     private double studentVote;
     private boolean hasPaid;
 }
+

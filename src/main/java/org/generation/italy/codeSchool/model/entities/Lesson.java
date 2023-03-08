@@ -7,6 +7,6 @@ public class Lesson {
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;
-    private ClassRoom classRoom;
+    private Classroom classRoom;
     private Teacher teacher;
 }

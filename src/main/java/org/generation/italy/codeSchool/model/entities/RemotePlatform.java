@@ -7,14 +7,13 @@ public class RemotePlatform {
     private String name;
     private double annualCost;
     private LocalDate adoptionDate;
-
     public RemotePlatform(){}
-
-    public RemotePlatform(long id, String name, double annualCost, LocalDate adoptionDate) {
-        this.id = id;
-        this.name = name;
+    
+    public RemotePlatform(long id, String name, double annualCost, LocalDate adoptionDate){
+        this.id=id;
+        this.name=name;
         this.annualCost = annualCost;
-        this.adoptionDate = adoptionDate;
+        this.adoptionDate=adoptionDate;
     }
 
     public long getId() {
@@ -25,11 +24,11 @@ public class RemotePlatform {
         return name;
     }
 
-    public double getAnnualCost() {
+    public double getAnnualCost(){
         return annualCost;
     }
-
     public LocalDate getAdoptionDate() {
         return adoptionDate;
     }
+
 }

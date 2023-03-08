@@ -1,106 +1,81 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.abstractions.CourseEditionRepository;
+import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.entities.CourseEdition;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
-public class InMemoryCourseEditionRepository implements CourseEditionRepository{
+public class InMemoryCourseEditionRepository implements CourseEditionRepository {
 
-    private Map<Long, CourseEdition> data = new HashMap<>();
-    private static long nextId;
+    private static Map<Long, CourseEdition> data = new HashMap<>();
 
     @Override
-    public double getCourseEditionTotalCost() {
-        Stream<CourseEdition> stream = data.values().stream();
-        return stream.mapToDouble(CourseEdition::getCost).sum();
+    public double getTotalCost() {
+        return data.values().stream().mapToDouble(CourseEdition :: getCost).sum();
     }
 
     @Override
-    public Optional<CourseEdition> getMostExpensiveCourseEdition() {
-        Stream<CourseEdition> stream = data.values().stream();
-        //Optional<CourseEdition> optional = stream.max((o1, o2) -> (int)Math.signum(o1.getCost() - o2.getCost()));
-        Optional<CourseEdition> optional = stream.max(Comparator.comparingDouble(CourseEdition::getCost));
-        return optional;
+    public Optional<CourseEdition> findMostExpensive() {
+        return data.values().stream().max(Comparator.comparingDouble(CourseEdition :: getCost));
     }
 
     @Override
-    public double getAverageCost() {
-        Stream<CourseEdition> stream = data.values().stream();
-        double sum = stream.mapToDouble(CourseEdition::getCost).sum();
-        double avg = sum / data.size();
-        return avg;
+    public double findAverageCost() {
+        return getTotalCost() / data.size();
     }
 
     @Override
-    public List<Double> getCourseEditionsDuration() {
-        Stream<CourseEdition> stream = data.values().stream();
-        var os = stream.map(e -> e.getCourse().getDuration());
-        var ps = stream.mapToDouble(e -> e.getCourse().getDuration());
-        var totalDuration = stream.map(e -> e.getCourse().getDuration()).toList();
-        return totalDuration;
+    public Iterable<Double> findAllDuration() {
+        return data.values().stream().map(e -> e.getCourse().getDuration()).toList();
     }
 
     @Override
-    public List<CourseEdition> getCourseEditionsByCourseId(long id) {
-        Stream<CourseEdition> stream = data.values().stream();
-        List<CourseEdition> idList = stream.filter(e -> e.getCourse().getId() == id).toList();
-        return idList;
+    public Iterable<CourseEdition> findByCourse(long courseId) {
+        return data.values().stream().filter(e -> e.getId()==courseId).toList();
     }
 
     @Override
-    public List<CourseEdition> getCourseEditionByCourseByTitleAndDateRange(String title, LocalDate fromDate, LocalDate toDate) {
-        Stream<CourseEdition> stream = data.values().stream();
-        List<CourseEdition> courses = stream.filter(e -> e.getCourse().getTitle().contains(title) && 
-                e.startedInRange(fromDate, toDate)).toList();
-        return courses;
+    public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart,
+                                                                 LocalDate startAt, LocalDate endAt){
+        return data.values().stream().filter(e -> e.getCourse().getTitle().contains(titlePart)
+                &&e.isStartedInRange(startAt, endAt)).toList();
+                                             /*&& e.getStartedAt().isAfter(startAt)
+                                             && e.getStartedAt().isBefore(endAt)).toList();*/
     }
 
     @Override
-    public List<CourseEdition> getMedianCourseEdition() {
-        Stream<CourseEdition> stream = data.values().stream().sorted(Comparator.comparingDouble(CourseEdition::getCost));
-        List<CourseEdition> sorted = stream.toList();
-        int pos = 0;
-        List<CourseEdition> list = new ArrayList<>();
-        if(sorted.size() % 2 != 0){ // dispari
-             pos = sorted.size() / 2;
-             list.add(sorted.get(pos));
-             return list;
-
-        } else {
-            pos = sorted.size() / 2;
-            list.add(sorted.get(pos - 1));
-            list.add(sorted.get(pos));
-            return list;
-        }        
+    public Iterable<CourseEdition> findMedian() {
+        List <CourseEdition> medianPrice = new ArrayList<>();
+        var result = data.values().stream().sorted(Comparator.comparingDouble(CourseEdition :: getCost)).toList();
+        if(data.size()%2==1) {
+            medianPrice.add(result.get((data.size()-1)/2));
+            return medianPrice;
+        }else {
+            medianPrice.add(result.get((data.size()/2)));
+            medianPrice.add(result.get((data.size()/2-1)));
+            return medianPrice;
+        }
     }
 
     @Override
     public Optional<Double> getCourseEditionCostMode() {
-        Stream<CourseEdition> stream = data.values().stream();
-//        var x = stream.collect(Collectors.groupingBy(CourseEdition::getCost)); // chiave: costo, valore: lista
-//        var max = x.entrySet().stream().max((kv1, kv2) -> kv1.getValue().size() - kv2.getValue().size()); // cerchiamo la list più lunga (srà la nostra moda)
-        var x = stream.collect(Collectors.groupingBy(CourseEdition::getCost, Collectors.counting())); // chiave: costo, valore: lista
-        var max = x.entrySet().stream().max(Comparator.comparingLong(Map.Entry::getValue));
+        /*Stream<Course> cs = data.values().stream().filter(e->e.getCost()>1000).map(e->e.getCourse()).distinct();
+        List<Course> ls =cs.toList();
+        Optional<Course> os=ls.stream().findFirst();
+        Optional<Course> mc=ls.stream().max((c1, c2)->(int) (c1.getDuration()-c2.getDuration()));*/
 
-        return max.map(Map.Entry::getKey);
-//        return max.isPresent()? Optional.of(max.get().getValue().get(0)) : Optional.empty(); // se è vero (return...) se è falso (return...)
-
-//        if(max.isPresent()){
-//            return Optional.of(max.get().getKey());
-//        }
-//        return Optional.empty();
-    }
-
-    public CourseEdition createEdition(CourseEdition course){
-        nextId++;
-        data.put(nextId, course);
-        course.setId(nextId);
-        return course;
+        Stream<CourseEdition> stream =data.values().stream();
+        var x = stream.collect(Collectors.groupingBy(CourseEdition :: getCost, Collectors.counting())); //è come se avesse Collectors.toList()
+        var max =x.entrySet().stream().max(Comparator.comparingLong(Map.Entry::getValue)); //ritorna optional di Map.Entry
+        /*if (max.isPresent()){
+            return Optional.of((max.get().getKey()));
+        }
+        return Optional.empty();*/
+        return max.map(Map.Entry::getKey);  //sta traformando un optional di chiave e valore in un optional di chiave(double)
     }
 }
