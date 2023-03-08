@@ -38,11 +38,11 @@ class CSVFileCourseRepositoryTest {
 
     @org.junit.jupiter.api.AfterEach
     void tearDown() {
-        try {
-            new FileOutputStream(FILENAME).close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            new FileOutputStream(FILENAME).close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Test

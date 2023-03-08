@@ -3,7 +3,6 @@ package org.generation.italy.codeSchool.model.data.implementations;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
-import org.generation.italy.codeSchool.model.data.exceptions.LogicException;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.postgresql.Driver;
 
@@ -46,7 +45,6 @@ public class JDBCCourseRepository implements CourseRepository {
             /*courseList.stream().map(Course::getTitle)
                                .forEach(System.out::println);*/
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DataException("errore nella lettura dei corsi da database", e);
         }
 
@@ -65,7 +63,6 @@ public class JDBCCourseRepository implements CourseRepository {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new DataException("errore nella lettura dei corsi da database", e);
         }
     }
@@ -83,15 +80,13 @@ public class JDBCCourseRepository implements CourseRepository {
                 }
                 return courseList;
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DataException("errore nella lettura dei corsi da database", e);
+            throw new DataException("Errore nella lettura dei corsi da database", e);
         }
     }
 
-    @Override
-    public Course create(Course course) throws DataException {
+    //@Override
+    public Course create2(Course course) throws DataException {
         try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
              PreparedStatement st = con.prepareStatement(INSERT_COURSE);//factory method pattern
              Statement st2 = con.createStatement();//factory method pattern
@@ -110,12 +105,12 @@ public class JDBCCourseRepository implements CourseRepository {
             int numLines = st.executeUpdate();
             return course;
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DataException("errore nell'inserimento del corso", e);
+            throw new DataException("Errore nell'insermiento del corso", e);
         }
 
     }
-    public Course create2(Course course) throws DataException {
+    @Override
+    public Course create(Course course) throws DataException {
         try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
              PreparedStatement st = con.prepareStatement(INSERT_COURSE_RETURNING_ID,Statement.RETURN_GENERATED_KEYS);//factory method pattern
         ) {
@@ -133,8 +128,7 @@ public class JDBCCourseRepository implements CourseRepository {
                 return course;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DataException("errore nell'inserimento del corso", e);
+            throw new DataException("Errore nell'inserimento del corso",e);
         }
 
     }
@@ -152,11 +146,10 @@ public class JDBCCourseRepository implements CourseRepository {
             st.setLong(7, course.getId());
             int numLines = st.executeUpdate();
             if (numLines != 1){
-                throw new EntityNotFoundException("Non e' stato trovato il corso con quell'id");
+                throw new EntityNotFoundException("Non e' stato trovato nessun corso per update con id"+course.getId());
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DataException("errore nella lettura dei corsi da database", e);
+            throw new DataException("Errore nella lettura dei corsi da database", e);
         }
 
     }
@@ -164,16 +157,15 @@ public class JDBCCourseRepository implements CourseRepository {
     @Override
     public void deleteById(long id) throws EntityNotFoundException, DataException {
         try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-             PreparedStatement st = con.prepareStatement(DELETE_COURSE_BY_ID);//factory method pattern
+             PreparedStatement st = con.prepareStatement(DELETE_COURSE_BY_ID)
         ) {
             st.setLong(1, id);
             int numLines = st.executeUpdate();
             if (numLines != 1) {
-                throw new EntityNotFoundException("Non è stato trovato il corso con quell'id");
+                throw new EntityNotFoundException("Non e' stato trovato nessun corso da eliminare con id"+id);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DataException("errore nella lettura dei corsi da database", e);
+            throw new DataException("Errore nella cancellazione dal database", e);
         }
     }
 
@@ -184,25 +176,23 @@ public class JDBCCourseRepository implements CourseRepository {
              ResultSet rs = st.executeQuery(ACTIVE_COURSES)){
                  rs.next();
                  return rs.getInt(1);
-
         }catch (SQLException e) {
-            e.printStackTrace();
-            throw new DataException("errore nella lettura dei corsi da database", e);
+            throw new DataException("Errore nel conteggio dei corsi attivi dal database.", e);
         }
 
     }
 
     @Override
     public void deactivateOldest(int n) throws DataException {
-        try(Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-        PreparedStatement st = con.prepareStatement(DEACTIVATE_OLDEST_COURSES)){
-            st.setInt(1, n);
-            int result = st.executeUpdate();
-            if(result != n){
-                throw new DataException("Errore nella disattivazione dei corsi. Non ci sono abbastanza corsi attivi");
+        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+             PreparedStatement st = con.prepareStatement(DEACTIVATE_OLDEST)){
+            st.setLong(1,n);
+            int numLines = st.executeUpdate();
+            if (numLines!=n){
+                throw new DataException("Errore nella disattivazione corsi. Numero corsi attivi non sufficiente");
             }
-        } catch (SQLException e){
-            throw new DataException("Errore nella disattivazione dei corsi", e);
+        }catch (SQLException e) {
+            throw new DataException("Errore nella disattivazione corsi.", e);
         }
     }
 
@@ -221,7 +211,7 @@ public class JDBCCourseRepository implements CourseRepository {
                     rs.getBoolean("is_active"),
                     rs.getDate("created_at").toLocalDate());
         } catch (SQLException e) {
-            throw new SQLException("errore nella lettura dei corsi da database", e);
+            throw new SQLException("Errore nella lettura dei corsi da database.", e);
         }
 
     }
