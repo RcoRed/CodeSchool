@@ -125,13 +125,24 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int getActiveCourses() {
+    public int countActiveCourses() throws DataException {
         return 0;
     }
+
 
     @Override
     public boolean adjustActiveCourses(int NumActive) throws DataException {
         return false;
+    }
+
+    @Override
+    public List<Course> findAll() throws DataException {
+        return null;
+    }
+
+    @Override
+    public void deactivateOldest(int n) throws DataException {
+
     }
 
     public String courseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
