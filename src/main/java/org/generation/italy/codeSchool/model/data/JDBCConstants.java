@@ -42,9 +42,13 @@ public class JDBCConstants {
             WHERE id_course = ?;
             """;
     public  static  final String ACTIVE_COURSES= """           
-            SELECT COUNT(*) as num_actives
-            FROM courses
-            WHERE is_active = true           
+            UPDATE COURSE
+            SET IS_ACTIVE = FALSE
+            WHERE COURSE_ID IN(
+               SELECT COURSE_ID
+               FROM COURSE AS C
+               WHERE IS_ACTIVE = TRUE
+               ORDER BY CREATE_DATE
+               LIMIT ?)
             """;
-
 }

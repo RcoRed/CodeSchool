@@ -183,7 +183,6 @@ public class JDBCCourseRepository implements CourseRepository {
              ResultSet rs = st.executeQuery(ACTIVE_COURSES)){
                  rs.next();
                  return rs.getInt(1);
-
         }catch (SQLException e) {
             e.printStackTrace();
             throw new DataException("errore nella lettura dei corsi da database", e);
@@ -193,7 +192,17 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public void deactivateOldest(int n) throws DataException {
-
+        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+             PreparedStatement st = con.prepareStatement(ACTIVE_COURSES)){//factory method pattern
+             st.setInt(1,n);
+             int numLines = st.executeUpdate();
+             if (numLines != 1) {
+                 throw new EntityNotFoundException("Non e' stato trovato nessun corso attivo");
+            }
+        }catch (SQLException | EntityNotFoundException e) {
+        e.printStackTrace();
+        throw new DataException("errore nella lettura dei corsi da database", e);
+        }
     }
 
     @Override
