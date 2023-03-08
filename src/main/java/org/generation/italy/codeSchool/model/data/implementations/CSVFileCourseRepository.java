@@ -4,6 +4,8 @@ import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,6 +15,10 @@ import java.util.*;
 
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
+
+
+@Repository
+@Profile("csv")
 public class CSVFileCourseRepository implements CourseRepository {
     private String fileName;
     public static long nextId;
@@ -27,7 +33,7 @@ public class CSVFileCourseRepository implements CourseRepository {
 
     @Override
     public List<Course> findAll() throws DataException {
-        try {
+         try {
             List<String> lines = Files.readAllLines(Paths.get(fileName));
             List<Course> courses = new ArrayList<>();
             for(String s : lines){
@@ -139,24 +145,29 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public ArrayList<Course> createListOfActiveCourses() {
-        return null;
+    public int countActiveCourses() {
+        return 0;
     }
 
     @Override
-    public void cancelOldActiveCourses(int difference) {
+    public void deactivateOldest(int n) {
 
+    }
+
+    @Override
+    public boolean adjustActiveCourses(int NumActive) throws DataException {
+        return false;
     }
 
     public String courseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)
         return String.format(Locale.US,CSV_COURSE,c.getId(),c.getTitle()
-                ,c.getDescription(),c.getProgram(),c.getDuration(), c.isActive(), c.getCreateAt());
+                ,c.getDescription(),c.getProgram(),c.getDuration(),c.isActive(),c.getCreatedAt());
     }
 
-    private Course CSVToCourse(String CSVLine) throws IOException {
+    private Course CSVToCourse(String CSVLine){
         String[] tokens = CSVLine.split(",");
         return new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
-                tokens[3], Double.parseDouble(tokens[4]), Boolean.valueOf(tokens[5]), LocalDate.parse(tokens[6]));
+                tokens[3], Double.parseDouble(tokens[4]),Boolean.parseBoolean(tokens[5]) ,LocalDate.parse(tokens[6]));
     }
     private void flushStringsToFile(List<String> lines) throws FileNotFoundException {
         try(PrintWriter pw = new PrintWriter(new FileOutputStream(fileName))) {
@@ -165,5 +176,4 @@ public class CSVFileCourseRepository implements CourseRepository {
             }
         }
     }
-
 }

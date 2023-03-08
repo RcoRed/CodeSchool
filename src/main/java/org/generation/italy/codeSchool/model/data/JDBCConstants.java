@@ -5,40 +5,57 @@ public class JDBCConstants {
     public static final String USER_NAME = "postgresMaster";
     public static final String PASSWORD = "goPostgresGo";
     public static final String COURSE_QUERY = """
-                SELECT id, title, duration, is_active, create_at, program, description
-                FROM course""";
+            SELECT id_course,title,description,program,duration,is_active,created_at
+            FROM course""";
     public static final String FIND_COURSE_BY_ID = """
-                    SELECT id, title, description, program, duration, is_active, create_at
-                    FROM course
-                    WHERE id = ?""";
-    public static final String CREATE_COURSE = """
-                    INSERT course
-                    SET id = ?, title = ?, description = ?, program = ?, duration = ?, is_active = ?, create_at = ?
-                    """;
-    public static final String UPDATE_COURSE = """
-                    UPDATE course
-                    SET id = ?, title = ?, description = ?, program = ?, duration = ?, is_active = ?, create_at = ?
-                    WHERE id = ?;""";
-    public static final String FIND_COURSES_BY_TITLE_CONTAIN = """
-                    SELECT id, title, description, program, duration, is_active, create_at
-                    FROM course
-                    WHERE title LIKE(%?%)""";
-    public static final String DELETE_COURSES_BY_ID = """
-                    DELETE FROM course
-                    WHERE id = ?""";
-    public static final String FIND_ACTIVE_COURSES= """
-                    SELECT id, title, description, program, duration, is_active, create_at
-                    FROM course
-                    WHERE is_active = true""";
-    public static final String DELETE_OLD_ACTIVE_COURSES = """
-                    DELETE FROM course
-                    WHERE id IN (
-                      SELECT id
-                      FROM course
-                      WHERE is_active = true
-                      GROUP BY id
-                      HAVING COUNT(*) > ?
-                      ORDER BY create_at
-                      LIMIT ?
-                    );""";
+            SELECT course_id,title,description,course_program, duration,is_active,create_date
+            FROM course WHERE course_id = ? 
+            """;
+    public static final String DELETE_COURSE_BY_ID = """
+               DELETE FROM course
+               WHERE id = ?
+            """;
+    public static final String FIND_BY_TITLE_CONTAINS = """
+            SELECT id_course,title,description,program, duration,is_active,created_at
+            FROM course WHERE title like ?
+            """;
+    public static final String INSERT_COURSE = """
+            INSERT INTO course(course_id, title, description, course_program,duration, is_active, create_date)
+              VALUES(?,?, ?, ?, ?, ?, ?);
+            """;
+    public static final String INSERT_COURSE_RETURNING_ID = """
+            INSERT INTO course(course_id, title, description, course_program,duration, is_active, create_date)
+              VALUES(nextval('course_id'),?, ?, ?, ?, ?, ?)
+              RETURNING course_id;
+            """;
+    public static final String NEXT_VAL_COURSE = """
+            SELECT nextval('course_sequence');
+            """;
+    public static final String UP_DATE_COURSE = """
+            UPDATE course
+            SET title = ?,
+            SET description = ?,
+            SET program = ?,
+            SET duration = ?,
+            SET is_active = ?,
+            SET create_at = ?,
+            WHERE id_course = ?;
+            """;
+    public static final String ACTIVE_COURSES = """           
+            SELECT COUNT(*) as num_actives
+            FROM course
+            WHERE is_active = true           
+            """;
+    public static final String DEACTIVATE_OLDEST_N_COURSES = """
+            UPDATE course
+                        SET is_active = false
+                        WHERE course_id IN (
+                          SELECT c2.course_id
+                          FROM course AS c2
+                          WHERE c2.is_active = true
+                          ORDER BY c2.create_date asc
+                          LIMIT ?
+                        );
+            """;
+
 }

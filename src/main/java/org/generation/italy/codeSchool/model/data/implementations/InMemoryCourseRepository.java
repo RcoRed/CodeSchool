@@ -2,20 +2,24 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.*;
 
-public class InMemoryCourseRepository implements CourseRepository {
 
+@Repository
+@Profile("memo")
+public class InMemoryCourseRepository implements CourseRepository {
     /*
         pensalo come una arrayList(NON fanno parte della stassa famiglia) ma le posizioni vengono definite con degli id UNIVOCI
         immaginalo come 2 colonne a sinistra l'id UNIVOCO della riga e a destra un oggetto
      */
-    private static Map<Long,Course> dataSource = new HashMap<>();
+    private static Map<Long, Course> dataSource = new HashMap<>();
     private static long nextId;
-
 
     /*
         Optional lo vedo un pò come una variabile jolly in che senso:
@@ -28,30 +32,26 @@ public class InMemoryCourseRepository implements CourseRepository {
         si! hai capito!! serve "solo" per ricordarci/ o a dire di controllare se un dato è vuoto(null) o meno, così da evitare cappellate logiche durante la scrittura dei codici
      */
 
-    public static Map<Long, Course> getDataSource() {
-        return dataSource;
-    }
-
     @Override
-    public List<Course> findAll() {
+    public List<Course> findAll() throws DataException {
         return new ArrayList<>(dataSource.values());
     }
 
     @Override
     public Optional<Course> findById(long id) {
         Course x = dataSource.get(id);
-        if (x != null){
+        if (x != null) {
             return Optional.of(x);
         }
         return Optional.empty();
     }
 
     @Override
-    public List<Course> findByTitleContains(String part){
+    public List<Course> findByTitleContains(String part) {
         List<Course> result = new ArrayList<>();            //un pò di polimorfismo non fa mai male
         Collection<Course> cs = dataSource.values();        //rappresenta una collezione di oggetti non ordinati(messi alla cazzo di cane) si ci possiamo ciclare sopra, guarda il for
-        for (Course c:cs){
-            if (c.getTitle().contains(part)){
+        for (Course c : cs) {
+            if (c.getTitle().contains(part)) {
                 result.add(c);                              //aggiungiamo l'oggetto che abbiamo trovato nella collection alla lista
             }
         }
@@ -68,9 +68,9 @@ public class InMemoryCourseRepository implements CourseRepository {
 
     @Override
     public void update(Course course) throws EntityNotFoundException {
-        if (dataSource.containsKey(course.getId())){
+        if (dataSource.containsKey(course.getId())) {
             dataSource.put(course.getId(), course);                   //inseriamo l'oggeto nel hashMap
-        }else {
+        } else {
 //            EntityNotFoundException e = new EntityNotFoundException("Non esiste un corso con id: " + course.getId());
 //            throw e;
             throw new EntityNotFoundException("Non esiste un corso con id: " + course.getId());
@@ -83,90 +83,67 @@ public class InMemoryCourseRepository implements CourseRepository {
 //        if (old == null){
 //            throw new EntityNotFoundException("Non esiste un corso con id: " + id);
 //        }
-        if (dataSource.remove(id)==null){           //possiamo farlo perche .remove() ritornerà null se non trova l' id
+        if (dataSource.remove(id) == null) {           //possiamo farlo perche .remove() ritornerà null se non trova l' id
             throw new EntityNotFoundException("Non esiste un corso con id: " + id);
         }
     }
-    /*public int countActiveCourses(List<Course> courses){
-        int count=0;
-        for(Course c : courses){
-            if(c.isActive()){
-                ++count;
-            }
-        }
-        return count;
-    }*/
-    public List<Course> createListOfActiveCourses2(List<Course> courses){
-        List<Course> activeCourses = new ArrayList<>();
-        for(Course c : courses){
-            if (c.isActive()){
-                activeCourses.add(c);
+
+    @Override
+    public int countActiveCourses() {
+        int activeCourses = 0;
+        Collection<Course> collection = dataSource.values();
+        for (Course c : collection) {                          //scorro la collection per vedere quanti corsi attivi ci sono
+            if (c.isActive()) {
+                activeCourses++;
             }
         }
         return activeCourses;
     }
 
-    public List<Course> cancelOldActiveCourses2(List<Course> courses, int difference){
-        List<Course> activeCourses = createListOfActiveCourses2(courses);
-        Course course = new Course();
-        for (int z = 0; z<difference; z++) {
-            for (int i = 0; i < activeCourses.size(); i++) {
-                Course course1 = activeCourses.get(i);
-                if(course.getCreateAt().isBefore(course1.getCreateAt())) {
-                    course1 = course;
-                }
-                for (int j = 0; j < activeCourses.size() - i; j++) {
-                    Course course2 = activeCourses.get(j + i);
-                    if (course1.getCreateAt().isAfter(course2.getCreateAt())) {
-                        course = course2;
+    @Override
+    public void deactivateOldest(int n) {
+        dataSource.values().stream()
+                           .filter(Course::isActive)
+                           .sorted(Comparator.comparing(Course::getCreatedAt))
+                           .limit(n)
+                           .forEach(Course::deactivate);
+    }
+
+    @Override
+    public boolean adjustActiveCourses(int nCoursesToDelete) throws DataException {
+        int activeCourses = countActiveCourses();
+        ArrayList<Course> arrayList = new ArrayList<>(dataSource.values());
+        if (activeCourses <= nCoursesToDelete) {
+            return false;
+        } else {
+            try{
+                for (int i = 0; i < nCoursesToDelete; i++) {
+                    LocalDate toDelete = LocalDate.now();
+                    for (ListIterator<Course> it = arrayList.listIterator(); it.hasNext();) {
+                        Course c1 = it.next();
+                        int f = it.nextIndex();
+                        if(f > arrayList.size() - 1){
+                            break;
+                        }
+                        Course c2 = arrayList.get(f);
+                        if (c1.getCreatedAt().isAfter(c2.getCreatedAt()) && c2.getCreatedAt().isBefore(toDelete)) {
+                            toDelete = c2.getCreatedAt();
+                        } else if (c1.getCreatedAt().isBefore(c2.getCreatedAt()) && c1.getCreatedAt().isBefore(toDelete)) {
+                            toDelete = c1.getCreatedAt();
+                        }
+                    }
+                    for (Course c : arrayList) {                              //la collections contiene quelli che devono rimanere nella mappa
+                        if (c.getCreatedAt() == toDelete) {
+                            c.setActive(false);
+                            arrayList.remove(c);
+                            break;
+                        }
                     }
                 }
+            }catch (NoSuchElementException e){
+                throw new DataException("Elementi nella lista inferiori a quelli da controllare", e);
             }
-            activeCourses.remove(course);       //prova ad usare il for con Iterator
-        }
-        return activeCourses;
-    }
-
-    public ArrayList<Course> createListOfActiveCourses(){
-        ArrayList<Course> activeCourses = new ArrayList<>();
-        Collection<Course> cs = dataSource.values();
-        for(Course c : cs){
-            if (c.isActive()){
-                activeCourses.add(c);
-            }
-        }
-        return activeCourses;
-    }
-    public void cancelOldActiveCourses(int difference) {
-        ArrayList<Course> activeCourses = createListOfActiveCourses();
-        //Collections.sort(activeCourses);
-        //Collections.sort(activeCourses, new CourseComparatorByTitleLength());  //posso chiamare un oggetto che possieda dentro di se la funzione che voglio usare
-        //Collections.sort(activeCourses, (o1, o2) -> (o1.getTitle().length() - o2.getTitle().length()));
-        //Collections.sort(activeCourses, (o1,o2) -> o1.getCreateAt().compareTo(o2.getCreateAt()));
-
-        activeCourses.sort((o1,o2) -> o2.getCreateAt().compareTo(o1.getCreateAt())); //più vecchie alla fine
-        int count = difference;
-        while(count>0){
-            activeCourses.get(activeCourses.size()-1).setActive(false);
-            activeCourses.remove(activeCourses.size()-1);
-            --count;
+            return true;
         }
     }
 }
-
-/*class CourseComparatorByTitleLength implements Comparator<Course>{
-
-    @Override
-    public int compare(Course o1, Course o2) {
-        /*if(o1.getTitle().length() > o2.getTitle().length()){
-            return 1; // se il primo è più grande del secondo ritorna
-                       //positivo se voglio ordinare dal più grande al più piccolo
-        } else if (o1.getTitle().length() < o2.getTitle().length()) {
-            return -1;
-        } else {
-            return 0;
-        }//
-        return (o1.getTitle().length() - o2.getTitle().length());
-        // basta ritornare la differenza delle lunghezze
-    }
-}*/

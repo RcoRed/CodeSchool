@@ -4,15 +4,16 @@ import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
+@Repository
+@Profile("ser")
 public class SerializedCourseRepository implements CourseRepository {
     private static final String SERIALIZED_FILE_NAME = "courses.ser";
     public static long nextID;
@@ -31,7 +32,7 @@ public class SerializedCourseRepository implements CourseRepository {
         try {
             return load();
         } catch (IOException | ClassNotFoundException e) {
-            throw new DataException("Errore nel caricamento", e);
+            throw new DataException("Errore nel findByTitleContains", e);
         }
     }
 
@@ -123,13 +124,34 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public ArrayList<Course> createListOfActiveCourses() {
-        return null;
+    public int countActiveCourses() throws DataException {
+        try {
+          return (int) load().stream()
+                    .filter(Course::isActive)
+                    .count();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new DataException("Errore nel conteggio dei corsi attivi", e);
+        }
     }
 
     @Override
-    public void cancelOldActiveCourses(int difference) {
+    public void deactivateOldest(int n) throws DataException {
+       try {
+           load().stream()
+                   .filter(Course::isActive)
+                   .sorted(Comparator.comparing(Course::getCreatedAt))
+                   .limit(n)
+                   .forEach(Course::deactivate);
+       }catch (IOException | ClassNotFoundException e) {
+           throw new DataException("Errore nella disattivazione dei corsi più vecchi", e);
+       }
 
+
+    }
+
+    @Override
+    public boolean adjustActiveCourses(int NumActive) throws DataException {
+        return false;
     }
 
     private List<Course> load() throws IOException, ClassNotFoundException {
