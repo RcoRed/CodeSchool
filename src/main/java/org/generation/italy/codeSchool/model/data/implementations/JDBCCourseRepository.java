@@ -4,16 +4,19 @@ import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.entities.Course;
-import org.postgresql.Driver;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
 
+
+@Repository
+@Profile("jdbc")
 public class JDBCCourseRepository implements CourseRepository {
     /*public static int askToClient;
     static{
@@ -25,9 +28,17 @@ public class JDBCCourseRepository implements CourseRepository {
             throw new RuntimeException(e);
         }
     }*/
+
+    private Connection con;
+
+    public JDBCCourseRepository(Connection connection) {
+        this.con = connection;
+    }
+
+
     @Override
     public List<Course> findAll() throws DataException {
-        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        try (
              Statement st = con.createStatement();//factory method pattern
              ResultSet rs = st.executeQuery(COURSE_QUERY);
         ) {
@@ -53,7 +64,7 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public Optional<Course> findById(long id) throws DataException {
-        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        try (
              PreparedStatement st = con.prepareStatement(FIND_COURSE_BY_ID);//factory method pattern
         ) {
             st.setLong(1, id);
@@ -71,7 +82,7 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public List<Course> findByTitleContains(String part) throws DataException {
-        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        try (
              PreparedStatement st = con.prepareStatement(FIND_BY_TITLE_CONTAINS);//factory method pattern
         ) {
             st.setString(1, "%" + part + "%");
@@ -91,13 +102,13 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public Course create(Course course) throws DataException {
-        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        try (
              PreparedStatement st = con.prepareStatement(INSERT_COURSE);//factory method pattern
              Statement st2 = con.createStatement();//factory method pattern
              ResultSet rs = st2.executeQuery(NEXT_VAL_COURSE);
         ) {
             rs.next();
-            int nextVal = rs.getInt("nextval");
+            long nextVal = rs.getLong("nextval");
             course.setId(nextVal);
             st.setLong(1, course.getId());
             st.setString(2, course.getTitle());
@@ -106,7 +117,7 @@ public class JDBCCourseRepository implements CourseRepository {
             st.setDouble(5, course.getDuration());
             st.setBoolean(6, course.isActive());
             st.setDate(7, Date.valueOf(course.getCreatedAt()));
-            int numLines = st.executeUpdate();
+            st.executeUpdate();
             return course;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,7 +126,7 @@ public class JDBCCourseRepository implements CourseRepository {
 
     }
     public Course create2(Course course) throws DataException {
-        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        try (
              PreparedStatement st = con.prepareStatement(INSERT_COURSE_RETURNING_ID,Statement.RETURN_GENERATED_KEYS);//factory method pattern
         ) {
             st.setString(1, course.getTitle());
@@ -140,7 +151,7 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public void update(Course course) throws EntityNotFoundException, DataException {
-        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        try (
              PreparedStatement st = con.prepareStatement(UP_DATE_COURSE)){
             st.setString(1, course.getTitle());
             st.setString(2, course.getDescription());
@@ -162,7 +173,7 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public void deleteById(long id) throws EntityNotFoundException, DataException {
-        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        try (
              PreparedStatement st = con.prepareStatement(DELETE_COURSE_BY_ID);//factory method pattern
         ) {
             st.setLong(1, id);
@@ -178,7 +189,7 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public int countActiveCourses() throws DataException{
-        try (Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        try (
              Statement st = con.createStatement();//factory method pattern
              ResultSet rs = st.executeQuery(ACTIVE_COURSES)){
                  rs.next();
@@ -193,13 +204,21 @@ public class JDBCCourseRepository implements CourseRepository {
 
     @Override
     public void deactivateOldest(int n) throws DataException {
-
+        try(
+            PreparedStatement st = con.prepareStatement(DEACTIVATE_OLDEST_N_COURSES)) {
+            st.setInt(1, n);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataException("Errore nella lettura dei corsi da database", e);
+        }
     }
 
     @Override
     public boolean adjustActiveCourses(int NumActive) throws DataException {
         return false;
     }
+
 
     private Course databaseToCourse(ResultSet rs) throws SQLException {
         try {

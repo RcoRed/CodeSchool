@@ -1,76 +1,81 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.abstractions.CourseEditionRepository;
+import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.entities.CourseEdition;
 
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.counting;
+import java.util.stream.Stream;
 
 public class InMemoryCourseEditionRepository implements CourseEditionRepository {
 
-    private Map<Long, CourseEdition> editionDataSource = new HashMap<>();
-    private List<CourseEdition> editionCollection = (ArrayList<CourseEdition>) editionDataSource.values();
+    private static Map<Long, CourseEdition> data = new HashMap<>();
+
     @Override
     public double getTotalCost() {
-        return editionCollection.stream().mapToDouble(CourseEdition::getCost).sum();
+        return data.values().stream().mapToDouble(CourseEdition :: getCost).sum();
     }
 
     @Override
-    public Optional<CourseEdition> getMostExpensive() {
-        //return editionCollection.stream().sorted((ce1, ce2) -> (int) (ce1.getCost() - ce2.getCost())).toList().get(0);
-        return editionCollection.stream().max(Comparator.comparingDouble(CourseEdition::getCost));
+    public Optional<CourseEdition> findMostExpensive() {
+        return data.values().stream().max(Comparator.comparingDouble(CourseEdition :: getCost));
     }
 
     @Override
-    public double getAverageCost() {
-        return getTotalCost() / editionCollection.size();
+    public double findAverageCost() {
+        return getTotalCost() / data.size();
     }
 
     @Override
-    public List<Double> getDurationList() {
-        return editionCollection.stream().map(e -> e.getCourse().getDuration()).toList();
+    public Iterable<Double> findAllDuration() {
+        return data.values().stream().map(e -> e.getCourse().getDuration()).toList();
     }
 
     @Override
-    public List<CourseEdition> getCourseEditionsById(long courseId) {
-        return editionCollection.stream().filter(e -> e.getCourse().getId() == courseId).toList();
+    public Iterable<CourseEdition> findByCourse(long courseId) {
+        return data.values().stream().filter(e -> e.getId()==courseId).toList();
     }
 
     @Override
-    public List<CourseEdition> getCourseEditionsInTime(String name, LocalDate fromDate, LocalDate toDate) {
-        return editionCollection.stream().filter(e -> e.getCourse().getTitle().contains(name)
-                    && e.getStartedAt().isAfter(fromDate)
-                    && e.getStartedAt().isBefore(toDate))
-                    .toList();
+    public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart,
+                                                                 LocalDate startAt, LocalDate endAt){
+        return data.values().stream().filter(e -> e.getCourse().getTitle().contains(titlePart)
+                &&e.isStartedInRange(startAt, endAt)).toList();
+                                             /*&& e.getStartedAt().isAfter(startAt)
+                                             && e.getStartedAt().isBefore(endAt)).toList();*/
     }
 
     @Override
-    public List<CourseEdition> getMiddleCourseEdition() {
-        List<CourseEdition> result = new ArrayList<>();
-        List<CourseEdition> sorted = editionCollection.stream()
-                                                      .sorted(Comparator.comparingDouble(CourseEdition::getCost))
-                                                      .toList();
-        if (editionCollection.size() % 2 == 0) {
-            result.add(sorted.get((sorted.size() / 2)));
-            result.add(sorted.get((sorted.size() / 2) + 1));
-        } else {
-            result.add(sorted.get((sorted.size() - 1) / 2));
+    public Iterable<CourseEdition> findMedian() {
+        List <CourseEdition> medianPrice = new ArrayList<>();
+        var result = data.values().stream().sorted(Comparator.comparingDouble(CourseEdition :: getCost)).toList();
+        if(data.size()%2==1) {
+            medianPrice.add(result.get((data.size()-1)/2));
+            return medianPrice;
+        }else {
+            medianPrice.add(result.get((data.size()/2)));
+            medianPrice.add(result.get((data.size()/2-1)));
+            return medianPrice;
         }
-        return result;
     }
 
     @Override
-    public Optional<Double> getModes() {
-                return editionCollection.stream()
-                                 .collect(Collectors.groupingBy(CourseEdition::getCost, Collectors.counting()))
-                                 .entrySet()
-                                 .stream()
-                                 .max(Comparator.comparingLong(Map.Entry::getValue))
-                                 .map(Map.Entry::getKey); // map funziona su un Optional! Tira fuori il valore dell'Optional
-                                                          // e lo trasforma nella sua stessa chiave sempre come Optional!
+    public Optional<Double> getCourseEditionCostMode() {
+        /*Stream<Course> cs = data.values().stream().filter(e->e.getCost()>1000).map(e->e.getCourse()).distinct();
+        List<Course> ls =cs.toList();
+        Optional<Course> os=ls.stream().findFirst();
+        Optional<Course> mc=ls.stream().max((c1, c2)->(int) (c1.getDuration()-c2.getDuration()));*/
+
+        Stream<CourseEdition> stream =data.values().stream();
+        var x = stream.collect(Collectors.groupingBy(CourseEdition :: getCost, Collectors.counting())); //è come se avesse Collectors.toList()
+        var max =x.entrySet().stream().max(Comparator.comparingLong(Map.Entry::getValue)); //ritorna optional di Map.Entry
+        /*if (max.isPresent()){
+            return Optional.of((max.get().getKey()));
+        }
+        return Optional.empty();*/
+        return max.map(Map.Entry::getKey);  //sta traformando un optional di chiave e valore in un optional di chiave(double)
     }
 }
