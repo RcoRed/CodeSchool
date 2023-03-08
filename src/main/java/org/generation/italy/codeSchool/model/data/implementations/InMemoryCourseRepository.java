@@ -101,15 +101,6 @@ public class InMemoryCourseRepository implements CourseRepository {
     }
 
     @Override
-    public void deactivateOldest(int n) {
-        dataSource.values().stream()
-                           .filter(Course::isActive)
-                           .sorted(Comparator.comparing(Course::getCreatedAt))
-                           .limit(n)
-                           .forEach(Course::deactivate);
-    }
-
-    @Override
     public boolean adjustActiveCourses(int nCoursesToDelete) throws DataException {
         int activeCourses = countActiveCourses();
         ArrayList<Course> arrayList = new ArrayList<>(dataSource.values());
@@ -147,10 +138,6 @@ public class InMemoryCourseRepository implements CourseRepository {
         }
     }
 
-    @Override
-    public List<Course> findAll() throws DataException {
-        return null;
-    }
 
     @Override
     public void deactivateOldest(int n) {
