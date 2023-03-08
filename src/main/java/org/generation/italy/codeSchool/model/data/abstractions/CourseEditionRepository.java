@@ -19,3 +19,12 @@ public interface CourseEditionRepository {
     Optional<Double> getCourseEditionCostMode();
 
 }
+
+/*
+* Implementare una serie di metodi nella classe JDBCCourseEditionRepository
+* Tutti i metodi dovranno riportare, oltre alla CourseEdition, anche il relativo Course e la Classroom
+* 1. findMostExpensive()
+* 2. findByCourse()
+* 3. findByCourseTitleAndPeriod()
+* 4. findByTeacherId() -> dammi tutte le CourseEdition tenute dal Teacher con id = x
+*/

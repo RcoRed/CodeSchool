@@ -16,6 +16,34 @@ public class CourseEdition {
         this.cost=cost;
     }
 
+    public CourseEdition(long id, Course course, LocalDate startedAt, double cost, Classroom assignedClassRoom) {
+        this.id=id;
+        this.course=course;
+        this.startedAt=startedAt;
+        this.cost=cost;
+        this.assignedClassRoom = assignedClassRoom;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public void setStartedAt(LocalDate startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public void setAssignedClassRoom(Classroom assignedClassRoom) {
+        this.assignedClassRoom = assignedClassRoom;
+    }
+
     public long getId() {
         return id;
     }

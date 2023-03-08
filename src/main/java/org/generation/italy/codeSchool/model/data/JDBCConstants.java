@@ -11,6 +11,54 @@ public class JDBCConstants {
             SELECT id_course, title, description, program, duration,is_active,created_at
             FROM course WHERE id_course = ?
             """;
+
+    public static final String FIND_MOST_EXPENSIVE_COURSE_EDITION = """
+            SELECT id_course_edition, id_course, started_at, price, id_classroom,
+            title, description, program, duration, is_active, created_at,
+            class_name, max_capacity, is_virtual, is_computerized, has_projector, id_remote_platform
+            FROM course_edition JOIN course
+            USING (id_course)
+            JOIN classroom
+            USING (id_classroom)
+            WHERE ce.price = (SELECT MAX(price) FROM course_edition)
+            """;
+
+    public static final String FIND_COURSE_EDITION_BY_COURSE = """
+            SELECT id_course_edition, id_course, started_at, price, id_classroom,
+            title, description, program, duration, is_active, created_at,
+            class_name, max_capacity, is_virtual, is_computerized, has_projector, id_remote_platform
+            FROM course_edition JOIN course
+            USING (id_course)
+            JOIN classroom
+            USING (id_classroom)
+            WHERE id_course = ?
+            """;
+
+    public static final String FIND_COURSE_EDITION_BY_COURSE_TILE_AND_PERIOD = """
+            SELECT id_course_edition, id_course, started_at, price, id_classroom,
+            title, description, program, duration, is_active, created_at,
+            class_name, max_capacity, is_virtual, is_computerized, has_projector, id_remote_platform
+            FROM course_edition JOIN course
+            USING (id_course)
+            JOIN classroom
+            USING (id_classroom)
+            WHERE title LIKE ? AND started_at BETWEEN ? AND ?
+            """;
+
+    public static final String FIND_COURSE_EDITION_BY_TEACHER_ID = """
+            SELECT id_course_edition, id_course, started_at, price, id_classroom,
+            title, description, program, duration, is_active, created_at,
+            class_name, max_capacity, is_virtual, is_computerized, has_projector, id_remote_platform,
+            id_edition_module, id_course_module, id_teacher, start_date, end_date
+            FROM course_edition JOIN course
+            USING (id_course)
+            JOIN classroom
+            USING (id_classroom)
+            JOIN edition_module
+            USING (id_course_edition)
+            WHERE id_teacher = ?
+            """;
+
     public static final String DELETE_COURSE_BY_ID = """
                DELETE FROM course
                WHERE id_course = ?
@@ -57,5 +105,4 @@ public class JDBCConstants {
                 LIMIT ?
             );
             """;
-
 }
