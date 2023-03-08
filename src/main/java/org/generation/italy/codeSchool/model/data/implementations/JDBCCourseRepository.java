@@ -111,7 +111,7 @@ public class JDBCCourseRepository implements CourseRepository {
             return course;
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataException("errore nell'insermiento del corso", e);
+            throw new DataException("errore nell'inserimento del corso", e);
         }
 
     }
@@ -134,7 +134,7 @@ public class JDBCCourseRepository implements CourseRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataException("errore nell'insermiento del corso", e);
+            throw new DataException("errore nell'inserimento del corso", e);
         }
 
     }
@@ -169,7 +169,7 @@ public class JDBCCourseRepository implements CourseRepository {
             st.setLong(1, id);
             int numLines = st.executeUpdate();
             if (numLines != 1) {
-                throw new EntityNotFoundException("Non e' stato trovato il corso con quell'id");
+                throw new EntityNotFoundException("Non è stato trovato il corso con quell'id");
             }
         } catch (SQLException e) {
             e.printStackTrace();
