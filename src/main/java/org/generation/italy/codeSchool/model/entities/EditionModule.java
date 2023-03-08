@@ -8,4 +8,32 @@ public class EditionModule {
     private Teacher teacher;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    public EditionModule(long id, CourseModule courseModule, Teacher teacher, LocalDate startDate, LocalDate endDate) {
+        this.id = id;
+        this.courseModule = courseModule;
+        this.teacher = teacher;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public CourseModule getCourseModule() {
+        return courseModule;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 }

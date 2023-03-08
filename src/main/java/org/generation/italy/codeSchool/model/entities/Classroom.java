@@ -8,4 +8,42 @@ public class Classroom {
     private boolean isComputerized;
     private boolean hasProjector;
     private RemotePlatform platform;
+
+    public Classroom(long id, String name, int maxCapacity, boolean isVirtual, boolean isComputerized, boolean hasProjector, RemotePlatform platform) {
+        this.id = id;
+        this.name = name;
+        this.maxCapacity = maxCapacity;
+        this.isVirtual = isVirtual;
+        this.isComputerized = isComputerized;
+        this.hasProjector = hasProjector;
+        this.platform = platform;
+    }
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getMaxCapacity() {
+        return maxCapacity;
+    }
+
+    public boolean isVirtual() {
+        return isVirtual;
+    }
+
+    public boolean isComputerized() {
+        return isComputerized;
+    }
+
+    public boolean isHasProjector() {
+        return hasProjector;
+    }
+
+    public RemotePlatform getPlatform() {
+        return platform;
+    }
+
 }
