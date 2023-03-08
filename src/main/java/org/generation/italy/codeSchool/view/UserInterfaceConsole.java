@@ -56,7 +56,7 @@ public class UserInterfaceConsole {
                         System.out.println("\nNon esiste un'opzione associata a questo tasto\n");
                         break;
                 }
-            }catch (DataException e){
+            }catch (DataException | EntityNotFoundException e){
                 System.out.println("Errore nella connessione con la sorgente dati");
                 System.out.println(e.getCause().getMessage());
             }
@@ -65,7 +65,7 @@ public class UserInterfaceConsole {
         }
     }
 
-    private void deleteOldCourses() throws DataException{
+    private void deleteOldCourses() throws DataException, EntityNotFoundException {
         System.out.println("Quanti corsi vuoi eliminare?\nRicorda: verranno eliminati gli n corsi più vecchi");
         int nCoursesToDelete = console.nextInt();
         boolean results = service.adjustActiveCourses(nCoursesToDelete);
