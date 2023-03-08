@@ -3,7 +3,7 @@ package org.generation.italy.codeSchool.model.data;
 public class JDBCConstants {
     public static final String URL = "jdbc:postgresql://localhost:5432/legion";
     public static final String USER_NAME = "postgresMaster";
-    public static final String PASSWORD = "goPostgresGo";
+    public static final String PASSWORD = "T0t1no2019!";
     public static final String COURSE_QUERY = """
             SELECT id_course, title, description, program, duration, is_active, created_at
             FROM course""";
