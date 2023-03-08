@@ -36,7 +36,6 @@ public class JDBCCourseRepository implements CourseRepository {
     }
 
 
-
     @Override
     public List<Course> findAll() throws DataException {
         try (
@@ -109,7 +108,7 @@ public class JDBCCourseRepository implements CourseRepository {
              ResultSet rs = st2.executeQuery(NEXT_VAL_COURSE);
         ) {
             rs.next();
-            int nextVal = rs.getInt("nextval");
+            long nextVal = rs.getLong("nextval");
             course.setId(nextVal);
             st.setLong(1, course.getId());
             st.setString(2, course.getTitle());
@@ -118,7 +117,7 @@ public class JDBCCourseRepository implements CourseRepository {
             st.setDouble(5, course.getDuration());
             st.setBoolean(6, course.isActive());
             st.setDate(7, Date.valueOf(course.getCreatedAt()));
-            int numLines = st.executeUpdate();
+            st.executeUpdate();
             return course;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -226,10 +225,10 @@ public class JDBCCourseRepository implements CourseRepository {
             return new Course(rs.getLong("id_course"),
                     rs.getString("title"),
                     rs.getString("description"),
-                    rs.getString("course_program"),
+                    rs.getString("program"),
                     rs.getDouble("duration"),
                     rs.getBoolean("is_active"),
-                    rs.getDate("create_date").toLocalDate());
+                    rs.getDate("created_at").toLocalDate());
         } catch (SQLException e) {
             throw new SQLException("errore nella lettura dei corsi da database", e);
         }

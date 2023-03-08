@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JDBCCourseRepositoryTest {
 
-
     private Course c1;
     private Course c2;
     private Course c3;

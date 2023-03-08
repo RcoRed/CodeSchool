@@ -50,13 +50,13 @@ public class JDBCTestUtils {
 
     private static Course createCourseFrom(ResultSet rs) throws SQLException {
 
-            return new Course(rs.getLong("course_id"),
+            return new Course(rs.getLong("id_course"),
                     rs.getString("title"),
                     rs.getString("description"),
-                    rs.getString("course_program"),
+                    rs.getString("program"),
                     rs.getDouble("duration"),
                     rs.getBoolean("is_active"),
-                    rs.getDate("create_date").toLocalDate());
+                    rs.getDate("created_at").toLocalDate());
 
     }
 

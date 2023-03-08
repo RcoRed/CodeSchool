@@ -1,4 +1,4 @@
-package org.generation.italy.codeSchool.model.services.abstractions;
+package org.generation.italy.codeSchool.model.data.services.abstractions;
 
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
@@ -17,7 +17,6 @@ public interface AbstractDidacticService {
     void updateCourse(Course course) throws EntityNotFoundException,DataException;
 
     void deleteCourseById(long id) throws EntityNotFoundException,DataException;
-
-    boolean adjustActiveCourses(int numActive) throws DataException; //se corsi attivi > numActive disattiva i più vecchi
-
+    boolean adjustActiveCourses(int numActive) throws DataException; //gli passo tipo 10 e deve controllare che ci siano al massimo 10 corsi attivi
+                                                                    // se i corsi sono più di 10 mantengo i 10 più nuovi
 }

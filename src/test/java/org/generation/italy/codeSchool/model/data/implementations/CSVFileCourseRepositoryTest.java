@@ -20,11 +20,12 @@ import static org.generation.italy.codeSchool.model.data.Constants.*;
 import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
 
 class CSVFileCourseRepositoryTest {
-
-
-    private static final String CSVLINE1=String.format(Locale.US,CSV_COURSE, ID1,TITLE,DESCRIPTION,PROGRAM,DURATION, IS_ACTIVE, CREATED_AT.toString());
-    private static final String CSVLINE2=String.format(Locale.US,CSV_COURSE,ID2,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1, IS_ACTIVE, CREATED_AT.toString());
-    private static final String CSVLINE3=String.format(Locale.US,CSV_COURSE,ID3,TITLE+TEST,DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2, IS_ACTIVE, CREATED_AT.toString());
+    private static final String CSVLINE1=String.format(Locale.US,CSV_COURSE, ID1,TITLE,
+            DESCRIPTION, PROGRAM,DURATION,IS_ACTIVE,CREATED_AT.toString());
+    private static final String CSVLINE2=String.format(Locale.US,CSV_COURSE,ID2,TITLE+TEST,
+            DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1,IS_ACTIVE,CREATED_AT.toString());
+    private static final String CSVLINE3=String.format(Locale.US,CSV_COURSE,ID3,TITLE+TEST,
+            DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2,IS_ACTIVE,CREATED_AT.toString());
     private static final String FILENAME="TESTDATA.csv";
 
     @org.junit.jupiter.api.BeforeEach
@@ -106,7 +107,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void findById_should_not_throw_when_file_dont_exist(){
         Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
-        CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
+        CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
         try{                                                                 //obbligo a scrivere subito
             File f = new File(FILENAME);
             assertTrue(f.delete());
@@ -163,7 +164,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void courseToCSV() {
         // ARRANGE      //inizializzo i dati che poi dovrò usare
-        Course c = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION, LocalDate.now());
+        Course c = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT          //richiamo ciò che devo testare
         String csvLine = repo.courseToCSV(c);
@@ -191,7 +192,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void update_should_change_course_if_present(){
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
-        Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION, LocalDate.now());
+        Course c = new Course(ID1,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION,LocalDate.now());
         try {
             repo.update(c);
             var courses = readAll();
@@ -217,7 +218,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void update_should_throw_if_course_absent(){
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
-        Course c = new Course(ID_NOT_PRESENT,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION,LocalDate.now());
+        Course c = new Course(ID_NOT_PRESENT,TITLE_UPDATED,DESCRIPTION_UPDATED,PROGRAM,DURATION, LocalDate.now());
 
         Exception e = assertThrows(EntityNotFoundException.class, () -> {
             repo.update(c);
@@ -241,7 +242,7 @@ class CSVFileCourseRepositoryTest {
         for(var s : lines) {
             String[] tokens = s.split(",");
             Course c = new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
-                    tokens[3], Double.parseDouble(tokens[4]),Boolean.parseBoolean(tokens[5]) ,LocalDate.parse(tokens[6]));
+                    tokens[3], Double.parseDouble(tokens[4]), Boolean.valueOf(tokens[5]), LocalDate.parse(tokens[6]));
             courses.add(c);
         }
         return courses;
