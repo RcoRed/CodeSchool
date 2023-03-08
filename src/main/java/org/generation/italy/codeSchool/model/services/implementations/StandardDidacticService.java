@@ -5,12 +5,16 @@ import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.services.abstractions.AbstractDidacticService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class StandardDidacticService implements AbstractDidacticService {
     private CourseRepository repo;
+    @Autowired
     public StandardDidacticService(CourseRepository repo){
         this.repo = repo;       //iniezione delle dipendenze (tecnica) -> inversione del controllo (design pattern) o inversione delle dipendenze
     }
@@ -47,6 +51,11 @@ public class StandardDidacticService implements AbstractDidacticService {
         //che non è stato necessario apportare alcuna modifica
         //altrimenti chiameremo un metodo sul repository che cancella gli
         //n corsi più vecchi
-        return repo.adjustActiveCourses(numActive);
+        int actives = repo.countActiveCourses();
+        if (actives <= numActive){
+            return false;
+        }
+        repo.deactivateOldest(actives - numActive);
+        return true;
     }
 }

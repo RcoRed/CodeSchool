@@ -4,6 +4,8 @@ import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,6 +15,10 @@ import java.util.*;
 
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
+
+
+@Repository
+@Profile("csv")
 public class CSVFileCourseRepository implements CourseRepository {
     private String fileName;
     public static long nextId;
@@ -23,6 +29,20 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
     public CSVFileCourseRepository(String fileName) {
         this.fileName = fileName;
+    }
+
+    @Override
+    public List<Course> findAll() throws DataException {
+         try {
+            List<String> lines = Files.readAllLines(Paths.get(fileName));
+            List<Course> courses = new ArrayList<>();
+            for(String s : lines){
+                courses.add(CSVToCourse(s));
+            }
+            return courses;
+        }catch (IOException e){
+            throw new DataException("Errore nella lettura del file", e);
+        }
     }
 
     @Override
@@ -125,24 +145,18 @@ public class CSVFileCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int countActiveCourses() throws DataException {
+    public int countActiveCourses() {
         return 0;
     }
 
+    @Override
+    public void deactivateOldest(int n) {
+
+    }
 
     @Override
     public boolean adjustActiveCourses(int NumActive) throws DataException {
         return false;
-    }
-
-    @Override
-    public List<Course> findAll() throws DataException {
-        return null;
-    }
-
-    @Override
-    public void deactivateOldest(int n) throws DataException {
-
     }
 
     public String courseToCSV(Course c){                //trasforma i dati presenti dell'oggetto in una stringa(che poi scriveremo sul file)

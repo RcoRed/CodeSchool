@@ -1,17 +1,27 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@Entity
 public class Course implements Serializable {
+    @Id
+    @Column(name = "course_id")
     private long id;
     private String title;
     private String description;
+    @Column(name = "course_program")
     private String program;
     private double duration;
     //private static final long serialVersionUID = 1;
+    @Column(name = "is_active")
     private boolean isActive;
+    @Column(name = "create_date")
     private LocalDate createdAt;
 
     public Course() {
@@ -61,6 +71,11 @@ public class Course implements Serializable {
 
     public boolean isActive() {
         return isActive;
+    }
+    public boolean deactivate(){
+        boolean wasActive = isActive;
+        isActive = false;
+        return isActive!= wasActive;
     }
 
     public void setActive(boolean active) {

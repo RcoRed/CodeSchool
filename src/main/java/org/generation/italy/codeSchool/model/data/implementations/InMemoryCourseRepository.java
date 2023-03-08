@@ -4,10 +4,15 @@ import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.*;
 
+
+@Repository
+@Profile("memo")
 public class InMemoryCourseRepository implements CourseRepository {
     /*
         pensalo come una arrayList(NON fanno parte della stassa famiglia) ma le posizioni vengono definite con degli id UNIVOCI
@@ -26,6 +31,11 @@ public class InMemoryCourseRepository implements CourseRepository {
         dice al programmatore che bisogna fare un controllo (nomeOptional.isEmpty) se non lo fa è un coglione!
         si! hai capito!! serve "solo" per ricordarci/ o a dire di controllare se un dato è vuoto(null) o meno, così da evitare cappellate logiche durante la scrittura dei codici
      */
+
+    @Override
+    public List<Course> findAll() throws DataException {
+        return new ArrayList<>(dataSource.values());
+    }
 
     @Override
     public Optional<Course> findById(long id) {
@@ -88,6 +98,15 @@ public class InMemoryCourseRepository implements CourseRepository {
             }
         }
         return activeCourses;
+    }
+
+    @Override
+    public void deactivateOldest(int n) {
+        dataSource.values().stream()
+                           .filter(Course::isActive)
+                           .sorted(Comparator.comparing(Course::getCreatedAt))
+                           .limit(n)
+                           .forEach(Course::deactivate);
     }
 
     @Override
