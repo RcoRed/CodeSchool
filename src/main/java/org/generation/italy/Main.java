@@ -10,11 +10,17 @@ import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.services.implementations.StandardDidacticService;
 import org.generation.italy.codeSchool.view.UserInterfaceConsole;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.LocalDate;
+
+import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
 
 @Configuration
 @ComponentScan
@@ -31,7 +37,7 @@ public class Main {
 //        System.out.println(repo.getClass().getName());
 //        new UserInterfaceConsole(new StandardDidacticService(repo)).userInteraction();
 
-        System.setProperty("spring.profiles.active", "ser");
+        System.setProperty("spring.profiles.active", "jdbc");
 
         try (var ctx =
                      new AnnotationConfigApplicationContext
@@ -49,5 +55,10 @@ public class Main {
             UserInterfaceConsole console = ctx.getBean(UserInterfaceConsole.class);
             console.start();
         }
+    }
+
+    @Bean
+    public static Connection createConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
     }
 }
