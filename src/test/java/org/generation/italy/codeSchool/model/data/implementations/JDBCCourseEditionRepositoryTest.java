@@ -1,9 +1,7 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
-import org.generation.italy.codeSchool.model.entities.Classroom;
-import org.generation.italy.codeSchool.model.entities.Course;
-import org.generation.italy.codeSchool.model.entities.CourseEdition;
+import org.generation.italy.codeSchool.model.entities.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,11 +10,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
-import static org.generation.italy.codeSchool.model.data.implementations.JDBCTestUtils.insertCourse;
 import static org.generation.italy.codeSchool.model.data.implementations.JDBCTestUtils.update;
 import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
 import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.CREATED_AT;
@@ -30,6 +28,9 @@ class JDBCCourseEditionRepositoryTest {
     private CourseEdition ce2;
     private CourseEdition ce3;
     private CourseEdition ce4;
+    private Teacher t1;
+    private Competence co1;
+    private Address a1;
     private Connection con;
     private JDBCCourseEditionRepository repo;
 
@@ -43,6 +44,13 @@ class JDBCCourseEditionRepositoryTest {
         ce2 = new CourseEdition(0,c1,COURSE_EDITION_STARTED_AT.plusMonths(1),COURSE_EDITION_COST2,cr1);
         ce3 = new CourseEdition(0,c1,COURSE_EDITION_STARTED_AT.plusMonths(2),COURSE_EDITION_COST2,cr1);
         ce4 = new CourseEdition(0,c2,COURSE_EDITION_STARTED_AT,COURSE_EDITION_COST2,cr1);
+        a1 = new Address();
+        t1 = new Teacher(0, "Riccardo", "Java", LocalDate.of(1970,7,12), Sex.MALE, "riky@wowo.com",
+                "398765387563", a1, "tech.publica", "streambelli",
+                new HashSet<>(), "90345677", true, LocalDate.of(2020,12,2),
+                null, Level.ADVANCED);
+        co1 = new Competence(0, new Skill(), t1, Level.ADVANCED);
+        t1.addCompetence(co1);
         con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
         con.setAutoCommit(false);
         int key1 = update(INSERT_COURSE_RETURNING_ID, con, true,c1.getTitle(),
@@ -68,7 +76,7 @@ class JDBCCourseEditionRepositoryTest {
         int courseEditionKey4 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true,c2.getId(),ce4.getStartedAt(),
                 ce4.getCost(), cr1.getId());
         ce4.setId(courseEditionKey4);
-        repo= new JDBCCourseEditionRepository(con);
+        repo = new JDBCCourseEditionRepository(con);
     }
 
     @AfterEach
@@ -127,5 +135,6 @@ class JDBCCourseEditionRepositoryTest {
 
     @Test
     void findByTeacherId() {
+
     }
 }
