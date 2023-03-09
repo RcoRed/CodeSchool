@@ -20,7 +20,7 @@ public interface CourseRepository {
 
     void deleteById(long id) throws EntityNotFoundException,DataException;
     int countActiveCourses() throws DataException;
-    void deactivateOldest(int n) throws DataException, EntityNotFoundException;
+    void deactivateOldest(int n) throws DataException;
     boolean adjustActiveCourses(int NumActive) throws DataException;
 
 }

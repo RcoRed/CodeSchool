@@ -1,57 +1,69 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.entities.Course;
-import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.time.LocalDate;
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.generation.italy.codeSchool.model.data.Constants.CSV_COURSE;
 import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
+import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.DURATION3;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.generation.italy.codeSchool.model.data.Constants.*;
+
 class InMemoryCourseRepositoryTest {
-   private static final String CSVLINE1=String.format(Locale.US,CSV_COURSE, ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,IS_ACTIVE,LocalDate.of(1235,12,8));
-   private static final String CSVLINE2=String.format(Locale.US,CSV_COURSE,ID2,TITLE+TEST,DESCRIPTION+TEST,
-         PROGRAM+TEST,DURATION+1,IS_ACTIVE, LocalDate.of(2005,12,8));
-   private static final String CSVLINE3=String.format(Locale.US,CSV_COURSE,ID3,TITLE+TEST,DESCRIPTION+TEST,
-         PROGRAM+TEST,DURATION+2,IS_ACTIVE,LocalDate.of(135,12,8));
-   InMemoryCourseRepository repo = new InMemoryCourseRepository();
+    private Course c1 = new Course(ID1, TITLE, DESCRIPTION, PROGRAM, DURATION, true, LocalDate.now());
+    private Course c2 = new Course(ID2, TITLE2, DESCRIPTION2, PROGRAM2, DURATION2,true, LocalDate.now().minusDays(20));
+    private Course c3 = new Course(ID3, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(389));
+    private Course c4 = new Course(ID3+1, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(3));
+    private Course c5 = new Course(ID3+2, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(4));
+    private Course c6 = new Course(ID3+3, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(24));
+    private Course c7 = new Course(ID3+4, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(55));
+    private Course c8 = new Course(ID3+5, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(22));
+    private Course c9 = new Course(ID3+6, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(224));
+    private Course c10 = new Course(ID3+7, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(52));
+    private Course c11 = new Course(ID3+8, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(45));
+    private Course c12 = new Course(ID3+9, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(64));
+    private List<Course> courses = new ArrayList<>();
+    private static final String FILE_NAME="ActiveCourses,txt";
+    private InMemoryCourseRepository repo = new InMemoryCourseRepository();
 
 
-   private Course CSVToCourse(String CSVLine){
-      String[] tokens = CSVLine.split(",");
-      return new Course(Long.parseLong(tokens[0]), tokens[1], tokens[2],
-            tokens[3], Double.parseDouble(tokens[4]), Boolean.parseBoolean(tokens[5]), LocalDate.parse(tokens[6]));
+    public InMemoryCourseRepositoryTest() {
+        courses.add(c1);
+        courses.add(c2);
+        courses.add(c3);
+        courses.add(c4);
+        courses.add(c5);
+        courses.add(c6);
+        courses.add(c7);
+        courses.add(c8);
+        courses.add(c9);
+        courses.add(c10);
+        courses.add(c11);
+        courses.add(c12);
+    }
 
-   }
-   @org.junit.jupiter.api.BeforeEach
-   void setUp() throws FileNotFoundException {
-      Course COURSE1 =CSVToCourse(CSVLINE1);
-      Course COURSE2 =CSVToCourse(CSVLINE2);
-      Course COURSE3 =CSVToCourse(CSVLINE3);
-      COURSE2.setActive(false);
+    @BeforeEach
+    void setUp() {
+    }
 
-      repo.create(COURSE1);
-      repo.create(COURSE2);
-      repo.create(COURSE3);
-   }
-   @Test
-   void countActivesCourses_should_return_num_of_actives_courses() {
-      int active = repo.countActivesCourses();
-      assertEquals(2,active);
-   }
+    @AfterEach
+    void tearDown() {
+    }
 
-   @Test
-   void deleteOldCourses() {
-      try {
-         repo.desactiveOldCourses(1);
-      } catch (EntityNotFoundException e) {
-         new EntityNotFoundException(ENTITY_NOT_FOUND + e.getMessage());
-      }
-//      System.out.println(repo.countActivesCourses());
-      assertEquals(1,repo.countActivesCourses());
-   }
+    @Test
+    void cancelOldActiveCourses() {
+        repo.deactivateOldest( 2);
+        try (PrintWriter pw = new PrintWriter(new FileOutputStream(FILE_NAME))) {
+            pw.println(courses);
+        }catch (FileNotFoundException e){
+            fail("File non trovato");
+        }
+    }
 }

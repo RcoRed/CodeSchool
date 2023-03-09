@@ -4,12 +4,16 @@ import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.*;
 
 import static org.generation.italy.codeSchool.model.data.Constants.*;
 
+@Repository
+@Profile("ser")
 public class SerializedCourseRepository implements CourseRepository {
     private static final String SERIALIZED_FILE_NAME = "courses.ser";
     public static long nextID;
@@ -120,27 +124,29 @@ public class SerializedCourseRepository implements CourseRepository {
     }
 
     @Override
-    public int countActiveCourses() throws DataException{
+    public int countActiveCourses() throws DataException {
         try {
-            return (int) load().stream()
-                               .filter(Course::isActive)
-                               .count();
+          return (int) load().stream()
+                    .filter(Course::isActive)
+                    .count();
         } catch (IOException | ClassNotFoundException e) {
-            throw new DataException("Errore nel conteggio dei corsi attvi", e);
+            throw new DataException("Errore nel conteggio dei corsi attivi", e);
         }
     }
 
     @Override
-    public void deactivateOldest(int n) throws DataException{
-        try {
-            load().stream()
-                  .filter(Course::isActive)
-                  .sorted(Comparator.comparing(Course::getCreatedAt))
-                  .limit(n)
-                  .forEach(Course::deactivate);
-        }catch (IOException | ClassNotFoundException e) {
-            throw new DataException("Errore nela disattivazione dei corsi attvi", e);
-        }
+    public void deactivateOldest(int n) throws DataException {
+       try {
+           load().stream()
+                   .filter(Course::isActive)
+                   .sorted(Comparator.comparing(Course::getCreatedAt))
+                   .limit(n)
+                   .forEach(Course::deactivate);
+       }catch (IOException | ClassNotFoundException e) {
+           throw new DataException("Errore nella disattivazione dei corsi più vecchi", e);
+       }
+
+
     }
 
     @Override
