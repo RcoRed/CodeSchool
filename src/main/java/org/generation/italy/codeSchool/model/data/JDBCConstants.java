@@ -28,10 +28,23 @@ public class JDBCConstants {
             VALUES(nextval('course_sequence'),?, ?, ?, ?, ?, ?)
             RETURNING id_course;
             """;
+
+    public static final String INSERT_COURSE_EDITION_RETURNING_ID = """
+            INSERT INTO course_edition(id_course_edition, id_course, started_at, price, id_classroom)
+            VALUES (nextval('course_edition_sequence'), ?, ? ,?, ?)
+            RETURNING id_course_edition;
+            """;
+
+    public static final String INSERT_CLASSROOM_RETURNING_ID = """
+            INSERT INTO classroom(id_classroom, class_name, max_capacity, is_virtual, is_computerized, has_projector, 
+            id_remote_platform)
+            VALUES (nextval('classroom_sequence'), ?, ?, ?, ?, ?, ?)
+            RETURNING id_classroom;
+            """;
     public static final String NEXT_VAL_COURSE = """
             SELECT nextval('course_sequence');
             """;
-    public static final String UP_DATE_COURSE = """
+    public static final String UPDATE_COURSE = """
             UPDATE course
             SET title = ?,
             SET description = ?,
@@ -58,29 +71,38 @@ public class JDBCConstants {
             );
             """;
 
-
-    // COURSE EDITION
-    public static final String FIND_MOST_EXPENSIVE_COURSE = """
-            SELECT ce.id_course_edition, c.title, ce.started_at, ce.price, ce.id_classroom
-                FROM course_edition AS ce JOIN course AS c
-                USING (id_course)
-                ORDER BY price desc
-                LIMIT 1
-            """;
-
-    public static final String FIND_BY_COURSE = """
-            SELECT ce.id_course_edition, c.title, ce.started_at, ce.price, ce.id_classroom
-            FROM course AS c JOIN course_edition AS ce
+    public static final String MOST_EXPENSIVE_COURSE_EDITION = """
+            SELECT ce.id_course_edition, ce.started_at, ce.price, id_course, c.title, c.description, c.program, c.duration, c.is_active, c.created_at,
+            id_classroom, cr.class_name, cr.max_capacity, cr.is_virtual, cr.is_computerized, cr.has_projector
+            FROM course_edition AS ce JOIN course AS c
             USING (id_course)
-            WHERE id_course = ?
+            JOIN classroom AS cr
+            USING (id_classroom)
+            WHERE ce.price = (
+            SELECT MAX(price)
+            FROM course_edition
+            )
             """;
 
-    public static final String FIND_BY_COURSE_AND_TITLE = """
-            SELECT ce.id_course_edition,ce.id_course,ce.started_at,ce.price,ce.id_classroom,
-            c.title,c.description,c.program,c.duration,c.is_active,c.created_at
-            FROM course_edition as ce JOIN course as c
+    public static final String FIND_BY_COURSE_TITLE_AND_PERIOD = """
+            SELECT ce.id_course_edition, ce.started_at, ce.price, id_course, c.title, c.description, c.program, c.duration, c.is_active, c.created_at,
+            id_classroom, cr.class_name, cr.max_capacity, cr.is_virtual, cr.is_computerized, cr.has_projector
+            FROM course_edition AS ce JOIN course AS c
             USING (id_course)
-            WHERE ce.id_course = ? AND c.title LIKE ? AND ce.started_at BETWEEN ? AND ?
+            JOIN classroom AS cr
+            USING (id_classroom)
+            WHERE (c.title LIKE ?) AND (c.created_at BETWEEN ? AND ?)
             """;
 
+    public static final String FIND_BY_TEACHER_ID = """
+            SELECT ce.id_course_edition, ce.started_at, ce.price, id_course, c.title, c.description, c.program, c.duration, c.is_active, c.created_at,
+            id_classroom, cr.class_name, cr.max_capacity, cr.is_virtual, cr.is_computerized, cr.has_projector
+            FROM course_edition AS ce JOIN course AS c
+            USING (id_course)
+            JOIN classroom AS cr
+            USING (id_classroom)
+            JOIN edition_module AS em
+            USING(id_course_edition)
+            WHERE em.id_teacher = ?
+            """;
 }

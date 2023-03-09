@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SerializedCourseRepositoryTest {
 
-    private Course c1 = new Course(ID1, TITLE, DESCRIPTION, PROGRAM, DURATION,LocalDate.now());
+    private Course c1 = new Course(ID1, TITLE1, DESCRIPTION, PROGRAM, DURATION,LocalDate.now());
     private Course c2 = new Course(ID2, TITLE2, DESCRIPTION2, PROGRAM2, DURATION2,LocalDate.now());
     private Course c3 = new Course(ID3, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,LocalDate.now());
     private SerializedCourseRepository repo = new SerializedCourseRepository(SERIALIZED_TEST_FILE_NAME);
@@ -76,13 +76,13 @@ class SerializedCourseRepositoryTest {
     @Test
     void create() {
         try {
-            Course c = new Course(0,TITLE,DESCRIPTION,PROGRAM,DURATION, LocalDate.now());
+            Course c = new Course(0,TITLE1,DESCRIPTION,PROGRAM,DURATION, LocalDate.now());
             var courseBefore = load();
             c = repo.create(c);
             var coursesAfter = load();
             assertEquals(courseBefore.size()+1, coursesAfter.size());
             assertEquals(SerializedCourseRepository.nextID, coursesAfter.get(coursesAfter.size()-1).getId());
-            assertEquals(TITLE, coursesAfter.get(coursesAfter.size()-1).getTitle());
+            assertEquals(TITLE1, coursesAfter.get(coursesAfter.size()-1).getTitle());
         } catch (DataException e) {
             fail("errore nalla creazione del corso nel file serializzato:" + e.getMessage());
         } catch (IOException | ClassNotFoundException e) {
