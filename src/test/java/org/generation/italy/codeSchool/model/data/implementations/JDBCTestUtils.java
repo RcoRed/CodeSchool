@@ -60,4 +60,26 @@ public class JDBCTestUtils {
 
     }
 
+    public static int update(String query,Connection con,boolean inserting,Object... params){
+        try (PreparedStatement st = inserting? con.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS)
+                :  con.prepareStatement(query)){
+            for(int i = 0; i < params.length; i++){
+                st.setObject(i+1,params[i]);
+            }
+            if(inserting){
+                st.executeUpdate();
+                try (ResultSet keys = st.getGeneratedKeys()) {
+                    keys.next();
+                    long key = keys.getLong(1);
+                    return (int) key;
+                }
+            }else {
+                return st.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getErrorCode());
+            throw new RuntimeException(e);
+        }
+    }
+
 }
