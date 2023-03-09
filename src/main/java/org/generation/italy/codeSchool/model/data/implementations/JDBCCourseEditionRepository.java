@@ -1,6 +1,7 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.abstractions.CourseEditionRepository;
+import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Classroom;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.entities.CourseEdition;
@@ -58,7 +59,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
     }
 
     @Override
-    public Iterable<CourseEdition> findByCourseTitleAndPeriod(long courseId, String titlePart, LocalDate startAt, LocalDate endAt) {
+    public Iterable<CourseEdition> findByCourseTitleAndPeriod(String titlePart, LocalDate startAt, LocalDate endAt) throws DataException{
         try (
                 PreparedStatement st = con.prepareStatement(FIND_BY_COURSE_TITLE_AND_PERIOD)
                 ){
@@ -73,7 +74,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
                 return ce;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataException("Errore nella ricerca dell'edizione per titolo e periodo", e);
         }
     }
 
@@ -87,8 +88,22 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
         return Optional.empty();
     }
 
-    public Optional<CourseEdition> findByTeacherId(long id){
-        return null;
+    @Override
+    public Iterable<CourseEdition> findByTeacherId(long id)throws DataException{
+        try (
+                PreparedStatement st = con.prepareStatement(FIND_BY_TEACHER_ID)
+                ){
+            st.setLong(1, id);
+            try (ResultSet rs = st.executeQuery()){
+                List<CourseEdition> ce = new ArrayList<>();
+                while (rs.next()){
+                    ce.add(databaseToCourseEdition(rs));
+                }
+                return ce;
+            }
+        } catch (SQLException e) {
+            throw new DataException("Errore nella ricerca dell'edizione per insegnante", e);
+        }
     }
 
     private CourseEdition databaseToCourseEdition(ResultSet rs) throws SQLException{

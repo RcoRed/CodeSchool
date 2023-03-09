@@ -9,9 +9,9 @@ public class TestConstants {
         public static final long ID_NOT_PRESENT=4;
         public static final long ID_CREATE=5;
         public static final String TEST = "TEST";
-        public static final String TITLE="TITLE";
+        public static final String TITLE1="TITLE1_TEST";
         public static final String TITLE2="TITLE2_TEST";
-        public static final String TITLE3="TITLE2_TEST";
+        public static final String TITLE3="TITLE3_TEST";
         public static final String TITLE_UPDATED="TITLE_UPDATED";
         public static final String DESCRIPTION="DESCRIPTION";
         public static final String DESCRIPTION2="DESCRIPTION2";

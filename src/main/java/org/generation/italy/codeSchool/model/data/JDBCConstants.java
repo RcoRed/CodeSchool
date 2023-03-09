@@ -3,7 +3,7 @@ package org.generation.italy.codeSchool.model.data;
 public class JDBCConstants {
     public static final String URL = "jdbc:postgresql://localhost:5432/legion";
     public static final String USER_NAME = "postgresMaster";
-    public static final String PASSWORD = "T0t1no2019!";
+    public static final String PASSWORD = "goPostgresGo";
     public static final String COURSE_QUERY = """
             SELECT id_course, title, description, program, duration, is_active, created_at
             FROM course""";
@@ -92,5 +92,17 @@ public class JDBCConstants {
             JOIN classroom AS cr
             USING (id_classroom)
             WHERE (c.title LIKE ?) AND (c.created_at BETWEEN ? AND ?)
+            """;
+
+    public static final String FIND_BY_TEACHER_ID = """
+            SELECT ce.id_course_edition, ce.started_at, ce.price, id_course, c.title, c.description, c.program, c.duration, c.is_active, c.created_at,
+            id_classroom, cr.class_name, cr.max_capacity, cr.is_virtual, cr.is_computerized, cr.has_projector
+            FROM course_edition AS ce JOIN course AS c
+            USING (id_course)
+            JOIN classroom AS cr
+            USING (id_classroom)
+            JOIN edition_module AS em
+            USING(id_course_edition)
+            WHERE em.id_teacher = ?
             """;
 }

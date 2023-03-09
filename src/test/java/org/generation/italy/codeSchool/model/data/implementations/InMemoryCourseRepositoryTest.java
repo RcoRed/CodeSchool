@@ -17,7 +17,7 @@ import static org.generation.italy.codeSchool.model.data.implementations.TestCon
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryCourseRepositoryTest {
-    private Course c1 = new Course(ID1, TITLE, DESCRIPTION, PROGRAM, DURATION, true, LocalDate.now());
+    private Course c1 = new Course(ID1, TITLE1, DESCRIPTION, PROGRAM, DURATION, true, LocalDate.now());
     private Course c2 = new Course(ID2, TITLE2, DESCRIPTION2, PROGRAM2, DURATION2,true, LocalDate.now().minusDays(20));
     private Course c3 = new Course(ID3, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(389));
     private Course c4 = new Course(ID3+1, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3,true,LocalDate.now().minusDays(3));
