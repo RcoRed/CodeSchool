@@ -58,4 +58,29 @@ public class JDBCConstants {
             );
             """;
 
+
+    // COURSE EDITION
+    public static final String FIND_MOST_EXPENSIVE_COURSE = """
+            SELECT ce.id_course_edition, c.title, ce.started_at, ce.price, ce.id_classroom
+                FROM course_edition AS ce JOIN course AS c
+                USING (id_course)
+                ORDER BY price desc
+                LIMIT 1
+            """;
+
+    public static final String FIND_BY_COURSE = """
+            SELECT ce.id_course_edition, c.title, ce.started_at, ce.price, ce.id_classroom
+            FROM course AS c JOIN course_edition AS ce
+            USING (id_course)
+            WHERE id_course = ?
+            """;
+
+    public static final String FIND_BY_COURSE_AND_TITLE = """
+            SELECT ce.id_course_edition,ce.id_course,ce.started_at,ce.price,ce.id_classroom,
+            c.title,c.description,c.program,c.duration,c.is_active,c.created_at
+            FROM course_edition as ce JOIN course as c
+            USING (id_course)
+            WHERE ce.id_course = ? AND c.title LIKE ? AND ce.started_at BETWEEN ? AND ?
+            """;
+
 }

@@ -4,6 +4,8 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Course;
 
 import java.sql.*;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
@@ -58,6 +60,18 @@ public class JDBCTestUtils {
                     rs.getBoolean("is_active"),
                     rs.getDate("created_at").toLocalDate());
 
+    }
+
+    public int update (String query, Connection con, Objects...params){
+        try(PreparedStatement st = con.prepareStatement(query)) {
+            for(int i = 0; i < params.length; i++){
+                st.setObject(i + 1, params[i]);
+            }
+            return st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

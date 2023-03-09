@@ -40,8 +40,8 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
     }
 
     @Override
-    public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart,
-                                                                 LocalDate startAt, LocalDate endAt){
+    public Iterable<CourseEdition> findByCourseTitleAndPeriod(long courseId, String titlePart,
+                                                              LocalDate startAt, LocalDate endAt){
         return data.values().stream().filter(e -> e.getCourse().getTitle().contains(titlePart)
                 &&e.isStartedInRange(startAt, endAt)).toList();
                                              /*&& e.getStartedAt().isAfter(startAt)
@@ -77,5 +77,10 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
         }
         return Optional.empty();*/
         return max.map(Map.Entry::getKey);  //sta traformando un optional di chiave e valore in un optional di chiave(double)
+    }
+
+    @Override
+    public List<CourseEdition> findByTeacherId(long teahcerId) {
+        return null;
     }
 }

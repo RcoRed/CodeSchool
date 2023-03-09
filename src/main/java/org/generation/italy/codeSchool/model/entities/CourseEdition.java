@@ -9,11 +9,16 @@ public class CourseEdition {
     private double cost;
     private Classroom assignedClassRoom;
 
+    public CourseEdition(){}
+
     public CourseEdition(long id, Course course, LocalDate startedAt, double cost){
         this.id=id;
         this.course=course;
         this.startedAt=startedAt;
         this.cost=cost;
+    }
+
+    public CourseEdition(long idCourseEdition, String courseTitle, LocalDate startedAt, double price, long idClassroom) {
     }
 
     public long getId() {
@@ -35,6 +40,7 @@ public class CourseEdition {
     public Classroom getAssignedClassRoom() {
         return assignedClassRoom;
     }
+
     public boolean isStartedInRange(LocalDate start, LocalDate end){
         return !(getStartedAt().isBefore(start) || getStartedAt().isAfter(end));
     }
