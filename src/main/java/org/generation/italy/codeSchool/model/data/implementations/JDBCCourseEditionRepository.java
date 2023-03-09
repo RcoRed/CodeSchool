@@ -33,7 +33,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
         try(
                 Statement st = con.createStatement();
                 ResultSet rs = st.executeQuery(MOST_EXPENSIVE_COURSE_EDITION)
-                ){
+        ){
             if(rs.next()){
                 return Optional.of(databaseToCourseEdition(rs));
             }
@@ -62,7 +62,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
     public Iterable<CourseEdition> findByCourseTitleAndPeriod(String titlePart, LocalDate startAt, LocalDate endAt) throws DataException{
         try (
                 PreparedStatement st = con.prepareStatement(FIND_BY_COURSE_TITLE_AND_PERIOD)
-                ){
+        ){
             st.setString(1,"%" + titlePart + "%");
             st.setDate(2, Date.valueOf(startAt));
             st.setDate(3, Date.valueOf(endAt));
@@ -74,6 +74,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
                 return ce;
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DataException("Errore nella ricerca dell'edizione per titolo e periodo", e);
         }
     }
@@ -92,7 +93,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
     public Iterable<CourseEdition> findByTeacherId(long id)throws DataException{
         try (
                 PreparedStatement st = con.prepareStatement(FIND_BY_TEACHER_ID)
-                ){
+        ){
             st.setLong(1, id);
             try (ResultSet rs = st.executeQuery()){
                 List<CourseEdition> ce = new ArrayList<>();
@@ -111,6 +112,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
                 rs.getBoolean(14), rs.getBoolean(15), rs.getBoolean(16),null);
         Course c = new Course(rs.getInt(4), rs.getString(5),rs.getString(6),rs.getString(7),
                 rs.getDouble(8), rs.getBoolean(9), rs.getDate(10).toLocalDate());
+
         return new CourseEdition(rs.getLong(1),c,rs.getDate(2).toLocalDate(),rs.getDouble(3),cr);
     }
 }

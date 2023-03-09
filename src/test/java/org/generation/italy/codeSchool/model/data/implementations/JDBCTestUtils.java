@@ -2,7 +2,9 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Course;
+import org.generation.italy.codeSchool.model.entities.Sex;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.Optional;
 
@@ -10,6 +12,8 @@ import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
 
 
 public class JDBCTestUtils {
+
+    private static Sex sex = Sex.MALE;
     public static long insertCourse(Course course, Connection con) {
         try (
              PreparedStatement st = con.prepareStatement(INSERT_COURSE_RETURNING_ID, Statement.RETURN_GENERATED_KEYS);//factory method pattern
@@ -64,7 +68,12 @@ public class JDBCTestUtils {
         try (PreparedStatement st = inserting? con.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS)
                 :  con.prepareStatement(query)){
             for(int i = 0; i < params.length; i++){
-                st.setObject(i+1,params[i]);
+                if (params[i] instanceof Enum<?>){
+                    st.setObject(i+1,params[i],Types.OTHER,0);
+                }else {
+                    st.setObject(i+1,params[i]);
+                }
+
             }
             if(inserting){
                 st.executeUpdate();
@@ -79,6 +88,13 @@ public class JDBCTestUtils {
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        Sex sex = Sex.MALE;
+        if(sex instanceof Enum<?>){
+            System.out.println("ok");
         }
     }
 

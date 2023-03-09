@@ -91,7 +91,7 @@ public class JDBCConstants {
             USING (id_course)
             JOIN classroom AS cr
             USING (id_classroom)
-            WHERE (c.title LIKE ?) AND (c.created_at BETWEEN ? AND ?)
+            WHERE (c.title LIKE ?) AND (ce.started_at BETWEEN ? AND ?)
             """;
 
     public static final String FIND_BY_TEACHER_ID = """
@@ -105,4 +105,35 @@ public class JDBCConstants {
             USING(id_course_edition)
             WHERE em.id_teacher = ?
             """;
+
+    public static final String INSERT_ADDRESS_RETURNING_ID = """
+            INSERT INTO address(id_address, street, house_number, city, country)
+                VALUES(nextval('address_sequence'),?,?,?,?)
+            RETURNING id_address;
+            """;
+
+    public static final String INSERT_PERSON_RETURNING_ID = """
+            INSERT INTO person(id_person, firstname, lastname, dob, sex, email, cell_number, id_address, username, password)
+            			VALUES(nextval('person_sequence'), ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            RETURNING id_person;
+            """;
+
+    public static final String INSERT_TEACHER_RETURNING_ID = """
+            INSERT INTO teacher(id_teacher, p_iva, is_employee, hire_date, fire_date, level, id_person)
+                          VALUES(nextval('teacher_sequence'),?,?,?,?,?,?)
+            RETURNING id_teacher;
+            """;
+
+    public static final String INSERT_COURSE_MODULE_RETURNING_ID = """
+            INSERT INTO course_module(id_course_module, title, cm_content, id_course, duration, level)
+                VALUES(nextval('course_module_sequence'), ?, ?, ?, ?, ?)
+            RETURNING id_course_module;
+            """;
+
+    public static final String INSERT_EDITION_MODULE_RETURNING_ID = """
+            INSERT INTO edition_module(id_edition_module, id_course_module, id_course_edition, id_teacher, start_date, end_date)
+                          VALUES(nextval('edition_module_sequence'),?,?,?,?,?)
+            RETURNING id_edition_module;
+            """;
+
 }
