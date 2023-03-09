@@ -71,7 +71,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
     @Override
     public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart, LocalDate startAt, LocalDate endAt) {
         try (PreparedStatement ps = con.prepareStatement(FIND_COURSE_EDITION_BY_COURSE_TILE_AND_PERIOD)){
-            ps.setString(1, titlePart);
+            ps.setString(1, "%"+titlePart+"%");
             ps.setDate(2, Date.valueOf(startAt));
             ps.setDate(3, Date.valueOf(endAt));
             try (ResultSet rs = ps.executeQuery()) {

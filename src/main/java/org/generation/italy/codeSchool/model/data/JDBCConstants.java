@@ -48,8 +48,7 @@ public class JDBCConstants {
     public static final String FIND_COURSE_EDITION_BY_TEACHER_ID = """
             SELECT id_course_edition, id_course, started_at, price, id_classroom,
             title, description, program, duration, is_active, created_at,
-            class_name, max_capacity, is_virtual, is_computerized, has_projector, id_remote_platform,
-            id_edition_module, id_course_module, id_teacher, start_date, end_date
+            class_name, max_capacity, is_virtual, is_computerized, has_projector, id_remote_platform
             FROM course_edition JOIN course
             USING (id_course)
             JOIN classroom
