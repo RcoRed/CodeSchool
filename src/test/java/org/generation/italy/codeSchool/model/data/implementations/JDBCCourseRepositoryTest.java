@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
@@ -36,7 +37,17 @@ class JDBCCourseRepositoryTest {
         courses = List.of(c1,c2,c3);
         con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
         con.setAutoCommit(false);
-        courses.forEach(c -> insertCourse(c,con));
+//        courses.forEach(c -> insertCourse(c,con));
+        courses.forEach((course ->
+        {
+           int key = JDBCTestUtils.update(INSERT_COURSE_RETURNING_ID, con, true, course.getTitle(),
+                 course.getDescription(),
+                 course.getProgram(),
+                 course.getDuration(),
+                 course.isActive(),
+                 Date.valueOf(course.getCreatedAt()));
+           course.setId(key);
+        }));
         repo = new JDBCCourseRepository(con);
     }
 
@@ -66,7 +77,7 @@ class JDBCCourseRepositoryTest {
     }
 
     @Test
-    void update() {
+    void update2() {
     }
 
     @Test

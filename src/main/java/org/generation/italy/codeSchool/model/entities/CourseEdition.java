@@ -53,4 +53,19 @@ public class CourseEdition {
         return !(getStartedAt().isBefore(start) || getStartedAt().isAfter(end));
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public void setStartedAt(LocalDate startedAt) {
+        this.startedAt = startedAt;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
 }

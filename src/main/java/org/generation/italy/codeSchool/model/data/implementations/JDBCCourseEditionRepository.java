@@ -94,7 +94,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
       return Optional.empty();
    }
 
-   public Iterable<CourseEdition> dinfByTeacherId(long teacherId){
+   public Iterable<CourseEdition> findByTeacherId(long teacherId){
       try (PreparedStatement ps = con.prepareStatement(FIND_COURSE_EDITION_BY_TEACHER_ID)) {
          ps.setLong(1,teacherId);
          try(ResultSet rs = ps.executeQuery()){

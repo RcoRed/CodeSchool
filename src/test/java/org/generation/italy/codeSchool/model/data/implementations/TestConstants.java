@@ -26,5 +26,13 @@ public class TestConstants {
         public static final boolean IS_ACTIVE=true;
         public static final LocalDate CREATED_AT=LocalDate.now();
         public static final String TEST_TITLE_PART = "TLE2_TES";
+        public static final String CLASSROOM_NAME ="CLASSROOM_NAME";
+        public static final int CLASSROOM_CAPACITY = 10;
+        public static final boolean CLASSROOM_IS_VIRTUAL = true;
+        public static final boolean CLASSROOM_IS_COMPUTERIZED = true;
+        public static final boolean CLASSROOM_HAS_PROJECTOR = false;
+        public static final LocalDate COURSE_EDITION_STARTED_AT = LocalDate.now();
+        public static final double COURSE_EDITION_COST = 250.95;
+        public static final double COURSE_EDITION_COST2 = 350;
         public static final String SERIALIZED_TEST_FILE_NAME="test_course_data.ser";
 }

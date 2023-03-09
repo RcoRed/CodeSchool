@@ -47,7 +47,6 @@ public class JDBCCourseRepository implements CourseRepository {
             courseList.add(databaseToCourse(rs));
          }
          return courseList;
-
       } catch (SQLException e) {
          e.printStackTrace();
          throw new DataException("errore nella lettura dei corsi da database", e);

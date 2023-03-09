@@ -28,6 +28,19 @@ public class JDBCConstants {
             VALUES(nextval('course_sequence'),?, ?, ?, ?, ?, ?)
             RETURNING id_course;
             """;
+
+   public static final String INSERT_COURSE_EDITION_RETURNING_ID = """
+            INSERT INTO course_edition(id_course_edition, id_course, started_at, price, id_classroom)
+            VALUES (nextval('course_edition_sequence'), ?, ? ,?, ?)
+            RETURNING id_course_edition;
+            """;
+
+   public static final String INSERT_CLASSROOM_RETURNING_ID = """
+            INSERT INTO classroom(id_classroom, class_name, max_capacity, is_virtual, is_computerized, has_projector, 
+            id_remote_platform)
+            VALUES (nextval('classroom_sequence'), ?, ?, ?, ?, ?, ?)
+            RETURNING id_classroom;
+            """;
    public static final String NEXT_VAL_COURSE = """
             SELECT nextval('course_sequence');
             """;
