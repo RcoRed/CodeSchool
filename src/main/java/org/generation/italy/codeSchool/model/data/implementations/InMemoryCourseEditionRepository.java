@@ -2,6 +2,7 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.abstractions.CourseEditionRepository;
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
+import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.entities.CourseEdition;
 
@@ -40,7 +41,7 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
     }
 
     @Override
-    public Iterable<CourseEdition> findByCourseTitleAndPeriod(long courseId, String titlePart,
+    public Iterable<CourseEdition> findByCourseTitleAndPeriod(String titlePart,
                                                               LocalDate startAt, LocalDate endAt){
         return data.values().stream().filter(e -> e.getCourse().getTitle().contains(titlePart)
                 &&e.isStartedInRange(startAt, endAt)).toList();
@@ -77,5 +78,10 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
         }
         return Optional.empty();*/
         return max.map(Map.Entry::getKey);  //sta traformando un optional di chiave e valore in un optional di chiave(double)
+    }
+
+    @Override
+    public Iterable<CourseEdition> findByTeacherId(long id) throws DataException {
+        return null;
     }
 }

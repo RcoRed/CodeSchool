@@ -20,11 +20,11 @@ import static org.generation.italy.codeSchool.model.data.Constants.*;
 import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
 
 class CSVFileCourseRepositoryTest {
-    private static final String CSVLINE1=String.format(Locale.US,CSV_COURSE, ID1,TITLE,
+    private static final String CSVLINE1=String.format(Locale.US,CSV_COURSE, ID1,TITLE1,
             DESCRIPTION, PROGRAM,DURATION,IS_ACTIVE,CREATED_AT.toString());
-    private static final String CSVLINE2=String.format(Locale.US,CSV_COURSE,ID2,TITLE+TEST,
+    private static final String CSVLINE2=String.format(Locale.US,CSV_COURSE,ID2,TITLE1+TEST,
             DESCRIPTION+TEST,PROGRAM+TEST,DURATION+1,IS_ACTIVE,CREATED_AT.toString());
-    private static final String CSVLINE3=String.format(Locale.US,CSV_COURSE,ID3,TITLE+TEST,
+    private static final String CSVLINE3=String.format(Locale.US,CSV_COURSE,ID3,TITLE1+TEST,
             DESCRIPTION+TEST,PROGRAM+TEST,DURATION+2,IS_ACTIVE,CREATED_AT.toString());
     private static final String FILENAME="TESTDATA.csv";
 
@@ -48,7 +48,7 @@ class CSVFileCourseRepositoryTest {
 
     @Test
     void findById_finds_course_when_present() {
-        Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
+        Course c1 = new Course(ID1,TITLE1,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         try{                                                                 //obbligo a scrivere subito
             Optional<Course> x = repo.findById(ID1);
@@ -63,7 +63,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void create() {
         // ARRANGE
-        Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
+        Course c = new Course(ID_CREATE,TITLE1,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT
         try{
@@ -85,7 +85,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void create_should_save_even_when_file_dont_exist(){
         try{
-            Course c = new Course(ID_CREATE,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
+            Course c = new Course(ID_CREATE,TITLE1,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
             CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
             File f = new File(FILENAME);
             assertTrue(f.delete());
@@ -106,7 +106,7 @@ class CSVFileCourseRepositoryTest {
     }
     @Test
     void findById_should_not_throw_when_file_dont_exist(){
-        Course c1 = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
+        Course c1 = new Course(ID1,TITLE1,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository repo = new CSVFileCourseRepository(FILENAME);
         try{                                                                 //obbligo a scrivere subito
             File f = new File(FILENAME);
@@ -164,7 +164,7 @@ class CSVFileCourseRepositoryTest {
     @Test
     void courseToCSV() {
         // ARRANGE      //inizializzo i dati che poi dovrò usare
-        Course c = new Course(ID1,TITLE,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
+        Course c = new Course(ID1,TITLE1,DESCRIPTION,PROGRAM,DURATION,LocalDate.now());
         CSVFileCourseRepository  repo = new CSVFileCourseRepository(FILENAME);
         // ACT          //richiamo ciò che devo testare
         String csvLine = repo.courseToCSV(c);

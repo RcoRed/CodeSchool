@@ -25,7 +25,7 @@ class StandardDidacticServiceTest {
     void setUp(){
         repo = new InMemoryCourseRepository();
         service = new StandardDidacticService(repo);
-        c1 = new Course(0, TITLE, DESCRIPTION, PROGRAM, DURATION,true, LocalDate.of(2021,12,3));
+        c1 = new Course(0, TITLE1, DESCRIPTION, PROGRAM, DURATION,true, LocalDate.of(2021,12,3));
         c2 = new Course(0, TITLE2, DESCRIPTION2, PROGRAM2, DURATION2,false ,LocalDate.of(2020,1,14));
         c3 = new Course(0, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3, true, LocalDate.of(2018,6,20));
         try {

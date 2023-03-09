@@ -31,7 +31,7 @@ class JDBCCourseRepositoryTest {
 
     @BeforeEach
     void setUp() throws SQLException {
-        c1 = new Course(0, TITLE, DESCRIPTION, PROGRAM, DURATION, IS_ACTIVE, CREATED_AT);
+        c1 = new Course(0, TITLE1, DESCRIPTION, PROGRAM, DURATION, IS_ACTIVE, CREATED_AT);
         c2 = new Course(0, TITLE2, DESCRIPTION2, PROGRAM2, DURATION2, IS_ACTIVE, CREATED_AT.plusDays(1));
         c3 = new Course(0, TITLE3, DESCRIPTION3, PROGRAM3, DURATION3, IS_ACTIVE, CREATED_AT.plusMonths(2));
         courses = List.of(c1,c2,c3);
