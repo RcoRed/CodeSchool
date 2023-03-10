@@ -110,7 +110,7 @@ CREATE TABLE person
 	sex					sex NOT NULL,
 	email				VARCHAR(50) NOT NULL,
 	cell_number			VARCHAR(20),
-	id_address			BIGINT NOT NULL,
+	id_address			BIGINT,
 	username			VARCHAR(32) NOT NULL,
 	password			VARCHAR(32) NOT NULL,
   	CONSTRAINT PK_person PRIMARY KEY(id_person),
@@ -132,16 +132,10 @@ CREATE TABLE teacher
 	hire_date			DATE,
 	fire_date			DATE,
 	level				level NOT NULL,
-	id_person			BIGINT NOT NULL,
   	CONSTRAINT PK_teacher PRIMARY KEY(id_teacher),
-	CONSTRAINT FK_teacher_person FOREIGN KEY(id_person)
+	CONSTRAINT FK_teacher_person FOREIGN KEY(id_teacher)
 		REFERENCES person(id_person)
 );
-
-CREATE SEQUENCE teacher_sequence
-  start 1
-  increment 1
-  OWNED BY teacher.id_teacher;
 
 --create table student
 CREATE TABLE student
@@ -149,16 +143,10 @@ CREATE TABLE student
   	id_student			BIGINT NOT NULL,
 	last_contact		DATE,
 	date_of_reg			DATE NOT NULL,
-	id_person			BIGINT NOT NULL,
   	CONSTRAINT PK_student PRIMARY KEY(id_student),
-	CONSTRAINT FK_student_person FOREIGN KEY(id_person)
+	CONSTRAINT FK_student_person FOREIGN KEY(id_student)
 		REFERENCES person(id_person)
 );
-
-CREATE SEQUENCE student_sequence
-  start 1
-  increment 1
-  OWNED BY student.id_student;
 
 --create table lesson
 CREATE TABLE lesson
@@ -283,7 +271,7 @@ CREATE SEQUENCE course_module_sequence
 CREATE TABLE edition_module
 (
   	id_edition_module		BIGINT NOT NULL,
-	id_course_module		BIGINT NOT NULL,
+	id_course_module		BIGINT,
 	id_course_edition		BIGINT NOT NULL,
 	id_teacher				BIGINT NOT NULL,
 	start_date				DATE,

@@ -1,6 +1,7 @@
 package org.generation.italy.codeSchool.model.entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class CourseEdition {
     private long id;
@@ -8,6 +9,14 @@ public class CourseEdition {
     private LocalDate startedAt;
     private double cost;
     private Classroom assignedClassRoom;
+    private List<EditionModule> editionModules;
+
+    public CourseEdition(long id, Course course, LocalDate startedAt, double cost){
+        this.id=id;
+        this.course=course;
+        this.startedAt=startedAt;
+        this.cost=cost;
+    }
 
     public CourseEdition(long id, Course course, LocalDate startedAt, double cost, Classroom assignedClassRoom){
         this.id=id;
@@ -17,11 +26,13 @@ public class CourseEdition {
         this.assignedClassRoom =assignedClassRoom;
     }
 
-    public CourseEdition(long id, Course course, LocalDate startedAt, double cost){
+
+    public CourseEdition(long id, Course course, LocalDate startedAt, double cost, List<EditionModule> editionModules){
         this.id=id;
         this.course=course;
         this.startedAt=startedAt;
         this.cost=cost;
+        this.editionModules = editionModules;
     }
 
     public long getId() {
@@ -66,4 +77,6 @@ public class CourseEdition {
     public void setAssignedClassRoom(Classroom assignedClassRoom) {
         this.assignedClassRoom = assignedClassRoom;
     }
+
+
 }

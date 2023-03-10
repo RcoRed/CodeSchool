@@ -60,13 +60,17 @@ public class JDBCTestUtils {
 
     }
 
-    public static int update(String query,Connection con,boolean inserting,Object... params){
-        try (PreparedStatement st = inserting? con.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS)
+    public static int update(String query,Connection con,boolean insertingWithSequence,Object... params){
+        try (PreparedStatement st = insertingWithSequence? con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)
                 :  con.prepareStatement(query)){
             for(int i = 0; i < params.length; i++){
-                st.setObject(i+1,params[i]);
+                if(params[i] instanceof Enum<?>){
+                    st.setObject(i+1, params[i], Types.OTHER, 0);
+                }else {
+                    st.setObject(i+1,params[i]);
+                }
             }
-            if(inserting){
+            if(insertingWithSequence){
                 st.executeUpdate();
                 try (ResultSet keys = st.getGeneratedKeys()) {
                     keys.next();

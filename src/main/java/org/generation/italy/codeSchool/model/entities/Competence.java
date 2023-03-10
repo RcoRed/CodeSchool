@@ -5,4 +5,43 @@ public class Competence {
     private Skill skill;
     private Person person;
     private Level level;
+
+    public Competence(long id, Skill skill, Person person, Level level) {
+        this.id = id;
+        this.skill = skill;
+        this.person = person;
+        this.level = level;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setSkill(Skill skill) {
+        this.skill = skill;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
 }
