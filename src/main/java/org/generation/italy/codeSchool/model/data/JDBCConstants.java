@@ -123,7 +123,7 @@ public class JDBCConstants {
     public static final String NEXT_VAL_COURSE = """
             SELECT nextval('course_sequence');
             """;
-    public static final String UP_DATE_COURSE = """
+    public static final String UPDATE_COURSE = """
             UPDATE course
             SET title = ?,
             SET description = ?,
