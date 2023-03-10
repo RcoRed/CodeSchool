@@ -5,11 +5,6 @@ public class Skill {
     private String name;
     private String description;
 
-    public Skill(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     public Skill(long id, String name, String description) {
         this.id = id;
         this.name = name;

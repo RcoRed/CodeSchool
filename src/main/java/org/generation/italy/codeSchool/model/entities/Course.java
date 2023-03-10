@@ -72,14 +72,15 @@ public class Course implements Serializable {
     public boolean isActive() {
         return isActive;
     }
+
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
     public boolean deactivate(){
         boolean wasActive = isActive;
         isActive = false;
         return isActive!= wasActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     //override del metodo madre Object toString() e lo facciamo meglio

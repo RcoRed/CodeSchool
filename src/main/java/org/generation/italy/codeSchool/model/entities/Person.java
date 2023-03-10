@@ -82,4 +82,44 @@ public abstract class Person {
     public void setId(long id) {
         this.id = id;
     }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCellNumber(String cellNumber) {
+        this.cellNumber = cellNumber;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setCompetences(Set<Competence> competences) {
+        this.competences = competences;
+    }
 }

@@ -88,7 +88,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
         }
     }
 
-    public Iterable<CourseEdition> findByTeacherId(long teacherId) throws DataException{
+    public Iterable<CourseEdition> findByTeacherId(long teacherId) throws DataException {
         try (PreparedStatement ps = con.prepareStatement(FIND_COURSE_EDITION_BY_TEACHER_ID)){
             ps.setLong(1, teacherId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -100,7 +100,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
             }
 
         } catch (SQLException e) {
-            throw new DataException("Errore nella ricerca di edicione per docente",e);
+            throw new DataException("Errore nella ricerca di edizioni per docente" , e);
         }
     }
 

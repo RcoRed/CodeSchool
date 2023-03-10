@@ -56,9 +56,9 @@ public class Main {
             console.start();
         }
     }
+
     @Bean
     public static Connection createConnection() throws SQLException {
-        Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-        return con;
+        return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
     }
 }
