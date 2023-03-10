@@ -20,7 +20,7 @@ public class JDBCConstants {
             USING (id_course)
             JOIN classroom
             USING (id_classroom)
-            WHERE ce.price = (SELECT MAX(price) FROM course_edition)
+            WHERE price = (SELECT MAX(price) FROM course_edition)
             """;
 
     public static final String FIND_COURSE_EDITION_BY_COURSE = """
@@ -86,6 +86,39 @@ public class JDBCConstants {
             id_remote_platform)
             VALUES (nextval('classroom_sequence'), ?, ?, ?, ?, ?, ?)
             RETURNING id_classroom;
+            """;
+    public static final String INSERT_CATEGORY_RETURNING_ID = """
+            INSERT INTO category(id_category, name)
+            VALUES (nextval('category_sequence'), ?)
+            RETURNING id_category
+            """;
+    public static final String INSERT_SKILL_RETURNING_ID = """
+            INSERT INTO skill(id_skill, name, id_category)
+            VALUES (nextval('skill_sequence'), ?, ?)
+            RETURNING id_skill
+            """;
+
+    public static final String INSERT_COMPETENCE_RETURNING_ID = """
+            INSERT INTO competence(id_competence, id_person, id_skill, level)
+            VALUES(nextval('competence_sequence'), ?, ?, ?)
+            RETURNING id_competence
+            """;
+
+    public static final String INSERT_PERSON_RETURNING_ID = """
+            INSERT INTO person(id_person, firstname, lastname, dob, sex, email, username, password)
+            VALUES(nextval('person_sequence'), ?, ?, ?, ?, ?, ?, ?)
+            RETURNING id_person;
+            """;
+    // la query di teacher prenderà lo stesso id di persona, per cui glielo passeremo dinamicamente una volta creata la person
+    public static final String INSERT_TEACHER = """
+            INSERT INTO teacher(id_teacher, p_IVA, is_employee, level)
+            VALUES (?, ?, ?, ?)
+            """;
+
+    public static final String INSERT_EDITION_MODULE_RETURNING_ID = """
+            INSERT INTO edition_module(id_edition_module, id_course_edition, id_teacher)
+            VALUES(nextval('edition_module_sequence'), ?, ?)
+            RETURNING id_edition_module
             """;
     public static final String NEXT_VAL_COURSE = """
             SELECT nextval('course_sequence');

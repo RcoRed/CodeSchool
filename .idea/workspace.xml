@@ -4,10 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="various on par with Davide F">
+    <list default="true" id="4ba76fb9-891e-44df-96ae-93da7af4c02f" name="Changes" comment="added Teacher and Competence to setUp in Test">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/JDBCTeacherConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/abstractions/TeacherRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/JDBCTeacherRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SQL/create_database.sql" beforeDir="false" afterPath="$PROJECT_DIR$/SQL/create_database.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/JDBCConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/JDBCConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/JDBCCourseEditionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/data/implementations/JDBCCourseEditionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Competence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Competence.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseEdition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/CourseEdition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/EditionModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/EditionModule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Skill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Skill.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/generation/italy/codeSchool/model/entities/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/JDBCCourseEditionRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/JDBCCourseEditionRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/JDBCTestUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/JDBCTestUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/TestConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/generation/italy/codeSchool/model/data/implementations/TestConstants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +31,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="JUnit5 Test Class" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -75,55 +89,7 @@
       <recent name="org.generation.italy.codeSchool.model.data.implementations" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.JDBCCourseRepositoryTest.deactivateOldest">
-    <configuration name="CSVFileCourseRepositoryTest.deleteById_should_delete_course_if_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CodeSchool" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="deleteById_should_delete_course_if_present" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CSVFileCourseRepositoryTest.deleteById_should_throw_when_course_not_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CodeSchool" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="deleteById_should_throw_when_course_not_present" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CSVFileCourseRepositoryTest.findById_finds_course_when_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CodeSchool" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
-      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
-      <option name="METHOD_NAME" value="findById_finds_course_when_present" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.JDBCCourseEditionRepositoryTest">
     <configuration name="CSVFileCourseRepositoryTest.findByTitleContains_should_find_courses_if_title_present" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodeSchool" />
       <extension name="coverage">
@@ -135,6 +101,53 @@
       <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
       <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.CSVFileCourseRepositoryTest" />
       <option name="METHOD_NAME" value="findByTitleContains_should_find_courses_if_title_present" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JDBCCourseEditionRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodeSchool" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.JDBCCourseEditionRepositoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JDBCCourseEditionRepositoryTest.findByTeacherId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodeSchool" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.JDBCCourseEditionRepositoryTest" />
+      <option name="METHOD_NAME" value="findByTeacherId" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JDBCCourseEditionRepositoryTest.getTotalCost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodeSchool" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.generation.italy.codeSchool.model.data.implementations.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.generation.italy.codeSchool.model.data.implementations" />
+      <option name="MAIN_CLASS_NAME" value="org.generation.italy.codeSchool.model.data.implementations.JDBCCourseEditionRepositoryTest" />
+      <option name="METHOD_NAME" value="getTotalCost" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -158,11 +171,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.JDBCCourseEditionRepositoryTest" />
+        <item itemvalue="JUnit.JDBCCourseEditionRepositoryTest.findByTeacherId" />
+        <item itemvalue="JUnit.JDBCCourseEditionRepositoryTest.getTotalCost" />
         <item itemvalue="JUnit.JDBCCourseRepositoryTest.deactivateOldest" />
         <item itemvalue="JUnit.CSVFileCourseRepositoryTest.findByTitleContains_should_find_courses_if_title_present" />
-        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.findById_finds_course_when_present" />
-        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.deleteById_should_throw_when_course_not_present" />
-        <item itemvalue="JUnit.CSVFileCourseRepositoryTest.deleteById_should_delete_course_if_present" />
       </list>
     </recent_temporary>
   </component>
@@ -210,7 +223,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678398742621</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added Teacher and Competence to setUp in Test">
+      <created>1678400768894</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1678400768894</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -242,6 +262,7 @@
     <MESSAGE value="integra in master la ddl e il test sul JDBCRepository" />
     <MESSAGE value="implements JDBCCourseEditionRepository and all its methods" />
     <MESSAGE value="various on par with Davide F" />
-    <option name="LAST_COMMIT_MESSAGE" value="various on par with Davide F" />
+    <MESSAGE value="added Teacher and Competence to setUp in Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="added Teacher and Competence to setUp in Test" />
   </component>
 </project>

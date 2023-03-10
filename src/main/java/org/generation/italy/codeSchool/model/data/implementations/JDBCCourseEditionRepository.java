@@ -1,6 +1,7 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.abstractions.CourseEditionRepository;
+import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Classroom;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.entities.CourseEdition;
@@ -87,7 +88,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
         }
     }
 
-    public Iterable<CourseEdition> findByTeacherId(long teacherId) {
+    public Iterable<CourseEdition> findByTeacherId(long teacherId) throws DataException {
         try (PreparedStatement ps = con.prepareStatement(FIND_COURSE_EDITION_BY_TEACHER_ID)){
             ps.setLong(1, teacherId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -99,7 +100,7 @@ public class JDBCCourseEditionRepository implements CourseEditionRepository {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new DataException("Errore nella ricerca di edizioni per docente" , e);
         }
     }
 
