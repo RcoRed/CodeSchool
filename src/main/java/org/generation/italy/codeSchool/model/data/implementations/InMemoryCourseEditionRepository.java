@@ -1,8 +1,6 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.abstractions.CourseEditionRepository;
-import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
-import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.entities.CourseEdition;
 
 import java.time.LocalDate;
@@ -40,8 +38,8 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
     }
 
     @Override
-    public Iterable<CourseEdition> findByCourseAndTitleAndPeriod(long courseId, String titlePart,
-                                                                 LocalDate startAt, LocalDate endAt){
+    public Iterable<CourseEdition> findByCourseTitleAndPeriod(String titlePart,
+                                                              LocalDate startAt, LocalDate endAt){
         return data.values().stream().filter(e -> e.getCourse().getTitle().contains(titlePart)
                 &&e.isStartedInRange(startAt, endAt)).toList();
                                              /*&& e.getStartedAt().isAfter(startAt)

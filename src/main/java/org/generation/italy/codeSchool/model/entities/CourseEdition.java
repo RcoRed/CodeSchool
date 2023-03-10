@@ -1,6 +1,7 @@
 package org.generation.italy.codeSchool.model.entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class CourseEdition {
     private long id;
@@ -9,26 +10,29 @@ public class CourseEdition {
     private LocalDate startedAt;
     private double cost;
     private Classroom assignedClassRoom;
+    private List<EditionModule> modules;
     public boolean startedInRange(LocalDate start, LocalDate end){
         return !(getStartedAt().isBefore(start) || getStartedAt().isBefore(end));
     }
     public CourseEdition(long id, Course course, LocalDate startedAt, double cost){
-        this.id=id;
-        this.course=course;
-        this.startedAt=startedAt;
-        this.cost=cost;
+        this(id, course, startedAt, cost,null, null);
     }
     public CourseEdition(long id, Course course, LocalDate startedAt, double cost, Classroom assignedClassRoom){
+        this(id, course, startedAt, cost, assignedClassRoom, null);
+    }
+    public CourseEdition(long id, Course course, LocalDate startedAt, double cost, Classroom assignedClassRoom, List<EditionModule> modules){
         this.id=id;
         this.course=course;
         this.startedAt=startedAt;
         this.cost=cost;
         this.assignedClassRoom = assignedClassRoom;
+        this.modules = modules;
     }
 
     public void setAssignedClassRoom(Classroom assignedClassRoom) {
         this.assignedClassRoom = assignedClassRoom;
     }
+
 
     public long getId() {
         return id;
@@ -67,5 +71,10 @@ public class CourseEdition {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public int addEditionModule(EditionModule em){
+        this.modules.add(em);
+        return modules.size();
     }
 }

@@ -9,8 +9,7 @@ public class Classroom {
     private boolean hasProjector;
     private RemotePlatform platform;
 
-    public Classroom(long id, String name, int maxCapacity, boolean isVirtual,
-                     boolean isComputerized, boolean hasProjector, RemotePlatform platform) {
+    public Classroom(long id, String name, int maxCapacity, boolean isVirtual, boolean isComputerized, boolean hasProjector, RemotePlatform platform) {
         this.id = id;
         this.name = name;
         this.maxCapacity = maxCapacity;
