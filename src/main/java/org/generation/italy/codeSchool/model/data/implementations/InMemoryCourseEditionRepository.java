@@ -40,7 +40,7 @@ public class InMemoryCourseEditionRepository implements CourseEditionRepository 
     }
 
     @Override
-    public Iterable<CourseEdition> findByCourseTitleAndPeriod(long courseId, String titlePart,
+    public Iterable<CourseEdition> findByCourseTitleAndPeriod(String titlePart,
                                                               LocalDate startAt, LocalDate endAt){
         return data.values().stream().filter(e -> e.getCourse().getTitle().contains(titlePart)
                 &&e.isStartedInRange(startAt, endAt)).toList();

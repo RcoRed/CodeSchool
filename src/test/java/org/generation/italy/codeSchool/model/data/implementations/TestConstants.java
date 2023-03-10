@@ -1,5 +1,7 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
+import org.generation.italy.codeSchool.model.entities.Address;
+
 import java.time.LocalDate;
 
 public class TestConstants {
@@ -10,8 +12,9 @@ public class TestConstants {
         public static final long ID_CREATE=5;
         public static final String TEST = "TEST";
         public static final String TITLE="TITLE";
+        public static final String TITLE1="TITLE1_TEST";
         public static final String TITLE2="TITLE2_TEST";
-        public static final String TITLE3="TITLE2_TEST";
+        public static final String TITLE3="TITLE3_TEST";
         public static final String TITLE_UPDATED="TITLE_UPDATED";
         public static final String DESCRIPTION="DESCRIPTION";
         public static final String DESCRIPTION2="DESCRIPTION2";
@@ -34,6 +37,16 @@ public class TestConstants {
         public static final LocalDate COURSE_EDITION_STARTED_AT = LocalDate.now();
         public static final double COURSE_EDITION_COST = 250;
         public static final double COURSE_EDITION_COST2 = 350;
+        public static final String TEACHER1_FIRSTNAME = "Alberto";
+        public static final String TEACHER1_LASTNAME = "Barroero";
+        public static final LocalDate TEACHER1_DOB = LocalDate.of(1975, 2, 25);
+        public static final String TEACHER1_EMAIL = "alberto.b@wow.com";
+        public static final String TEACHER1_USERNAME = "albertobrr";
+        public static final String TEACHER1_PASSWORD = "JAITA81";
+        public static final boolean TEACHER1_IS_EMPLOYEE = true;
+        public static final String SKILL1_NAME = "Java";
+        public static final String SKILL2_NAME = "Soft Skill";
+        public static final String CATEGORY1_NAME = "Programming";
 
         public static final String SERIALIZED_TEST_FILE_NAME="test_course_data.ser";
 }
