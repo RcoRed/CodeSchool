@@ -15,7 +15,6 @@ public abstract class Person {
     protected String username;
     protected String password;
     private Set<Competence> competences;
-
     public Person(long id, String firstname, String lastname, LocalDate dob, Sex sex, String email, String cellNumber,
                   Address address, String username, String password, Set<Competence> competences) {
         this.id = id;
