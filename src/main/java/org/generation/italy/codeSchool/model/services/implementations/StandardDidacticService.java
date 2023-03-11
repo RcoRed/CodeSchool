@@ -17,6 +17,7 @@ public class StandardDidacticService implements AbstractDidacticService {
     @Autowired
     public StandardDidacticService(CourseRepository repo){
         this.repo = repo;       //iniezione delle dipendenze (tecnica) -> inversione del controllo (design pattern) o inversione delle dipendenze
+        System.out.println(this.repo.getClass().getName());
     }
 
     @Override

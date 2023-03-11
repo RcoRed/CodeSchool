@@ -16,4 +16,28 @@ public class EditionModule {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public CourseModule getCourseModule() {
+        return courseModule;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

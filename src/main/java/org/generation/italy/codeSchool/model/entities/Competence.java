@@ -12,4 +12,24 @@ public class Competence {
         this.person = person;
         this.level = level;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public Skill getSkill() {
+        return skill;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

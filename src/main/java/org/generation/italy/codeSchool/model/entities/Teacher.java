@@ -9,18 +9,16 @@ public class Teacher extends Person{
     private LocalDate hireDate;
     private LocalDate fireDate;
     private Level level;
-    private Set<Competence> competences;
 
     public Teacher(long id, String firstname, String lastname, LocalDate dob, Sex sex, String email, String cellNumber,
-                   Address address, String username, String password, String pIVA, boolean isEmployee,
-                   LocalDate hireDate, LocalDate fireDate, Level level, Set<Competence> competences) {
-        super(id, firstname, lastname, dob, sex, email, cellNumber, address, username, password);
+                   Address address, String username, String password, Set<Competence> competences, String pIVA, boolean isEmployee,
+                   LocalDate hireDate, LocalDate fireDate, Level level) {
+        super(id, firstname, lastname, dob, sex, email, cellNumber, address, username, password, competences);
         this.pIVA = pIVA;
         this.isEmployee = isEmployee;
         this.hireDate = hireDate;
         this.fireDate = fireDate;
         this.level = level;
-        this.competences = competences;
     }
 
     public String getpIVA() {
@@ -43,7 +41,4 @@ public class Teacher extends Person{
         return level;
     }
 
-    public Set<Competence> getCompetences() {
-        return competences;
-    }
 }
