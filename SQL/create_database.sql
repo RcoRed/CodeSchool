@@ -110,7 +110,7 @@ CREATE TABLE person
 	sex					sex NOT NULL,
 	email				VARCHAR(50) NOT NULL,
 	cell_number			VARCHAR(20),
-	id_address			BIGINT NOT NULL,
+	id_address			BIGINT,
 	username			VARCHAR(32) NOT NULL,
 	password			VARCHAR(32) NOT NULL,
   	CONSTRAINT PK_person PRIMARY KEY(id_person),

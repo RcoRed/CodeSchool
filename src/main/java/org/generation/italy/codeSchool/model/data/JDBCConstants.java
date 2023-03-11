@@ -41,9 +41,16 @@ public class JDBCConstants {
             VALUES (nextval('classroom_sequence'), ?, ?, ?, ?, ?, ?)
             RETURNING id_classroom;
             """;
+
+    public static final String INSERT_PERSON_RETURNING_ID = """
+            INSERT INTO teacher(id_person, firstname, lastname, dob, sex, email, cell_number, id_address, username,password)
+            VALUES(nextvla('person_sequence'), ?, ?, ?, ?, ?, ?, ?, ?, ?
+            """;
+
     public static final String NEXT_VAL_COURSE = """
             SELECT nextval('course_sequence');
             """;
+
     public static final String UPDATE_COURSE = """
             UPDATE course
             SET title = ?,
@@ -54,11 +61,13 @@ public class JDBCConstants {
             SET created_at = ?,
             WHERE id_course = ?;
             """;
+
     public static final String ACTIVE_COURSES = """           
             SELECT COUNT(*) as num_actives
             FROM course
             WHERE is_active = true
             """;
+
     public static final String DEACTIVATE_OLDEST_N_COURSES = """
             UPDATE course
             SET is_active = false

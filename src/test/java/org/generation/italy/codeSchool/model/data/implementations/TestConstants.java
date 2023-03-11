@@ -31,9 +31,25 @@ public class TestConstants {
         public static final boolean CLASSROOM_IS_VIRTUAL = true;
         public static final boolean CLASSROOM_IS_COMPUTERIZED = true;
         public static final boolean CLASSROOM_HAS_PROJECTOR = false;
+        public static final boolean IS_EMPLOYEE = true;
         public static final LocalDate COURSE_EDITION_STARTED_AT = LocalDate.now();
         public static final double COURSE_EDITION_COST = 250;
         public static final double COURSE_EDITION_COST2 = 350;
+        public static final String P_IVA1 = "11111111111";
+        public static final String P_IVA2 = "11111111112";
+        public static final String P_IVA3 = "11111111113";
+        public static final String FIRSTNAME1 = "NOME1";
+        public static final String FIRSTNAME2 = "NOME2";
+        public static final String LASTNAME1 = "LASTNAME1";
+        public static final String LASTNAME2 = "LASTNAME2";
+        public static final String EMAIL1 = "email1@email.com";
+        public static final String CELL_NUMBER1 = "1000000000";
+        public static final String ADDRESS_STREET = "ADDRESS_STREET";
+        public static final int ADDRESS_HOUSE_NUMBER = 1;
+        public static final String ADDRESS_CITY = "Palermo";
+        public static final String ADDRESS_COUNTRY = "Italia";
+        public static final String USERNAME = "USERNAME1";
+        public static final String PASSWORD_TEST = "PASSWORD1";
 
         public static final String SERIALIZED_TEST_FILE_NAME="test_course_data.ser";
 }

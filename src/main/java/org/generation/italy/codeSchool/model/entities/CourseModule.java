@@ -7,4 +7,13 @@ public class CourseModule {
     private Course course;
     private double duration;
     private Level level;
+
+    public CourseModule(long id, String title, String contents, Course course, double duration, Level level) {
+        this.id = id;
+        this.title = title;
+        this.contents = contents;
+        this.course = course;
+        this.duration = duration;
+        this.level = level;
+    }
 }

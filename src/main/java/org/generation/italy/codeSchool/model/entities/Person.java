@@ -13,4 +13,17 @@ public abstract class Person {
     protected Address address;
     protected String username;
     protected String password;
+
+    public Person(long id, String firstname, String lastname, LocalDate dob, Sex sex, String email, String cellNumber, Address address, String username, String password) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.dob = dob;
+        this.sex = sex;
+        this.email = email;
+        this.cellNumber = cellNumber;
+        this.address = address;
+        this.username = username;
+        this.password = password;
+    }
 }
