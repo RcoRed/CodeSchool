@@ -3,25 +3,26 @@ package org.generation.italy.codeSchool.model.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
+@Table(name = "course")    //annotazione di runtime,rimane nel bytecode
 public class Course implements Serializable {
     @Id
-    @Column(name = "course_id")
+    @Column(name = "id_course")   //nome colonna lato DB
     private long id;
     private String title;
     private String description;
-    @Column(name = "course_program")
     private String program;
     private double duration;
     //private static final long serialVersionUID = 1;
     @Column(name = "is_active")
     private boolean isActive;
-    @Column(name = "create_date")
+    @Column(name = "created_at")
     private LocalDate createdAt;
 
     public Course() {
