@@ -17,7 +17,6 @@ import java.util.Optional;
 import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
 import static org.generation.italy.codeSchool.model.data.implementations.JDBCTestUtils.update;
 import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.*;
-import static org.generation.italy.codeSchool.model.data.implementations.TestConstants.CREATED_AT;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JDBCCourseEditionRepositoryTest {
