@@ -11,17 +11,16 @@ import java.util.Objects;
 @Entity
 public class Course implements Serializable {
     @Id
-    @Column(name = "course_id")
+    @Column(name = "id_course")
     private long id;
     private String title;
     private String description;
-    @Column(name = "course_program")
     private String program;
     private double duration;
     //private static final long serialVersionUID = 1;
     @Column(name = "is_active")
     private boolean isActive;
-    @Column(name = "create_date")
+    @Column(name = "created_at")
     private LocalDate createdAt;
 
     public Course() {
