@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-public class GenericCrudRepository<T> implements AbstractCrudRepository {
+public class GenericCrudRepository<T> implements AbstractCrudRepository<T> {
     @Autowired
     protected Session session;
     protected Class<?> entityClass;
