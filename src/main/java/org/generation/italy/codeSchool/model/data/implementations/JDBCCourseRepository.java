@@ -146,13 +146,12 @@ public class JDBCCourseRepository implements CourseRepository {
             e.printStackTrace();
             throw new DataException("errore nell'insermiento del corso", e);
         }
-
     }
 
     @Override
     public void update(Course course) throws EntityNotFoundException, DataException {
         try (
-             PreparedStatement st = con.prepareStatement(UPDATE_COURSE)){
+             PreparedStatement st = con.prepareStatement(UP_DATE_COURSE)){
             st.setString(1, course.getTitle());
             st.setString(2, course.getDescription());
             st.setString(3, course.getProgram());
