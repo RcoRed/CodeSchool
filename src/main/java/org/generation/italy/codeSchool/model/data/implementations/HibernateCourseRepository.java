@@ -60,7 +60,12 @@ public class HibernateCourseRepository extends GenericCrudRepository<Course> imp
 
     @Override
     public void deactivateOldest(int n) throws DataException {
-
+        List<Course> c = session.createQuery("from Course as c where c.isActive=true order by createdAt asc limit :l")
+              .setParameter("l", n).list();
+        for (Course co : c) {
+            co.deactivate();
+            session.merge(co);
+        }
     }
 
     @Override

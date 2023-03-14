@@ -1,5 +1,6 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
+import org.checkerframework.checker.nullness.Opt;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.hibernate.Session;
@@ -62,6 +63,17 @@ class HibernateCourseRepositoryTest {
 
     @Test
     void deactivateOldest() {
+        try {
+            repo.deactivateOldest(1);
+            repo.findById(c1.getId()).ifPresent(course -> assertFalse(course.isActive()));
+            assertFalse(c1.isActive());
+            assertTrue(c2.isActive() && c3.isActive());
+            repo.deactivateOldest(1);
+            assertFalse(c2.isActive());
+            assertTrue(c3.isActive());
+        } catch (DataException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
