@@ -1,8 +1,6 @@
 package org.generation.italy.codeSchool.model.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,6 +9,8 @@ import java.util.Objects;
 @Entity
 public class Course implements Serializable {
     @Id
+    @GeneratedValue(generator = "course_generator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "course_generator", sequenceName = "course_sequence", allocationSize = 1)
     @Column(name = "id_course")
     private long id;
     private String title;

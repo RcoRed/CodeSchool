@@ -65,8 +65,8 @@ public class HibernateCourseRepository extends GenericCRUDRepository <Course> im
    }
    @Override
    public List<Course> findByTitleContains(String part) throws DataException {
-      Query<Course> q = session.createQuery("form Course where title like :p"); //:part, buco dove metto "part
-      q.setParameter("p", part);
+      Query<Course> q = session.createQuery("from Course where title like :p"); //:part, buco dove metto "part
+      q.setParameter("p", "%" + part + "%");
       return q.list();
    }
 }
