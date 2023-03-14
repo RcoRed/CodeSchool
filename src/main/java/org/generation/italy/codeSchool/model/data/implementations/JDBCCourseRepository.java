@@ -4,6 +4,7 @@ import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.entities.Course;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,7 @@ public class JDBCCourseRepository implements CourseRepository {
 
     private Connection con;
 
+    @Autowired
     public JDBCCourseRepository(Connection connection) {
         this.con = connection;
     }
