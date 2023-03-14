@@ -34,13 +34,13 @@ public class GenericCrudRepository<T> implements AbstractCrudRepository<T> {
     }
 
     @Override
-    public Object create(Object entity) throws DataException {
+    public T create(T entity) throws DataException {
         session.persist(entity);
         return entity;
     }
 
     @Override
-    public void update(Object entity) throws EntityNotFoundException, DataException {
+    public void update(T entity) throws EntityNotFoundException, DataException {
         session.merge(entity);
     }
 
