@@ -1,6 +1,8 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.abstractions.CourseEditionRepository;
+import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
+import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.entities.CourseEdition;
 
 import java.time.LocalDate;

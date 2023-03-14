@@ -43,22 +43,22 @@ public class Main {
                      new AnnotationConfigApplicationContext
                              (Main.class)) {
 
-//            var factory = HibernateUtils.getSessionFactory();
-//
-//            Course c = new Course(3000,"title", "description", "program",
-//                    200, LocalDate.now());
-//            var session = factory.openSession();
-//            session.getTransaction().begin();
-//            session.save(c);
-//            session.getTransaction().commit();
+            var factory = HibernateUtils.getSessionFactory();
 
-            UserInterfaceConsole console = ctx.getBean(UserInterfaceConsole.class);
-            console.start();
+            Course c = new Course(3000,"title", "description", "program",
+                    200, LocalDate.now());
+            var session = factory.openSession();
+            session.getTransaction().begin();
+            session.save(c);
+            session.getTransaction().commit();
+
+//            UserInterfaceConsole console = ctx.getBean(UserInterfaceConsole.class);
+//            console.start();
         }
     }
+
     @Bean
     public static Connection createConnection() throws SQLException {
-        Connection con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-        return con;
+        return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
     }
 }
