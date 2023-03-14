@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/code_school</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/legion</property>
         <property name="hibernate.connection.username">postgresMaster</property>
         <property name="hibernate.connection.password">goPostgresGo</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>

@@ -34,6 +34,7 @@ public class UserInterfaceConsole {
     @Autowired
     public UserInterfaceConsole(AbstractDidacticService service) {
         this.service = service;
+        System.out.println(this.service.getClass().getName());
     }
 
     public void start() {

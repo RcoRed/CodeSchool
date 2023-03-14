@@ -47,7 +47,7 @@ class JDBCCourseRepositoryTest {
         repo = new JDBCCourseRepository(con);
     }
 
-   @AfterEach
+    @AfterEach
     void tearDown() {
         try {
             con.rollback();

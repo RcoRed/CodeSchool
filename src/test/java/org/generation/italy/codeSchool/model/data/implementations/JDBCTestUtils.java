@@ -2,9 +2,7 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Course;
-import org.generation.italy.codeSchool.model.entities.Sex;
 
-import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.Optional;
 
@@ -12,8 +10,6 @@ import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
 
 
 public class JDBCTestUtils {
-
-    private static Sex sex = Sex.MALE;
     public static long insertCourse(Course course, Connection con) {
         try (
              PreparedStatement st = con.prepareStatement(INSERT_COURSE_RETURNING_ID, Statement.RETURN_GENERATED_KEYS);//factory method pattern
@@ -64,18 +60,17 @@ public class JDBCTestUtils {
 
     }
 
-    public static int update(String query,Connection con,boolean inserting,Object... params){
-        try (PreparedStatement st = inserting? con.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS)
+    public static int update(String query,Connection con,boolean insertingWithSequence,Object... params){
+        try (PreparedStatement st = insertingWithSequence? con.prepareStatement(query,  Statement.RETURN_GENERATED_KEYS)
                 :  con.prepareStatement(query)){
             for(int i = 0; i < params.length; i++){
-                if (params[i] instanceof Enum<?>){
-                    st.setObject(i+1,params[i],Types.OTHER,0);
-                }else {
+                if (params[i] instanceof Enum<?>) { // verifichiamo che la classe sia un Enum di qualsiasi tipo per convertirlo correttamente nel suo corrispettivo in SQL
+                    st.setObject(i+1, params[i], Types.OTHER);
+                } else {
                     st.setObject(i+1,params[i]);
                 }
-
             }
-            if(inserting){
+            if(insertingWithSequence){
                 st.executeUpdate();
                 try (ResultSet keys = st.getGeneratedKeys()) {
                     keys.next();
@@ -88,13 +83,6 @@ public class JDBCTestUtils {
         } catch (SQLException e) {
             System.out.println(e.getErrorCode());
             throw new RuntimeException(e);
-        }
-    }
-
-    public static void main(String[] args) {
-        Sex sex = Sex.MALE;
-        if(sex instanceof Enum<?>){
-            System.out.println("ok");
         }
     }
 
