@@ -83,7 +83,7 @@ class JDBCCourseEditionRepositoryTest {
         int classroomKey = update(INSERT_CLASSROOM_RETURNING_ID, con, true, cr1.getName(),cr1.getMaxCapacity(),
                 cr1.isVirtual(), cr1.isComputerized(), cr1.isHasProjector(), null);
         cr1.setId(classroomKey);
-        int courseEditionKey1 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true,c1.getId(),ce1.getStartedAt(),
+        int courseEditionKey1 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true, c1.getId(),ce1.getStartedAt(),
                 ce1.getCost(), cr1.getId());
         ce1.setId(courseEditionKey1);
         int courseEditionKey2 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true,c1.getId(),ce2.getStartedAt(),
