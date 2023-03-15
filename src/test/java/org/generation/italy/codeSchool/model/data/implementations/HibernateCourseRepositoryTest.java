@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +60,23 @@ class HibernateCourseRepositoryTest {
 
     @Test
     void deactivateOldest() {
+        try {
+            repo.deactivateOldest(2);
+            // s.flush();
+            s.clear();
+            List<Course> all = s.createQuery("from Course", Course.class).list()
+                    .stream().sorted(Comparator.comparing(Course::getCreatedAt)).toList();
+            assertEquals(3, all.size());
+            assertEquals(all.get(0).getId() , c1.getId());
+            assertFalse(all.get(0).isActive());
+            assertEquals(all.get(1).getId() , c2.getId());
+            assertFalse(all.get(1).isActive());
+            assertEquals(all.get(2).getId() , c3.getId());
+            assertTrue(all.get(2).isActive());
+
+        } catch (DataException e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test

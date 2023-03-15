@@ -5,12 +5,15 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.hibernate.Session;
+import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.generation.italy.codeSchool.model.data.HibernateConstants.HQL_DEACTIVATE_OLDEST_N_COURSES;
 
 
 @Repository
@@ -61,6 +64,9 @@ public class HibernateCourseRepository extends GenericCrudRepository<Course> imp
 
     @Override
     public void deactivateOldest(int n) throws DataException {
+        MutationQuery q = session.createMutationQuery(HQL_DEACTIVATE_OLDEST_N_COURSES);
+        q.setParameter("limit", n);
+        q.executeUpdate();
     }
 
     @Override
