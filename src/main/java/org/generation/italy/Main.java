@@ -44,15 +44,16 @@ public class Main {
                              (Main.class)) {
 
             var factory = HibernateUtils.getSessionFactory();
+
             Course c = new Course(3000,"title", "description", "program",
-                200, LocalDate.now());
+                    200, LocalDate.now());
             var session = factory.openSession();
             session.getTransaction().begin();
             session.save(c);
             session.getTransaction().commit();
 
-            //UserInterfaceConsole console = ctx.getBean(UserInterfaceConsole.class);
-            //console.start();
+//            UserInterfaceConsole console = ctx.getBean(UserInterfaceConsole.class);
+//            console.start();
         }
     }
 

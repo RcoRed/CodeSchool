@@ -1,19 +1,18 @@
 package org.generation.italy.codeSchool.model.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Generated;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "course")
+@Table(name = "course")    //annotazione di runtime,rimane nel bytecode
 public class Course implements Serializable {
     @Id
     @GeneratedValue(generator = "course_generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "course_generator", sequenceName = "course_sequence", allocationSize = 1)
-    @Column(name = "id_course")
+    @Column(name = "id_course")   //nome colonna lato DB
     private long id;
     private String title;
     private String description;
