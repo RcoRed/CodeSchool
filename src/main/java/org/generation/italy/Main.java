@@ -36,7 +36,7 @@ public class Main {
 //        }
 //        System.out.println(repo.getClass().getName());
 //        new UserInterfaceConsole(new StandardDidacticService(repo)).userInteraction();
-
+// questa linra decide che profilo usare per il repostory
         System.setProperty("spring.profiles.active", "jdbc");
 
         try (var ctx =
