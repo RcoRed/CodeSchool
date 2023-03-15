@@ -16,6 +16,11 @@ public class HibernateConstants {
             order by c.createdAt
             limit :limit
             """;
+
+    public static final String HQL_FIND_TEACHER_BY_LEVEL = """
+            from Teacher t
+            where t.level = :level
+            """;
 //        public static final String HQL_DEACTIVATE_OLDEST_N_COURSES = """
 //               update Course c set c.isActive=false, title = "boh" where c.id in (
 //               select co.id from Course co

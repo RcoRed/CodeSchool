@@ -7,7 +7,7 @@ import java.util.Set;
 @Entity
 @PrimaryKeyJoinColumn(name = "id_teacher")
 @Table(name = "teacher")
-public class Teacher extends Person{
+public class Teacher extends Person implements WithId{
     @Column(name = "p_iva")
     private String pIVA;
     @Column(name = "is_employee")
