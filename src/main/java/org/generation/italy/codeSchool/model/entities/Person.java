@@ -1,20 +1,34 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.Set;
-
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "person")
 public abstract class Person {
+    @Id
+    @GeneratedValue(generator = "course_module_generator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "course_module_generator", sequenceName = "course_module_sequence", allocationSize = 1)
+    @Column(name = "id_course_module")   //nome colonna lato DB
     protected long id;
     protected String firstname;
     protected String lastname;
     protected LocalDate dob;
+    @Enumerated(EnumType.STRING)
     protected Sex sex;
     protected String email;
+    @Column(name = "cell_number")
     protected String cellNumber;
+    @ManyToOne
+    @JoinColumn(name = "id_address")
     protected Address address;
     protected String username;
     protected String password;
+    @OneToMany(mappedBy = "person")
     private Set<Competence> competences;
+    public Person(){}
     public Person(long id, String firstname, String lastname, LocalDate dob, Sex sex, String email, String cellNumber,
                   Address address, String username, String password, Set<Competence> competences) {
         this.id = id;

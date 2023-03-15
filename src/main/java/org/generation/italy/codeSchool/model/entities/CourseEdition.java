@@ -1,14 +1,28 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.List;
-
+@Entity
+@Table(name = "course_edition")
 public class CourseEdition {
+    @Id
+    @GeneratedValue(generator = "course_edition_generator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "course_edition_generator", sequenceName = "course_edition_sequence", allocationSize = 1)
+    @Column(name = "id_course_edition")   //nome colonna lato DB
     private long id;
+    @ManyToOne(fetch = FetchType.EAGER) //FetchType.LAZY dice non ti disturbare a caricare, EAGER il contrario
+    @JoinColumn(name = "id_course")
     private Course course;
+    @Column(name = "started_at")
     private LocalDate startedAt;
+    @Column(name = "price")
     private double cost;
+    @ManyToOne      //di default é eager
+    @JoinColumn(name = "id_classroom")
     private Classroom assignedClassRoom;
+    @OneToMany(mappedBy = "edition")
     private List<EditionModule> modules;
 
     public CourseEdition(long id, Course course, LocalDate startedAt, double cost){

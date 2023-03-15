@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public class HibernateCourseRepository extends GenericCrudRepository<Course> implements CourseRepository {
-//    @Autowired
+   //    @Autowired
 //    private Session session;
 //    @Override
 //    public List<Course> findAll() throws DataException {
@@ -48,34 +48,34 @@ public class HibernateCourseRepository extends GenericCrudRepository<Course> imp
 //
 //
 //
-    public HibernateCourseRepository(Session s){
-        super(s, Course.class);
-    }
-    @Override
-    public int countActiveCourses() throws DataException {
-        Query<Integer> q = session.createQuery("select count (*) from Course where isActive = true ", Integer.class);
-        int n = q.getSingleResult();
-        return n;
-    }
+   public HibernateCourseRepository(Session s){
+      super(s, Course.class);
+   }
+   @Override
+   public int countActiveCourses() throws DataException {
+      Query<Integer> q = session.createQuery("select count (*) from Course where isActive = true ", Integer.class);
+      int n = q.getSingleResult();
+      return n;
+   }
 
-    @Override
-    public void deactivateOldest(int n) throws DataException {
-        List<Course> c = session.createQuery("from Course as c where c.isActive=true order by createdAt asc limit :l")
-              .setParameter("l", n).list();
-        for (Course co : c) {
-            co.deactivate();
-            session.merge(co);
-        }
-    }
+   @Override
+   public void deactivateOldest(int n) throws DataException {
+      List<Course> c = session.createQuery("from Course as c where c.isActive=true order by createdAt asc limit :l")
+            .setParameter("l", n).list();
+      for (Course co : c) {
+         co.deactivate();
+         session.merge(co);
+      }
+   }
 
-    @Override
-    public boolean adjustActiveCourses(int NumActive) throws DataException {
-        return false;
-    }
-    @Override
-    public List<Course> findByTitleContains(String part) throws DataException {
-        Query<Course> q = session.createQuery("from Course where title like :p", Course.class);
-        q.setParameter("p", "%" + part + "%");
-        return q.list();
-    }
+   @Override
+   public boolean adjustActiveCourses(int NumActive) throws DataException {
+      return false;
+   }
+   @Override
+   public List<Course> findByTitleContains(String part) throws DataException {
+      Query<Course> q = session.createQuery("from Course where title like :p", Course.class);
+      q.setParameter("p", "%" + part + "%");
+      return q.list();
+   }
 }

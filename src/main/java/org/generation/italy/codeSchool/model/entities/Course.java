@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +24,8 @@ public class Course implements Serializable {
     private boolean isActive;
     @Column(name = "created_at")
     private LocalDate createdAt;
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER) //si riferisce a come si chiama l'attributo nell'altra classe
+    private List<CourseEdition> editions;
 
     public Course() {
         this.createdAt = LocalDate.now();
@@ -73,7 +76,6 @@ public class Course implements Serializable {
         return isActive;
     }
 
-
     public void setActive(boolean active) {
         isActive = active;
     }
@@ -83,6 +85,13 @@ public class Course implements Serializable {
         return isActive!= wasActive;
     }
 
+    public List<CourseEdition> getEditions() {
+        return editions;
+    }
+
+    public void setEditions(List<CourseEdition> editions) {
+        this.editions = editions;
+    }
     //override del metodo madre Object toString() e lo facciamo meglio
     @Override
     public String toString() {
