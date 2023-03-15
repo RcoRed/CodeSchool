@@ -66,8 +66,9 @@ class HibernateCourseRepositoryTest {
 
         try {
             repo.deactivateOldest(2);
-           // s.flush();
-            s.clear();
+            //s.flush();
+            //s.clear();
+            System.out.println("Prima di leggere i corsi da database");
             List<Course> all = s.createQuery("from Course", Course.class).list()
                     .stream().sorted(Comparator.comparing(Course::getCreatedAt)).toList();
             assertEquals(3, all.size());

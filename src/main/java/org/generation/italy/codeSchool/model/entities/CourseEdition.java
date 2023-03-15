@@ -49,14 +49,6 @@ public class CourseEdition {
     public void setAssignedClassRoom(Classroom assignedClassRoom) {
         this.assignedClassRoom = assignedClassRoom;
     }
-    public CourseEdition(long id, Course course, LocalDate startedAt, double cost, Classroom assignedClassRoom){
-        this.id=id;
-        this.course=course;
-        this.startedAt=startedAt;
-        this.cost=cost;
-        this.assignedClassRoom=assignedClassRoom;
-    }
-
     public long getId() {
         return id;
     }

@@ -10,6 +10,12 @@ public class HibernateConstants {
             )
             """;
 
+    public static final String HQL_OLDEST_N_COURSES = """
+            from Course c
+            where c.isActive=true
+            order by c.createdAt
+            limit :limit
+            """;
 //        public static final String HQL_DEACTIVATE_OLDEST_N_COURSES = """
 //               update Course c set c.isActive=false, title = "boh" where c.id in (
 //               select co.id from Course co
