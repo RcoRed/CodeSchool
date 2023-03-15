@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS remote_platform,edition_module,course_module,enrollment,competence,skill,category,lesson,
-					student,teacher,person,address,course_edition,classroom,course, atttendance;
+					student,teacher,person,address,course_edition,classroom,course,attendance;
 
 DROP TYPE IF EXISTS level,sex;
 
@@ -127,7 +127,7 @@ CREATE SEQUENCE person_sequence
 CREATE TABLE teacher
 (
   	id_teacher			BIGINT NOT NULL,
-	p_IVA				CHAR(11),
+	p_iva			CHAR(11),
 	is_employee       	BOOLEAN NOT NULL,
 	hire_date			DATE,
 	fire_date			DATE,
@@ -155,7 +155,7 @@ CREATE TABLE lesson
   	title				VARCHAR(32) NOT NULL,
   	start_date			DATE NOT NULL,
 	end_date			DATE NOT NULL,
-	comment		        VARCHAR(100),
+	content	            VARCHAR(100),
 	id_classroom		BIGINT NOT NULL,
 	id_teacher			BIGINT NOT NULL,
   	CONSTRAINT PK_lesson PRIMARY KEY(id_lesson),
