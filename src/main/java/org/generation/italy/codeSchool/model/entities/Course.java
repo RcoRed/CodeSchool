@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +24,9 @@ public class Course implements Serializable {
     private boolean isActive;
     @Column(name = "created_at")
     private LocalDate createdAt;
+    @OneToMany (mappedBy = "course", //specifica che la mappatura da utilizzare si trova nell'attributo corrispondente nell'altra classe
+    fetch = FetchType.EAGER)
+    private List<CourseEdition> editions;
 
     public Course() {
         this.createdAt = LocalDate.now();
@@ -51,6 +55,14 @@ public class Course implements Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public List<CourseEdition> getEditions() {
+        return editions;
+    }
+
+    public void setEditions(List<CourseEdition> editions) {
+        this.editions = editions;
     }
 
     public String getDescription() {
