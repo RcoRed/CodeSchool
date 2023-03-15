@@ -146,7 +146,6 @@ public class JDBCConstants {
                 FROM course AS c2
                 WHERE c2.is_active = true
                 ORDER BY c2.created_at asc
-                LIMIT ?
-            );
+                LIMIT ?);
             """;
 }

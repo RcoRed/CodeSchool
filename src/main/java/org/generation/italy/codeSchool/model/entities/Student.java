@@ -1,13 +1,21 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+@Entity
+@PrimaryKeyJoinColumn(name = "id_student")
 public class Student extends Person{
 
+    @Column(name = "last_contact")
     private LocalDate lastContact;
+
+    @Column(name = "date_of_reg")
     private LocalDate dateOfReg;
 
     public Student(long id, String firstname, String lastname, LocalDate dob, Sex sex, String email, String cellNumber,

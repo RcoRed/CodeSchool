@@ -6,6 +6,7 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.hibernate.Session;
+import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -64,9 +65,21 @@ public class HibernateCourseRepository extends GenericCrudRepository<Course> imp
 
     @Override
     public void deactivateOldest(int n) throws DataException {
-
+        MutationQuery q = session.createMutationQuery("update Course set isActive = false where id in (select co from Course co where co.isActive = true order by co.createdAt asc limit :n)");
+//        Query<Course> q = session.createQuery("from Course as c where c.isActive = true order by c.createdAt asc limit :n", Course.class);
+        q.setParameter("n", n);
+        q.executeUpdate();
     }
 
+//                UPDATE course
+//                SET is_active = false
+//                WHERE id_course IN (
+//                    SELECT c2.id_course
+//                    FROM course AS c2
+//                    WHERE c2.is_active = true
+//                    ORDER BY c2.created_at asc
+//                    LIMIT ?
+//                );
     @Override
     public boolean adjustActiveCourses(int NumActive) throws DataException {
         return false;

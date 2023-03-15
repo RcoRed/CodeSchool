@@ -73,11 +73,17 @@ class HibernateCourseRepositoryTest {
         } catch (DataException e){
             fail(e.getMessage());
         }
-
     }
 
     @Test
     void deactivateOldest() {
+        try{
+            repo.deactivateOldest(1);
+            assertFalse(c1.isActive());
+
+        } catch (DataException e){
+            fail(e.getMessage());
+        }
     }
 
     @Test

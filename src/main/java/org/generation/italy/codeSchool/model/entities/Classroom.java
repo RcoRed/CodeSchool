@@ -1,13 +1,36 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "classroom")
 public class Classroom {
+    @Id
+    @GeneratedValue(generator = "classroom_generator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "classroom_generator", sequenceName = "classroom_sequence", allocationSize = 1)
+    @Column(name = "id_category")
     private long id;
+
+    @Column(name = "class_name")
     private String name;
+
+    @Column(name = "max_capacity")
     private int maxCapacity;
+
+    @Column(name = "is_virtual")
     private boolean isVirtual;
+
+    @Column(name = "is_computerized")
     private boolean isComputerized;
+
+    @Column(name = "has_projector")
     private boolean hasProjector;
+
+    @ManyToOne
+    @JoinColumn(name = "id_remote_platform")
     private RemotePlatform platform;
+
+    public Classroom(){}
 
     public Classroom(long id, String name, int maxCapacity, boolean isVirtual, boolean isComputerized, boolean hasProjector, RemotePlatform platform) {
         this.id = id;
