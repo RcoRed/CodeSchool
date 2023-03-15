@@ -13,11 +13,18 @@ import java.util.Optional;
 
 @Service
 public class StandardDidacticService implements AbstractDidacticService {
-    private CourseRepository repo;
+    //@Autowired
+    private CourseRepository repo; // field injection = inietta sul campo
+
     @Autowired
-    public StandardDidacticService(CourseRepository repo){
+    public StandardDidacticService(CourseRepository repo){ // constructor injection = inietta sul costruttore (è opzionale l'annotazione)
         this.repo = repo;       //iniezione delle dipendenze (tecnica) -> inversione del controllo (design pattern) o inversione delle dipendenze
         System.out.println(this.repo.getClass().getName());
+    }
+
+//    @Autowired
+    public void setRepo(CourseRepository repo) { // setter injection
+        this.repo = repo;
     }
 
     @Override
