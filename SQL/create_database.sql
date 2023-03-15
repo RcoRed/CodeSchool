@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS remote_platform,edition_module,course_module,enrollment,competence,skill,category,lesson,
-					student,teacher,person,address,course_edition,classroom,course;
+					student,teacher,person,address,course_edition,classroom,course,attendance;
 
 DROP TYPE IF EXISTS level,sex;
 
@@ -127,7 +127,7 @@ CREATE SEQUENCE person_sequence
 CREATE TABLE teacher
 (
   	id_teacher			BIGINT NOT NULL,
-	p_IVA				CHAR(11),
+	p_iva			CHAR(11),
 	is_employee       	BOOLEAN NOT NULL,
 	hire_date			DATE,
 	fire_date			DATE,
@@ -155,7 +155,7 @@ CREATE TABLE lesson
   	title				VARCHAR(32) NOT NULL,
   	start_date			DATE NOT NULL,
 	end_date			DATE NOT NULL,
-	lesson_comment		VARCHAR(100),
+	content	            VARCHAR(100),
 	id_classroom		BIGINT NOT NULL,
 	id_teacher			BIGINT NOT NULL,
   	CONSTRAINT PK_lesson PRIMARY KEY(id_lesson),
@@ -289,3 +289,23 @@ CREATE SEQUENCE edition_module_sequence
   start 1
   increment 1
   OWNED BY edition_module.id_edition_module;
+
+--create table attendance
+CREATE TABLE attendance
+(
+    id_attendance         	BIGINT NOT NULL,
+    id_lesson            	BIGINT,
+    id_student            	BIGINT,
+    start_date            	DATE NOT NULL,
+    end_date            	DATE,
+    comment               	VARCHAR(100),
+    CONSTRAINT PK_attendance PRIMARY KEY(id_attendance),
+    CONSTRAINT FK_attendance_lesson FOREIGN KEY(id_lesson)
+        REFERENCES lesson(id_lesson),
+    CONSTRAINT FK_attendance_student FOREIGN KEY(id_student)
+        REFERENCES student(id_student)
+);
+CREATE SEQUENCE attendance_sequence
+  start 1
+  increment 1
+  OWNED BY attendance.id_attendance;

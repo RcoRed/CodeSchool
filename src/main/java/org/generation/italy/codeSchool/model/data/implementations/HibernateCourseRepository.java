@@ -9,6 +9,7 @@ import org.hibernate.id.uuid.CustomVersionOneStrategy;
 import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import static org.generation.italy.codeSchool.model.data.HibernateConstants.HQL_
 import static org.generation.italy.codeSchool.model.data.HibernateConstants.HQL_OLDEST_N_COURSES;
 
 @Repository
+@Profile("hibernate")
 public class HibernateCourseRepository extends GenericCrudRepository<Course> implements CourseRepository {
 //    @Autowired
 //    private Session session;
