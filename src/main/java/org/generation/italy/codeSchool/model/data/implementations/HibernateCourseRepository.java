@@ -2,7 +2,6 @@ package org.generation.italy.codeSchool.model.data.implementations;
 
 import org.generation.italy.codeSchool.model.data.abstractions.CourseRepository;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
-import org.generation.italy.codeSchool.model.data.exceptions.EntityNotFoundException;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class HibernateCourseRepository extends GenericCRUDRepository<Course> implements CourseRepository{
@@ -66,7 +64,6 @@ public class HibernateCourseRepository extends GenericCRUDRepository<Course> imp
 
         //session.createQuery("update Course as c1 set c1.isActive = false where c1.id in (from Course as c where c.isActive = true order by c.createdAt asc limit :n)").setParameter("n", n);
         //session.merge()
-
 
     }
 
