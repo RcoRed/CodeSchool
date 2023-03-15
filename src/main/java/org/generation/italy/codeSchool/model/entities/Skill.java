@@ -26,6 +26,9 @@ public class Skill {
         this.category = category;
     }
 
+    public Skill(int i, String skill1Name, Object o) {
+    }
+
     public long getId() {
         return id;
     }

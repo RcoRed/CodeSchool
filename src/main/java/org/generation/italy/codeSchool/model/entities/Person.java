@@ -12,7 +12,7 @@ public abstract class Person {
     @Id
     @GeneratedValue(generator = "person_generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "person_generator", sequenceName = "person_sequence", allocationSize = 1)
-    @Column(name = "is_person")
+    @Column(name = "id_person")
     protected long id;
     protected String firstname;
     protected String lastname;
@@ -31,7 +31,7 @@ public abstract class Person {
     protected String username;
     protected String password;
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
     private Set<Competence> competences;
 
     public Person(){}
