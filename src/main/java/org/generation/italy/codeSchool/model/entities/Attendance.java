@@ -12,7 +12,11 @@ public class Attendance {
     @SequenceGenerator(name = "attendance_generator", sequenceName = "attendance_sequence", allocationSize = 1)
     @Column(name = "id_attendance")
     private long id;
+    @ManyToOne
+    @JoinColumn(name = "id_lesson")
     private Lesson lesson;
+    @ManyToOne
+    @JoinColumn(name = "id_student")
     private Student student;
     @Column (name = "start_date")
     private LocalDate startDate;
