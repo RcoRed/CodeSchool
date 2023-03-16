@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "skill")
-public class Skill {
+public class Skill implements WithId{
     @Id
     @GeneratedValue(generator = "skill_generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "skill_generator", sequenceName = "skill_sequence", allocationSize = 1)

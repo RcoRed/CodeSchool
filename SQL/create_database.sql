@@ -5,6 +5,7 @@ DROP TYPE IF EXISTS level,sex;
 
 CREATE TYPE sex					AS ENUM ('MALE','FEMALE','UNDECIDED');	--crea un enum
 CREATE TYPE level				AS ENUM ('BASE','INTERMEDIATE','ADVANCED','GURU');	--crea un enum
+
 --CREATE INDEX categoryname ON category(categoryname);
 
 CREATE TABLE remote_platform

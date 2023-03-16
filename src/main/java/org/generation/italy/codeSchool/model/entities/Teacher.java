@@ -1,6 +1,8 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -17,6 +19,8 @@ public class Teacher extends Person implements WithId{
     @Column(name = "fire_date")
     private LocalDate fireDate;
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "level")
+    @Type(PostgreSQLEnumType.class)
     private Level level;
     public Teacher(){}
     public Teacher(long id, String firstname, String lastname, LocalDate dob, Sex sex, String email, String cellNumber,

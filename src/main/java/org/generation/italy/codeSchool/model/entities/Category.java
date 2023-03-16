@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "category")
-public class Category {
+public class Category implements WithId{
     @Id
     @GeneratedValue(generator = "category_generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "category_generator", sequenceName = "category_sequence", allocationSize = 1)
@@ -12,8 +12,8 @@ public class Category {
     private long id;
     private String name;
     private String description;
-    public Category(){}
 
+    public Category(){}
     public Category(long id, String name) {
         this.id = id;
         this.name = name;

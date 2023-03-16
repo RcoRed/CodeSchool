@@ -1,6 +1,8 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "competence")
@@ -17,6 +19,8 @@ public class Competence {
     @JoinColumn(name = "id_person")
     private Person person;
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "level")
+    @Type(PostgreSQLEnumType.class)
     private Level level;
 
     public Competence(){}
