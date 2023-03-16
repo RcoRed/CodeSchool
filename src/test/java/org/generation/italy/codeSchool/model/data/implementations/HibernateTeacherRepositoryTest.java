@@ -102,4 +102,22 @@ class HibernateTeacherRepositoryTest {
             fail(e.getMessage());
         }
     }
+    @Test
+    void shouldFindWithSkillAndLevel(){
+        session.clear();
+        Iterable<Teacher> it = repo.findWithSkillAndLevel(skill1.getId(),Level.ADVANCED);
+        List<Teacher> tc = new ArrayList<>();
+        it.forEach(tc::add);
+        assertTrue(tc.size() == 1);
+        assertEquals(t1.getId(), tc.get(0).getId());
+        Optional<Competence> competenceFound = tc.get(0).getCompetences()
+              .stream()
+              .filter(c-> c.getLevel() == Level.ADVANCED && c.getSkill().getId() == skill1.getId()
+                        && c.getSkill().getName().equals(skill1.getName())).findFirst();
+        assertTrue(competenceFound.isPresent());
+    }
+    @Test
+    void findTeachersByNCourseEdition(){
+        repo.findTeachersByNCourseEdition(2);
+    }
 }
