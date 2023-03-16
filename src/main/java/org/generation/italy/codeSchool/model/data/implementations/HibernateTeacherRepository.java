@@ -20,4 +20,19 @@ public class HibernateTeacherRepository extends GenericCrudRepository<Teacher> i
                 .setParameter("level", teacherLevel).list();
 
     }
+
+    @Override
+    public Iterable<Teacher> findWithSkillAndLevel(long idSkill, Level competenceLevel) {
+        return session.createSelectionQuery(HQL_FIND_TEACHER_BY_SKILL_LEVEL, Teacher.class)
+                .setParameter("level", competenceLevel)
+                .setParameter("id", idSkill)
+                .list();
+    }
+
+    @Override
+    public Iterable<Teacher> findByNEditionModule(int n) {
+        return session.createSelectionQuery(HQL_FIND_TEACHER_BY_N_EDITION_MODULE, Teacher.class)
+                .setParameter("n", n)
+                .list();
+    }
 }

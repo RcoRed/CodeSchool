@@ -98,9 +98,38 @@ class HibernateTeacherRepositoryTest {
             assertEquals(Level.INTERMEDIATE, oc2.get().getLevel());
             assertEquals(SKILL2_NAME, oc2.get().getSkill().getName());
 
+
         } catch (DataException e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    void findWithSkillAndLevel(){
+        session.clear();
+        Iterable<Teacher> it =repo.findWithSkillAndLevel(s1.getId(), Level.ADVANCED);
+        List<Teacher> tc = new ArrayList<>();
+        it.forEach(tc::add);
+
+        assertEquals(1, tc.size());
+        assertEquals(t1.getId(), tc.get(0).getId());
+
+        Optional<Competence> competenceFounded = tc.get(0).getCompetences()
+                        .stream()
+                        .filter(c->c.getLevel() == Level.ADVANCED
+                                && c.getSkill().getId()== s1.getId()
+                                && c.getSkill().getName().equals(s1.getName()))
+                        .findFirst();
+        assertTrue(competenceFounded.isPresent());
+
+    }
+
+    @Test
+    void findByNEditionModule(){
+        session.clear();
+        Iterable<Teacher> it =repo.findByNEditionModule(2);
+        List<Teacher> tc = new ArrayList<>();
+        it.forEach(tc::add);
     }
 
 }

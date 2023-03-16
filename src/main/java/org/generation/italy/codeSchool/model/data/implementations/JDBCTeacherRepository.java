@@ -35,6 +35,16 @@ public class JDBCTeacherRepository implements TeacherRepository {
         }
     }
 
+    @Override
+    public Iterable<Teacher> findWithSkillAndLevel(long idSkill, Level competenceLevel) {
+        return null;
+    }
+
+    @Override
+    public Iterable<Teacher> findByNEditionModule(int n) {
+        return null;
+    }
+
     private Teacher teacherRawMapper(ResultSet rs) {
         return null; // da scrivere ma c'è il barbatrucco
     }
