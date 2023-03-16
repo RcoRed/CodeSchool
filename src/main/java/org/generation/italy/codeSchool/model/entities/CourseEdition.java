@@ -10,20 +10,21 @@ public class CourseEdition {
     @Id
     @GeneratedValue(generator = "course_edition_generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "course_edition_generator", sequenceName = "course_edition_sequence", allocationSize = 1)
-    @Column(name = "id_course_edition")   //nome colonna lato DB
+    @Column(name= "id_course_edition")
     private long id;
-    @ManyToOne(fetch = FetchType.EAGER) //FetchType.LAZY dice non ti disturbare a caricare, EAGER il contrario
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_course")
     private Course course;
     @Column(name = "started_at")
     private LocalDate startedAt;
-    @Column(name = "price")
+    @Column(name ="price")
     private double cost;
-    @ManyToOne      //di default é eager
+    @ManyToOne
     @JoinColumn(name = "id_classroom")
     private Classroom assignedClassRoom;
     @OneToMany(mappedBy = "edition")
     private List<EditionModule> modules;
+    public CourseEdition(){}
 
     public CourseEdition(long id, Course course, LocalDate startedAt, double cost){
         this(id, course, startedAt, cost,null, null);
@@ -42,6 +43,8 @@ public class CourseEdition {
         this.assignedClassRoom = assignedClassRoom;
         this.modules = modules;
     }
+
+
     public void setId(long id) {
         this.id = id;
     }
@@ -61,7 +64,6 @@ public class CourseEdition {
     public void setAssignedClassRoom(Classroom assignedClassRoom) {
         this.assignedClassRoom = assignedClassRoom;
     }
-
     public long getId() {
         return id;
     }
@@ -84,7 +86,6 @@ public class CourseEdition {
     public boolean isStartedInRange(LocalDate start, LocalDate end){
         return !(getStartedAt().isBefore(start) || getStartedAt().isAfter(end));
     }
-
     public int addModule (EditionModule e ) {
         this.modules.add(e);
         return modules.size();

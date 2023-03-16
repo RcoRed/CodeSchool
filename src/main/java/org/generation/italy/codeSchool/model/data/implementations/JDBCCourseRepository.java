@@ -233,6 +233,5 @@ public class JDBCCourseRepository implements CourseRepository {
         } catch (SQLException e) {
             throw new SQLException("errore nella lettura dei corsi da database", e);
         }
-
     }
 }

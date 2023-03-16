@@ -69,7 +69,6 @@ class JDBCCourseEditionRepositoryTest {
         em3 = new EditionModule(0, null, t1, null, null);
         // Category
         cat1 = new Category(0, CATEGORY1_NAME);
-        //Setting della connessione col driverManager
         con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
         con.setAutoCommit(false);
         // INSERTS
@@ -81,51 +80,44 @@ class JDBCCourseEditionRepositoryTest {
                 c2.getDescription(), c2.getProgram(), c2.getDuration(), c2.isActive(),
                 Date.valueOf(c2.getCreatedAt()));
         c2.setId(key2);
-        int classroomKey = update(INSERT_CLASSROOM_RETURNING_ID, con, true, cr1.getName(),
-              cr1.getMaxCapacity(), cr1.isVirtual(), cr1.isComputerized(), cr1.isHasProjector(), null);
+        int classroomKey = update(INSERT_CLASSROOM_RETURNING_ID, con, true, cr1.getName(),cr1.getMaxCapacity(),
+                cr1.isVirtual(), cr1.isComputerized(), cr1.isHasProjector(), null);
         cr1.setId(classroomKey);
-        int courseEditionKey1 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true, c1.getId(),
-              ce1.getStartedAt(), ce1.getCost(), cr1.getId());
+        int courseEditionKey1 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true, c1.getId(),ce1.getStartedAt(),
+                ce1.getCost(), cr1.getId());
         ce1.setId(courseEditionKey1);
-        int courseEditionKey2 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true, c1.getId(),
-              ce2.getStartedAt(), ce2.getCost(), cr1.getId());
+        int courseEditionKey2 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true,c1.getId(),ce2.getStartedAt(),
+                ce2.getCost(), cr1.getId());
         ce2.setId(courseEditionKey2);
-        int courseEditionKey3 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true, c1.getId(),
-              ce3.getStartedAt(), ce3.getCost(), cr1.getId());
+        int courseEditionKey3 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true,c1.getId(),ce3.getStartedAt(),
+                ce3.getCost(), cr1.getId());
         ce3.setId(courseEditionKey3);
-        int courseEditionKey4 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true, c2.getId(),
-              ce4.getStartedAt(), ce4.getCost(), cr1.getId());
+        int courseEditionKey4 = update(INSERT_COURSE_EDITION_RETURNING_ID, con,true,c2.getId(),ce4.getStartedAt(),
+                ce4.getCost(), cr1.getId());
         ce4.setId(courseEditionKey4);
         int categoryKey1 = update(INSERT_CATEGORY_RETURNING_ID, con, true, cat1.getName());
         cat1.setId(categoryKey1);
-        int skillKey1 = update(INSERT_SKILL_RETURNING_ID, con, true, co1.getSkill().getName(),
-              cat1.getId());
+        int skillKey1 = update(INSERT_SKILL_RETURNING_ID, con, true, co1.getSkill().getName(), cat1.getId());
         co1.getSkill().setId(skillKey1);
-        int skillKey2 = update(INSERT_SKILL_RETURNING_ID, con, true, co2.getSkill().getName(),
-              cat1.getId());
+        int skillKey2 = update(INSERT_SKILL_RETURNING_ID, con, true, co2.getSkill().getName(), cat1.getId());
         co2.getSkill().setId(skillKey2);
-        int personKey1 = update(INSERT_PERSON_RETURNING_ID, con, true, t1.getFirstname(),
-              t1.getLastname(), t1.getDob(), t1.getSex(), t1.getEmail(), t1.getUsername(), t1.getPassword());
+        int personKey1 = update(INSERT_PERSON_RETURNING_ID, con, true, t1.getFirstname(), t1.getLastname(),
+                t1.getDob(), t1.getSex(), t1.getEmail(), t1.getUsername(), t1.getPassword());
         t1.setId(personKey1);
         update(INSERT_TEACHER, con, false, personKey1, t1.getpIVA(), t1.isEmployee(), t1.getLevel());
-        int personKey2 = update(INSERT_PERSON_RETURNING_ID, con, true, t2.getFirstname(),
-              t2.getLastname(), t2.getDob(), t2.getSex(), t2.getEmail(), t2.getUsername(), t2.getPassword());
+        int personKey2 = update(INSERT_PERSON_RETURNING_ID, con, true, t2.getFirstname(), t2.getLastname(),
+                t2.getDob(), t2.getSex(), t2.getEmail(), t2.getUsername(), t2.getPassword());
         t2.setId(personKey2);
         update(INSERT_TEACHER, con, false, personKey2, t2.getpIVA(), t2.isEmployee(), t2.getLevel());
-        int competenceKey1 = update(INSERT_COMPETENCE_RETURNING_ID, con, true, t1.getId(),
-              co1.getSkill().getId(), co1.getLevel());
+        int competenceKey1 = update(INSERT_COMPETENCE_RETURNING_ID, con, true, t1.getId(), co1.getSkill().getId(), co1.getLevel());
         co1.setId(competenceKey1);
-        int competenceKey2 = update(INSERT_COMPETENCE_RETURNING_ID, con, true, t2.getId(),
-              co2.getSkill().getId(), co2.getLevel());
+        int competenceKey2 = update(INSERT_COMPETENCE_RETURNING_ID, con, true, t2.getId(), co2.getSkill().getId(), co2.getLevel());
         co2.setId(competenceKey2);
-        int editionModuleKey1 = update(INSERT_EDITION_MODULE_RETURNING_ID, con, true, ce1.getId(),
-              t1.getId());
+        int editionModuleKey1 = update(INSERT_EDITION_MODULE_RETURNING_ID, con, true, ce1.getId(), t1.getId());
         em1.setId(editionModuleKey1);
-        int editionModuleKey2 = update(INSERT_EDITION_MODULE_RETURNING_ID, con, true, ce2.getId(),
-              t2.getId());
+        int editionModuleKey2 = update(INSERT_EDITION_MODULE_RETURNING_ID, con, true, ce2.getId(), t2.getId());
         em2.setId(editionModuleKey2);
-        int editionModuleKey3 = update(INSERT_EDITION_MODULE_RETURNING_ID, con, true, ce3.getId(),
-              t1.getId());
+        int editionModuleKey3 = update(INSERT_EDITION_MODULE_RETURNING_ID, con, true, ce3.getId(), t1.getId());
         em3.setId(editionModuleKey3);
         repo = new JDBCCourseEditionRepository(con);
     }

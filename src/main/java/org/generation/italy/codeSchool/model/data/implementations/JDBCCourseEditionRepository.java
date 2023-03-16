@@ -5,6 +5,8 @@ import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Classroom;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.entities.CourseEdition;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -13,7 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.generation.italy.codeSchool.model.data.JDBCConstants.*;
-
+@Repository
+@Profile("jdbc")
 public class JDBCCourseEditionRepository implements CourseEditionRepository {
 
     private Connection con;

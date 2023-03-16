@@ -9,6 +9,7 @@ import org.generation.italy.codeSchool.model.data.implementations.SerializedCour
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.generation.italy.codeSchool.model.services.implementations.StandardDidacticService;
 import org.generation.italy.codeSchool.view.UserInterfaceConsole;
+import org.hibernate.Session;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -45,12 +46,12 @@ public class Main {
 
             var factory = HibernateUtils.getSessionFactory();
 
-            Course c = new Course(3000,"title", "description", "program",
-                    200, LocalDate.now());
-            var session = factory.openSession();
-            session.getTransaction().begin();
-            session.save(c);
-            session.getTransaction().commit();
+//            Course c = new Course(3000,"title", "description", "program",
+//                    200, LocalDate.now());
+//            var session = factory.openSession();
+//            session.getTransaction().begin();
+//            session.save(c);
+//            session.getTransaction().commit();
 
 //            UserInterfaceConsole console = ctx.getBean(UserInterfaceConsole.class);
 //            console.start();
@@ -60,5 +61,9 @@ public class Main {
     @Bean
     public static Connection createConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+    }
+    @Bean
+    public static Session createSession(){
+        return HibernateUtils.getSessionFactory().openSession();
     }
 }

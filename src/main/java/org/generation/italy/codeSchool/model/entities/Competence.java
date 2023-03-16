@@ -1,6 +1,8 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "competence")
@@ -8,7 +10,7 @@ public class Competence {
     @Id
     @GeneratedValue(generator = "competence_generator", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "competence_generator", sequenceName = "competence_sequence", allocationSize = 1)
-    @Column(name = "id_competence")   //nome colonna lato DB
+    @Column(name= "id_competence")
     private long id;
     @ManyToOne
     @JoinColumn(name = "id_skill")
@@ -17,7 +19,10 @@ public class Competence {
     @JoinColumn(name = "id_person")
     private Person person;
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "level")
+    @Type(PostgreSQLEnumType.class)
     private Level level;
+
     public Competence(){}
     public Competence(long id, Skill skill, Person person, Level level) {
         this.id = id;

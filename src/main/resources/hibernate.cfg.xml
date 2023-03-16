@@ -10,7 +10,23 @@
         <property name="hibernate.connection.password">goPostgresGo</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="show_sql">true</property>
-        <!-- <property name="hbm2ddl.auto">create-drop</property> -->
+       <!-- <property name="hbm2ddl.auto">create-drop</property> -->
+        <mapping class="org.generation.italy.codeSchool.model.entities.Address"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Attendance"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Category"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Classroom"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Competence"></mapping>
         <mapping class="org.generation.italy.codeSchool.model.entities.Course"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.CourseEdition"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.CourseModule"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.EditionModule"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Enrollment"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Lesson"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Person"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.RemotePlatform"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Skill"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Student"></mapping>
+        <mapping class="org.generation.italy.codeSchool.model.entities.Teacher"></mapping>
+
     </session-factory>
 </hibernate-configuration>

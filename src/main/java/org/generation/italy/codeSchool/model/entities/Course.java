@@ -24,7 +24,7 @@ public class Course implements Serializable {
     private boolean isActive;
     @Column(name = "created_at")
     private LocalDate createdAt;
-    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER) //si riferisce a come si chiama l'attributo nell'altra classe
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     private List<CourseEdition> editions;
 
     public Course() {
@@ -71,10 +71,14 @@ public class Course implements Serializable {
     public LocalDate getCreatedAt() {
         return createdAt;
     }
+    public List<CourseEdition> getEditions() {
+        return editions;
+    }
 
     public boolean isActive() {
         return isActive;
     }
+
 
     public void setActive(boolean active) {
         isActive = active;
@@ -84,14 +88,10 @@ public class Course implements Serializable {
         isActive = false;
         return isActive!= wasActive;
     }
-
-    public List<CourseEdition> getEditions() {
-        return editions;
-    }
-
     public void setEditions(List<CourseEdition> editions) {
         this.editions = editions;
     }
+
     //override del metodo madre Object toString() e lo facciamo meglio
     @Override
     public String toString() {

@@ -1,7 +1,10 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
+import java.net.Inet4Address;
 import java.time.LocalDate;
 import java.util.Set;
 @Entity
@@ -9,14 +12,16 @@ import java.util.Set;
 @Table(name = "person")
 public abstract class Person {
     @Id
-    @GeneratedValue(generator = "course_module_generator", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "course_module_generator", sequenceName = "course_module_sequence", allocationSize = 1)
-    @Column(name = "id_course_module")   //nome colonna lato DB
+    @GeneratedValue(generator = "person_generator", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "person_generator", sequenceName = "person_sequence", allocationSize = 1)
+    @Column(name= "id_person")
     protected long id;
     protected String firstname;
     protected String lastname;
     protected LocalDate dob;
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "sex")
+    @Type(PostgreSQLEnumType.class)
     protected Sex sex;
     protected String email;
     @Column(name = "cell_number")
@@ -26,9 +31,10 @@ public abstract class Person {
     protected Address address;
     protected String username;
     protected String password;
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Competence> competences;
     public Person(){}
+
     public Person(long id, String firstname, String lastname, LocalDate dob, Sex sex, String email, String cellNumber,
                   Address address, String username, String password, Set<Competence> competences) {
         this.id = id;

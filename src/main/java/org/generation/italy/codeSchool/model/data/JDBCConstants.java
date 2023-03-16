@@ -59,12 +59,13 @@ public class JDBCConstants {
             """;
 
     public static final String DELETE_COURSE_BY_ID = """
-               DELETE FROM course
-               WHERE id_course = ?
-               """;
+            DELETE FROM course
+            WHERE id_course = ?
+            """;
     public static final String FIND_BY_TITLE_CONTAINS = """
             SELECT id_course,title,description,program, duration,is_active,created_at
-            FROM course WHERE title like ?
+            FROM course
+            WHERE title like ?
             """;
     public static final String INSERT_COURSE = """
             INSERT INTO course(id_course, title, description, program, duration, is_active, created_at)

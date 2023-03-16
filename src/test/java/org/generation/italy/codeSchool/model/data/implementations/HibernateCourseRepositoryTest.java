@@ -1,6 +1,5 @@
 package org.generation.italy.codeSchool.model.data.implementations;
 
-import org.checkerframework.checker.nullness.Opt;
 import org.generation.italy.codeSchool.model.data.exceptions.DataException;
 import org.generation.italy.codeSchool.model.entities.Course;
 import org.hibernate.Session;
@@ -8,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,16 +63,24 @@ class HibernateCourseRepositoryTest {
 
     @Test
     void deactivateOldest() {
+
         try {
-            repo.deactivateOldest(1);
-            repo.findById(c1.getId()).ifPresent(course -> assertFalse(course.isActive()));
-            assertFalse(c1.isActive());
-            assertTrue(c2.isActive() && c3.isActive());
-            repo.deactivateOldest(1);
-            assertFalse(c2.isActive());
-            assertTrue(c3.isActive());
+            repo.deactivateOldest(2);
+            //s.flush();
+            //s.clear();
+            System.out.println("Prima di leggere i corsi da database");
+            List<Course> all = s.createQuery("from Course", Course.class).list()
+                    .stream().sorted(Comparator.comparing(Course::getCreatedAt)).toList();
+            assertEquals(3, all.size());
+            assertEquals(all.get(0).getId() , c1.getId());
+            assertFalse(all.get(0).isActive());
+            assertEquals(all.get(1).getId() , c2.getId());
+            assertFalse(all.get(1).isActive());
+            assertEquals(all.get(2).getId() , c3.getId());
+            assertTrue(all.get(2).isActive());
+
         } catch (DataException e) {
-            throw new RuntimeException(e);
+            fail(e.getMessage());
         }
     }
 
