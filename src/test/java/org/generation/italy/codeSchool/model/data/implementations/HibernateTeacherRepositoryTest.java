@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,9 +34,9 @@ class HibernateTeacherRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        t1 = new Teacher(0, "Riccardo", "Java", LocalDate.of(1970,7,12), Sex.MALE, "riky@wowo.com",
+        t1 = new Teacher(0, "Riccardo", "Java", LocalDate.of(1970, 7, 12), Sex.MALE, "riky@wowo.com",
                 "398765387563", null, "tech.publica", "streambelli",
-                new HashSet<>(), "90345677", true, LocalDate.of(2020,12,2),
+                new HashSet<>(), "90345677", true, LocalDate.of(2020, 12, 2),
                 null, Level.ADVANCED);
 
         t2 = new Teacher(0, TEACHER1_FIRSTNAME, TEACHER1_LASTNAME, TEACHER1_DOB, Sex.MALE, TEACHER1_EMAIL, null,
@@ -67,7 +68,7 @@ class HibernateTeacherRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        if(session != null){
+        if (session != null) {
             session.getTransaction().rollback();
             session.close();
         }
@@ -75,7 +76,7 @@ class HibernateTeacherRepositoryTest {
 
     @Test
     void findWithCompetenceByLevel() {
-        try{
+        try {
             session.clear();
             Iterable<Teacher> list = repo.findWithCompetenceByLevel(Level.INTERMEDIATE);
             List<Teacher> tc = new ArrayList<>();
@@ -100,9 +101,24 @@ class HibernateTeacherRepositoryTest {
             assertEquals(Level.INTERMEDIATE, co2Result.getLevel());
             assertNotNull(co2Result.getSkill());
             assertEquals(SKILL2_NAME, co2Result.getSkill().getName());
-        } catch (DataException e){
+        } catch (DataException e) {
             fail(e.getMessage());
         }
 
+    }
+
+    @Test
+    void findWithSkillAndLevel() {
+        session.clear();
+        Iterable<Teacher> it = repo.findWithSkillAndLevel(skill1.getId(), Level.ADVANCED);
+        List<Teacher> tc = new ArrayList<>();
+        it.forEach(tc::add);
+        assertTrue(tc.size() == 1);
+        assertEquals(t1.getId(), tc.get(0).getId());
+        Optional<Competence> competenceFound = tc.get(0).getCompetences()
+                .stream()
+                .filter(c -> c.getLevel() == Level.ADVANCED && c.getSkill().getId() == skill1.getId()
+                        && c.getSkill().getName().equals(skill1.getName())).findFirst();
+        assertTrue(competenceFound.isPresent());
     }
 }
