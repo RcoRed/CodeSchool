@@ -1,6 +1,8 @@
 package org.generation.italy.codeSchool.model.entities;
 
+import io.hypersistence.utils.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -19,6 +21,8 @@ public abstract class Person {
     protected LocalDate dob;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "sex")
+    @Type(PostgreSQLEnumType.class)
     protected Sex sex;
     protected String email;
 
@@ -31,7 +35,7 @@ public abstract class Person {
     protected String username;
     protected String password;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Competence> competences;
 
     public Person(){}
